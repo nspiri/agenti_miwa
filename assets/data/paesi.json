@@ -1,0 +1,1920 @@
+[
+        {
+            "BackList": "b",
+            "Sigla": "A1",
+            "Iso": "238",
+            "Paese": "ABU DHABI      (EMIRATI ARABI UNITI)",
+            "Codice": "ARE"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "A2",
+            "Iso": "239",
+            "Paese": "AJMAN          (EMIRATI ARABI UNITI)",
+            "Codice": "ARE"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "A3",
+            "Iso": "240",
+            "Paese": "DUBAI          (EMIRATI ARABI UNITI)",
+            "Codice": "ARE"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "A4",
+            "Iso": "241",
+            "Paese": "FUIJAYRAH      (EMIRATI ARABI UNITI)",
+            "Codice": "ARE"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "A5",
+            "Iso": "242",
+            "Paese": "RAS EL KAIMAH  (EMIRATI ARABI UNITI)",
+            "Codice": "ARE"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "A6",
+            "Iso": "243",
+            "Paese": "SHARJAH        (EMIRATI ARABI UNITI)",
+            "Codice": "ARE"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "A7",
+            "Iso": "244",
+            "Paese": "UMM AL QAIWAIN (EMIRATI ARABI UNITI)",
+            "Codice": "ARE"
+        },
+        {
+            "BackList": "",
+            "Sigla": "AC",
+            "Iso": "227",
+            "Paese": "ASCENSION (ISOLA)",
+            "Codice": ""
+        },
+        {
+            "BackList": "b",
+            "Sigla": "AD",
+            "Iso": "004",
+            "Paese": "ANDORRA",
+            "Codice": "AND"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "AE",
+            "Iso": "799",
+            "Paese": "EMIRATI ARABI UNITI",
+            "Codice": "ARE"
+        },
+        {
+            "BackList": "",
+            "Sigla": "AF",
+            "Iso": "002",
+            "Paese": "AFGHANISTAN",
+            "Codice": "AFG"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "AG",
+            "Iso": "197",
+            "Paese": "ANTIGUA E BARBUDA",
+            "Codice": "ATG"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "AI",
+            "Iso": "209",
+            "Paese": "ANGUILLA",
+            "Codice": "AIA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "AL",
+            "Iso": "087",
+            "Paese": "ALBANIA",
+            "Codice": "ALB"
+        },
+        {
+            "BackList": "",
+            "Sigla": "AM",
+            "Iso": "266",
+            "Paese": "ARMENIA",
+            "Codice": "ARM"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "AN",
+            "Iso": "251",
+            "Paese": "ANTILLE OLANDESI",
+            "Codice": "ANG"
+        },
+        {
+            "BackList": "",
+            "Sigla": "AO",
+            "Iso": "133",
+            "Paese": "ANGOLA",
+            "Codice": "AGO"
+        },
+        {
+            "BackList": "",
+            "Sigla": "AQ",
+            "Iso": "180",
+            "Paese": "ANTARTIDE",
+            "Codice": "ATA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "AR",
+            "Iso": "006",
+            "Paese": "ARGENTINA",
+            "Codice": "ARG"
+        },
+        {
+            "BackList": "",
+            "Sigla": "AS",
+            "Iso": "148",
+            "Paese": "AMERICAN SAMOA",
+            "Codice": "ASM"
+        },
+        {
+            "BackList": "",
+            "Sigla": "AT",
+            "Iso": "008",
+            "Paese": "AUSTRIA",
+            "Codice": "AUT"
+        },
+        {
+            "BackList": "",
+            "Sigla": "AU",
+            "Iso": "007",
+            "Paese": "AUSTRALIA",
+            "Codice": "AUS"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "AW",
+            "Iso": "212",
+            "Paese": "ARUBA",
+            "Codice": "ABW"
+        },
+        {
+            "BackList": "",
+            "Sigla": "AX",
+            "Iso": "292",
+            "Paese": "ALAND ISOLE",
+            "Codice": "ALA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "AZ",
+            "Iso": "268",
+            "Paese": "AZERBAIJAN",
+            "Codice": "AZE"
+        },
+        {
+            "BackList": "",
+            "Sigla": "BA",
+            "Iso": "274",
+            "Paese": "BOSNIA - HERZEGOWINA",
+            "Codice": "BIH"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "BB",
+            "Iso": "118",
+            "Paese": "BARBADOS",
+            "Codice": "BRB"
+        },
+        {
+            "BackList": "",
+            "Sigla": "BD",
+            "Iso": "130",
+            "Paese": "BANGLADESH",
+            "Codice": "BGD"
+        },
+        {
+            "BackList": "",
+            "Sigla": "BE",
+            "Iso": "009",
+            "Paese": "BELGIO",
+            "Codice": "BEL"
+        },
+        {
+            "BackList": "",
+            "Sigla": "BF",
+            "Iso": "142",
+            "Paese": "BURKINA FASO",
+            "Codice": "BFA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "BG",
+            "Iso": "012",
+            "Paese": "BULGARIA",
+            "Codice": "BGR"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "BH",
+            "Iso": "169",
+            "Paese": "BAHRAIN",
+            "Codice": "BHR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "BI",
+            "Iso": "025",
+            "Paese": "BURUNDI",
+            "Codice": "BDI"
+        },
+        {
+            "BackList": "",
+            "Sigla": "BJ",
+            "Iso": "158",
+            "Paese": "BENIN",
+            "Codice": "BEN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "BL",
+            "Iso": "293",
+            "Paese": "SAINT BARTHELEMY",
+            "Codice": "BLM"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "BM",
+            "Iso": "207",
+            "Paese": "BERMUDA",
+            "Codice": "BMU"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "BN",
+            "Iso": "125",
+            "Paese": "BRUNEI DARUSSALAM",
+            "Codice": "BRN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "BO",
+            "Iso": "010",
+            "Paese": "BOLIVIA",
+            "Codice": "BOL"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "BQ",
+            "Iso": "295",
+            "Paese": "BONAIRE S.EUSTATIUS AND SABA",
+            "Codice": "BES"
+        },
+        {
+            "BackList": "",
+            "Sigla": "BR",
+            "Iso": "011",
+            "Paese": "BRASILE",
+            "Codice": "BRA"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "BS",
+            "Iso": "160",
+            "Paese": "BAHAMAS",
+            "Codice": "BHS"
+        },
+        {
+            "BackList": "",
+            "Sigla": "BT",
+            "Iso": "097",
+            "Paese": "BHUTAN",
+            "Codice": "BTN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "BV",
+            "Iso": "280",
+            "Paese": "BOUVET ISLAND",
+            "Codice": "BVT"
+        },
+        {
+            "BackList": "",
+            "Sigla": "BW",
+            "Iso": "098",
+            "Paese": "BOTSWANA",
+            "Codice": "BWA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "BY",
+            "Iso": "264",
+            "Paese": "BIELORUSSIA",
+            "Codice": "BLR"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "BZ",
+            "Iso": "198",
+            "Paese": "BELIZE",
+            "Codice": "BLZ"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CA",
+            "Iso": "013",
+            "Paese": "CANADA",
+            "Codice": "CAN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CC",
+            "Iso": "281",
+            "Paese": "COCOS (KEELING) ISLANDS",
+            "Codice": "CCK"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CD",
+            "Iso": "018",
+            "Paese": "CONGO (REPUBBLICA DEMOCRATICA DEL CONGO)",
+            "Codice": "COD"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CF",
+            "Iso": "143",
+            "Paese": "CENTROAFRICANA (REPUBBLICA)",
+            "Codice": "CAF"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CG",
+            "Iso": "145",
+            "Paese": "CONGO",
+            "Codice": "COG"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "CH",
+            "Iso": "071",
+            "Paese": "SVIZZERA",
+            "Codice": "CHE"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CI",
+            "Iso": "146",
+            "Paese": "COSTA D'AVORIO",
+            "Codice": "CIV"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "CK",
+            "Iso": "237",
+            "Paese": "COOK ISOLE",
+            "Codice": "COK"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CL",
+            "Iso": "015",
+            "Paese": "CILE",
+            "Codice": "CHL"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CM",
+            "Iso": "119",
+            "Paese": "CAMERUN",
+            "Codice": "CMR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CN",
+            "Iso": "016",
+            "Paese": "CINA",
+            "Codice": "CHN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CO",
+            "Iso": "017",
+            "Paese": "COLOMBIA",
+            "Codice": "COL"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CP",
+            "Iso": "223",
+            "Paese": "CLIPPERTON",
+            "Codice": ""
+        },
+        {
+            "BackList": "b",
+            "Sigla": "CR",
+            "Iso": "019",
+            "Paese": "COSTA RICA",
+            "Codice": "CRI"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CU",
+            "Iso": "020",
+            "Paese": "CUBA",
+            "Codice": "CUB"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CV",
+            "Iso": "188",
+            "Paese": "CAPO VERDE",
+            "Codice": "CPV"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "CW",
+            "Iso": "296",
+            "Paese": "CURACAO",
+            "Codice": "CUW"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CX",
+            "Iso": "282",
+            "Paese": "CHRISTMAS ISLAND",
+            "Codice": "CXR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CY",
+            "Iso": "101",
+            "Paese": "CIPRO",
+            "Codice": "CYP"
+        },
+        {
+            "BackList": "",
+            "Sigla": "CZ",
+            "Iso": "275",
+            "Paese": "REPUBBLICA CECA",
+            "Codice": "CZE"
+        },
+        {
+            "BackList": "",
+            "Sigla": "DE",
+            "Iso": "094",
+            "Paese": "GERMANIA",
+            "Codice": "DEU"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "DJ",
+            "Iso": "113",
+            "Paese": "GIBUTI",
+            "Codice": "DJI"
+        },
+        {
+            "BackList": "",
+            "Sigla": "DK",
+            "Iso": "021",
+            "Paese": "DANIMARCA",
+            "Codice": "DNK"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "DM",
+            "Iso": "192",
+            "Paese": "DOMINICA",
+            "Codice": "DMA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "DO",
+            "Iso": "063",
+            "Paese": "REPUBBLICA DOMINICANA",
+            "Codice": "DOM"
+        },
+        {
+            "BackList": "",
+            "Sigla": "DZ",
+            "Iso": "003",
+            "Paese": "ALGERIA",
+            "Codice": "DZA"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "EC",
+            "Iso": "024",
+            "Paese": "ECUADOR",
+            "Codice": "ECU"
+        },
+        {
+            "BackList": "",
+            "Sigla": "EE",
+            "Iso": "257",
+            "Paese": "ESTONIA",
+            "Codice": "EST"
+        },
+        {
+            "BackList": "",
+            "Sigla": "EG",
+            "Iso": "023",
+            "Paese": "EGITTO",
+            "Codice": "EGY"
+        },
+        {
+            "BackList": "",
+            "Sigla": "EH",
+            "Iso": "166",
+            "Paese": "SAHARA OCCIDENTALE",
+            "Codice": "ESH"
+        },
+        {
+            "BackList": "",
+            "Sigla": "ER",
+            "Iso": "277",
+            "Paese": "ERITREA",
+            "Codice": "ERI"
+        },
+        {
+            "BackList": "",
+            "Sigla": "ES",
+            "Iso": "067",
+            "Paese": "SPAGNA",
+            "Codice": "ESP"
+        },
+        {
+            "BackList": "",
+            "Sigla": "ET",
+            "Iso": "026",
+            "Paese": "ETIOPIA",
+            "Codice": "ETH"
+        },
+        {
+            "BackList": "",
+            "Sigla": "FI",
+            "Iso": "028",
+            "Paese": "FINLANDIA",
+            "Codice": "FIN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "FJ",
+            "Iso": "161",
+            "Paese": "FIJI (ISOLE)",
+            "Codice": "FJI"
+        },
+        {
+            "BackList": "",
+            "Sigla": "FK",
+            "Iso": "190",
+            "Paese": "FALKLAND (ISOLE)",
+            "Codice": "FLK"
+        },
+        {
+            "BackList": "",
+            "Sigla": "FM",
+            "Iso": "215",
+            "Paese": "MICRONESIA (STATI FEDERATI DI)",
+            "Codice": "FSM"
+        },
+        {
+            "BackList": "",
+            "Sigla": "FO",
+            "Iso": "204",
+            "Paese": "FAEROER (ISOLE)",
+            "Codice": "FRO"
+        },
+        {
+            "BackList": "",
+            "Sigla": "FR",
+            "Iso": "029",
+            "Paese": "FRANCIA",
+            "Codice": "FRA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "GA",
+            "Iso": "157",
+            "Paese": "GABON",
+            "Codice": "GAB"
+        },
+        {
+            "BackList": "",
+            "Sigla": "GB",
+            "Iso": "031",
+            "Paese": "GRAN BRETAGNA (REGNO UNITO)",
+            "Codice": "GBR"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "GD",
+            "Iso": "156",
+            "Paese": "GRENADA",
+            "Codice": "GRD"
+        },
+        {
+            "BackList": "",
+            "Sigla": "GE",
+            "Iso": "267",
+            "Paese": "GEORGIA",
+            "Codice": "GEO"
+        },
+        {
+            "BackList": "",
+            "Sigla": "GF",
+            "Iso": "123",
+            "Paese": "GUIANA FRANCESE",
+            "Codice": "GUF"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "GG",
+            "Iso": "201",
+            "Paese": "GUERNSEY",
+            "Codice": "GGY"
+        },
+        {
+            "BackList": "",
+            "Sigla": "GH",
+            "Iso": "112",
+            "Paese": "GHANA",
+            "Codice": "GHA"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "GI",
+            "Iso": "102",
+            "Paese": "GIBILTERRA",
+            "Codice": "GIB"
+        },
+        {
+            "BackList": "",
+            "Sigla": "GL",
+            "Iso": "200",
+            "Paese": "GROENLANDIA",
+            "Codice": "GRL"
+        },
+        {
+            "BackList": "",
+            "Sigla": "GM",
+            "Iso": "164",
+            "Paese": "GAMBIA",
+            "Codice": "GMB"
+        },
+        {
+            "BackList": "",
+            "Sigla": "GN",
+            "Iso": "137",
+            "Paese": "GUINEA",
+            "Codice": "GIN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "GP",
+            "Iso": "214",
+            "Paese": "GUADELUPA",
+            "Codice": "GLP"
+        },
+        {
+            "BackList": "",
+            "Sigla": "GQ",
+            "Iso": "167",
+            "Paese": "GUINEA EQUATORIALE",
+            "Codice": "GNQ"
+        },
+        {
+            "BackList": "",
+            "Sigla": "GR",
+            "Iso": "032",
+            "Paese": "GRECIA",
+            "Codice": "GRC"
+        },
+        {
+            "BackList": "",
+            "Sigla": "GS",
+            "Iso": "283",
+            "Paese": "SOUTH GEORGIA AND SOUTH SANDWICH",
+            "Codice": "SGS"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "GT",
+            "Iso": "033",
+            "Paese": "GUATEMALA",
+            "Codice": "GTM"
+        },
+        {
+            "BackList": "",
+            "Sigla": "GU",
+            "Iso": "154",
+            "Paese": "GUAM",
+            "Codice": "GUM"
+        },
+        {
+            "BackList": "",
+            "Sigla": "GW",
+            "Iso": "185",
+            "Paese": "GUINEA BISSAU",
+            "Codice": "GNB"
+        },
+        {
+            "BackList": "",
+            "Sigla": "GY",
+            "Iso": "159",
+            "Paese": "GUYANA",
+            "Codice": "GUY"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "HK",
+            "Iso": "103",
+            "Paese": "HONG KONG",
+            "Codice": "HKG"
+        },
+        {
+            "BackList": "",
+            "Sigla": "HM",
+            "Iso": "284",
+            "Paese": "HEARD AND MC DONALD ISLAND",
+            "Codice": "HMD"
+        },
+        {
+            "BackList": "",
+            "Sigla": "HN",
+            "Iso": "035",
+            "Paese": "HONDURAS",
+            "Codice": "HND"
+        },
+        {
+            "BackList": "",
+            "Sigla": "HR",
+            "Iso": "261",
+            "Paese": "CROAZIA",
+            "Codice": "HRV"
+        },
+        {
+            "BackList": "",
+            "Sigla": "HT",
+            "Iso": "034",
+            "Paese": "HAITI",
+            "Codice": "HTI"
+        },
+        {
+            "BackList": "",
+            "Sigla": "HU",
+            "Iso": "077",
+            "Paese": "UNGHERIA",
+            "Codice": "HUN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "IC",
+            "Iso": "100",
+            "Paese": "CANARIE (ISOLE)",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "ID",
+            "Iso": "129",
+            "Paese": "INDONESIA",
+            "Codice": "IDN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "IE",
+            "Iso": "040",
+            "Paese": "IRLANDA",
+            "Codice": "IRL"
+        },
+        {
+            "BackList": "",
+            "Sigla": "IL",
+            "Iso": "182",
+            "Paese": "ISRAELE",
+            "Codice": "ISR"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "IM",
+            "Iso": "203",
+            "Paese": "MAN ISOLA",
+            "Codice": "IMN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "IN",
+            "Iso": "114",
+            "Paese": "INDIA",
+            "Codice": "IND"
+        },
+        {
+            "BackList": "",
+            "Sigla": "IO",
+            "Iso": "245",
+            "Paese": "TERRITORIO BRIT. OCEANO INDIANO",
+            "Codice": "IOT"
+        },
+        {
+            "BackList": "",
+            "Sigla": "IQ",
+            "Iso": "038",
+            "Paese": "IRAQ",
+            "Codice": "IRQ"
+        },
+        {
+            "BackList": "",
+            "Sigla": "IR",
+            "Iso": "039",
+            "Paese": "IRAN (REP.ISLAMICA DI)",
+            "Codice": "IRN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "IS",
+            "Iso": "041",
+            "Paese": "ISLANDA",
+            "Codice": "ISL"
+        },
+        {
+            "BackList": "",
+            "Sigla": "IT",
+            "Iso": "",
+            "Paese": "ITALIA",
+            "Codice": "ITA"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "JE",
+            "Iso": "202",
+            "Paese": "JERSEY C.I.",
+            "Codice": "JEY"
+        },
+        {
+            "BackList": "",
+            "Sigla": "JM",
+            "Iso": "082",
+            "Paese": "GIAMAICA",
+            "Codice": "JAM"
+        },
+        {
+            "BackList": "",
+            "Sigla": "JO",
+            "Iso": "122",
+            "Paese": "GIORDANIA",
+            "Codice": "JOR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "JP",
+            "Iso": "088",
+            "Paese": "GIAPPONE",
+            "Codice": "JPN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "KE",
+            "Iso": "116",
+            "Paese": "KENYA",
+            "Codice": "KEN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "KG",
+            "Iso": "270",
+            "Paese": "KYRGHIZISTAN",
+            "Codice": "KGZ"
+        },
+        {
+            "BackList": "",
+            "Sigla": "KH",
+            "Iso": "135",
+            "Paese": "CAMBOGIA",
+            "Codice": "KHM"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "KI",
+            "Iso": "194",
+            "Paese": "KIRIBATI",
+            "Codice": "KIR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "KM",
+            "Iso": "176",
+            "Paese": "COMORE (ISOLE)",
+            "Codice": "KMF"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "KN",
+            "Iso": "195",
+            "Paese": "SAINT KITTS E NEVIS",
+            "Codice": "KNA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "KP",
+            "Iso": "074",
+            "Paese": "COREA DEL NORD",
+            "Codice": "PRK"
+        },
+        {
+            "BackList": "",
+            "Sigla": "KR",
+            "Iso": "084",
+            "Paese": "COREA DEL SUD",
+            "Codice": "KOR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "KW",
+            "Iso": "126",
+            "Paese": "KUWAIT",
+            "Codice": "KWT"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "KY",
+            "Iso": "211",
+            "Paese": "CAYMAN (ISOLE)",
+            "Codice": "CYM"
+        },
+        {
+            "BackList": "",
+            "Sigla": "KZ",
+            "Iso": "269",
+            "Paese": "KAZAKHSTAN",
+            "Codice": "KAZ"
+        },
+        {
+            "BackList": "",
+            "Sigla": "LA",
+            "Iso": "136",
+            "Paese": "LAOS",
+            "Codice": "LAO"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "LB",
+            "Iso": "095",
+            "Paese": "LIBANO",
+            "Codice": "LBN"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "LC",
+            "Iso": "199",
+            "Paese": "SAINT LUCIA",
+            "Codice": "LCA"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "LI",
+            "Iso": "090",
+            "Paese": "LIECHTENSTEIN",
+            "Codice": "LIE"
+        },
+        {
+            "BackList": "",
+            "Sigla": "LK",
+            "Iso": "085",
+            "Paese": "SRI LANKA",
+            "Codice": "LKA"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "LR",
+            "Iso": "044",
+            "Paese": "LIBERIA",
+            "Codice": "LBR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "LS",
+            "Iso": "089",
+            "Paese": "LESOTHO",
+            "Codice": "LSO"
+        },
+        {
+            "BackList": "",
+            "Sigla": "LT",
+            "Iso": "259",
+            "Paese": "LITUANIA",
+            "Codice": "LTU"
+        },
+        {
+            "BackList": "",
+            "Sigla": "LU",
+            "Iso": "092",
+            "Paese": "LUSSEMBURGO",
+            "Codice": "LUX"
+        },
+        {
+            "BackList": "",
+            "Sigla": "LV",
+            "Iso": "258",
+            "Paese": "LETTONIA",
+            "Codice": "LVA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "LY",
+            "Iso": "045",
+            "Paese": "LIBIA",
+            "Codice": "LBY"
+        },
+        {
+            "BackList": "",
+            "Sigla": "MA",
+            "Iso": "107",
+            "Paese": "MAROCCO",
+            "Codice": "MAR"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "MC",
+            "Iso": "091",
+            "Paese": "PRINCIPATO DI MONACO",
+            "Codice": "MCO"
+        },
+        {
+            "BackList": "",
+            "Sigla": "MD",
+            "Iso": "265",
+            "Paese": "MOLDAVIA",
+            "Codice": "MDA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "ME",
+            "Iso": "290",
+            "Paese": "MONTENEGRO",
+            "Codice": "MNE"
+        },
+        {
+            "BackList": "",
+            "Sigla": "MF",
+            "Iso": "222",
+            "Paese": "SAINT MARTIN SETTENTRIONALE",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "MG",
+            "Iso": "104",
+            "Paese": "MADAGASCAR",
+            "Codice": "MDG"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "MH",
+            "Iso": "217",
+            "Paese": "MARSHALL (ISOLE)",
+            "Codice": "MHL"
+        },
+        {
+            "BackList": "",
+            "Sigla": "MK",
+            "Iso": "278",
+            "Paese": "MACEDONIA",
+            "Codice": "MKD"
+        },
+        {
+            "BackList": "",
+            "Sigla": "ML",
+            "Iso": "149",
+            "Paese": "MALI",
+            "Codice": "MLI"
+        },
+        {
+            "BackList": "",
+            "Sigla": "MM",
+            "Iso": "083",
+            "Paese": "MYANMAR",
+            "Codice": "MMR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "MN",
+            "Iso": "110",
+            "Paese": "MONGOLIA",
+            "Codice": "MNG"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "MO",
+            "Iso": "059",
+            "Paese": "MACAO",
+            "Codice": "MAC"
+        },
+        {
+            "BackList": "",
+            "Sigla": "MP",
+            "Iso": "219",
+            "Paese": "MARIANNE SETTENTRIONALI (ISOLE)",
+            "Codice": "MNP"
+        },
+        {
+            "BackList": "",
+            "Sigla": "MQ",
+            "Iso": "213",
+            "Paese": "MARTINICA",
+            "Codice": "MTQ"
+        },
+        {
+            "BackList": "",
+            "Sigla": "MR",
+            "Iso": "141",
+            "Paese": "MAURITANIA",
+            "Codice": "MRT"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "MS",
+            "Iso": "208",
+            "Paese": "MONTSERRAT",
+            "Codice": "MSR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "MT",
+            "Iso": "105",
+            "Paese": "MALTA",
+            "Codice": "MLT"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "MU",
+            "Iso": "128",
+            "Paese": "MAURITIUS (ISOLE)",
+            "Codice": "MUS"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "MV",
+            "Iso": "127",
+            "Paese": "MALDIVE",
+            "Codice": "MDV"
+        },
+        {
+            "BackList": "",
+            "Sigla": "MW",
+            "Iso": "056",
+            "Paese": "MALAWI",
+            "Codice": "MWI"
+        },
+        {
+            "BackList": "",
+            "Sigla": "MX",
+            "Iso": "046",
+            "Paese": "MESSICO",
+            "Codice": "MEX"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "MY",
+            "Iso": "106",
+            "Paese": "MALAYSIA",
+            "Codice": "MYS"
+        },
+        {
+            "BackList": "",
+            "Sigla": "MZ",
+            "Iso": "134",
+            "Paese": "MOZAMBICO",
+            "Codice": "MOZ"
+        },
+        {
+            "BackList": "",
+            "Sigla": "NA",
+            "Iso": "206",
+            "Paese": "NAMIBIA",
+            "Codice": "NAM"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "NC",
+            "Iso": "253",
+            "Paese": "NUOVA CALEDONIA",
+            "Codice": "NCL"
+        },
+        {
+            "BackList": "",
+            "Sigla": "NE",
+            "Iso": "150",
+            "Paese": "NIGER",
+            "Codice": "NER"
+        },
+        {
+            "BackList": "",
+            "Sigla": "NF",
+            "Iso": "285",
+            "Paese": "NORFOLK ISLAND",
+            "Codice": "NFK"
+        },
+        {
+            "BackList": "",
+            "Sigla": "NG",
+            "Iso": "117",
+            "Paese": "NIGERIA",
+            "Codice": "NGA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "NI",
+            "Iso": "047",
+            "Paese": "NICARAGUA",
+            "Codice": "NIC"
+        },
+        {
+            "BackList": "",
+            "Sigla": "NL",
+            "Iso": "050",
+            "Paese": "OLANDA (PAESI BASSI)",
+            "Codice": "NLD"
+        },
+        {
+            "BackList": "",
+            "Sigla": "NO",
+            "Iso": "048",
+            "Paese": "NORVEGIA",
+            "Codice": "NOR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "NP",
+            "Iso": "115",
+            "Paese": "NEPAL",
+            "Codice": "NPL"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "NR",
+            "Iso": "109",
+            "Paese": "NAURU",
+            "Codice": "NRU"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "NU",
+            "Iso": "205",
+            "Paese": "NIUE",
+            "Codice": "NIU"
+        },
+        {
+            "BackList": "",
+            "Sigla": "NZ",
+            "Iso": "049",
+            "Paese": "NUOVA ZELANDA",
+            "Codice": "NZL"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "OM",
+            "Iso": "163",
+            "Paese": "OMAN",
+            "Codice": "OMN"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "PA",
+            "Iso": "051",
+            "Paese": "PANAMA",
+            "Codice": "PAN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "PE",
+            "Iso": "053",
+            "Paese": "PERU",
+            "Codice": "PER"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "PF",
+            "Iso": "225",
+            "Paese": "POLINESIA FRANCESE",
+            "Codice": "PYF"
+        },
+        {
+            "BackList": "",
+            "Sigla": "PG",
+            "Iso": "186",
+            "Paese": "PAPUA NUOVA GUINEA",
+            "Codice": "PNG"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "PH",
+            "Iso": "027",
+            "Paese": "FILIPPINE",
+            "Codice": "PHL"
+        },
+        {
+            "BackList": "",
+            "Sigla": "PK",
+            "Iso": "036",
+            "Paese": "PAKISTAN",
+            "Codice": "PAK"
+        },
+        {
+            "BackList": "",
+            "Sigla": "PL",
+            "Iso": "054",
+            "Paese": "POLONIA",
+            "Codice": "POL"
+        },
+        {
+            "BackList": "",
+            "Sigla": "PM",
+            "Iso": "248",
+            "Paese": "SAINT PIERRE E MIQUELON",
+            "Codice": "SPM"
+        },
+        {
+            "BackList": "",
+            "Sigla": "PN",
+            "Iso": "175",
+            "Paese": "PITCAIRN",
+            "Codice": "PCN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "PR",
+            "Iso": "220",
+            "Paese": "PORTORICO",
+            "Codice": "PRI"
+        },
+        {
+            "BackList": "",
+            "Sigla": "PS",
+            "Iso": "279",
+            "Paese": "PALESTINA (TERRITORI AUTONOMI)",
+            "Codice": "PSE"
+        },
+        {
+            "BackList": "",
+            "Sigla": "PT",
+            "Iso": "055",
+            "Paese": "PORTOGALLO",
+            "Codice": "PRT"
+        },
+        {
+            "BackList": "",
+            "Sigla": "PW",
+            "Iso": "216",
+            "Paese": "PALAU",
+            "Codice": "PLW"
+        },
+        {
+            "BackList": "",
+            "Sigla": "PY",
+            "Iso": "052",
+            "Paese": "PARAGUAY",
+            "Codice": "PRY"
+        },
+        {
+            "BackList": "",
+            "Sigla": "QA",
+            "Iso": "168",
+            "Paese": "QATAR",
+            "Codice": "QAT"
+        },
+        {
+            "BackList": "",
+            "Sigla": "RE",
+            "Iso": "247",
+            "Paese": "REUNION",
+            "Codice": "REU"
+        },
+        {
+            "BackList": "",
+            "Sigla": "RO",
+            "Iso": "061",
+            "Paese": "ROMANIA",
+            "Codice": "ROU"
+        },
+        {
+            "BackList": "",
+            "Sigla": "RS",
+            "Iso": "289",
+            "Paese": "SERBIA",
+            "Codice": "SRB"
+        },
+        {
+            "BackList": "",
+            "Sigla": "RU",
+            "Iso": "262",
+            "Paese": "RUSSIA FEDERAZIONE",
+            "Codice": "RUS"
+        },
+        {
+            "BackList": "",
+            "Sigla": "RW",
+            "Iso": "151",
+            "Paese": "RUANDA",
+            "Codice": "RWA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "SA",
+            "Iso": "005",
+            "Paese": "ARABIA SAUDITA",
+            "Codice": "SAU"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "SB",
+            "Iso": "191",
+            "Paese": "SALOMONE ISOLE",
+            "Codice": "SLB"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "SC",
+            "Iso": "189",
+            "Paese": "SEYCHELLES",
+            "Codice": "SYC"
+        },
+        {
+            "BackList": "",
+            "Sigla": "SD",
+            "Iso": "070",
+            "Paese": "SUDAN",
+            "Codice": "SDN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "SE",
+            "Iso": "068",
+            "Paese": "SVEZIA",
+            "Codice": "SWE"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "SG",
+            "Iso": "147",
+            "Paese": "SINGAPORE",
+            "Codice": "SGP"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "SH",
+            "Iso": "254",
+            "Paese": "ST. ELENA",
+            "Codice": "SHN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "SI",
+            "Iso": "260",
+            "Paese": "SLOVENIA",
+            "Codice": "SVN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "SJ",
+            "Iso": "286",
+            "Paese": "SVALBARD AND JAN MAYEN ISLANDS",
+            "Codice": "SJM"
+        },
+        {
+            "BackList": "",
+            "Sigla": "SK",
+            "Iso": "276",
+            "Paese": "SLOVACCA REPUBBLICA",
+            "Codice": "SVK"
+        },
+        {
+            "BackList": "",
+            "Sigla": "SL",
+            "Iso": "153",
+            "Paese": "SIERRA LEONE",
+            "Codice": "SLE"
+        },
+        {
+            "BackList": "",
+            "Sigla": "SM",
+            "Iso": "037",
+            "Paese": "SAN MARINO",
+            "Codice": "SMR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "SN",
+            "Iso": "152",
+            "Paese": "SENEGAL",
+            "Codice": "SEN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "SO",
+            "Iso": "066",
+            "Paese": "SOMALIA",
+            "Codice": "SOM"
+        },
+        {
+            "BackList": "",
+            "Sigla": "SR",
+            "Iso": "124",
+            "Paese": "SURINAME",
+            "Codice": "SUR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "ST",
+            "Iso": "187",
+            "Paese": "SAO TOME E PRINCIPE",
+            "Codice": "STP"
+        },
+        {
+            "BackList": "",
+            "Sigla": "SV",
+            "Iso": "064",
+            "Paese": "SALVADOR",
+            "Codice": "SLV"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "SX",
+            "Iso": "294",
+            "Paese": "SINT MAARTEN (DUTCH PART)",
+            "Codice": "SXM"
+        },
+        {
+            "BackList": "",
+            "Sigla": "SY",
+            "Iso": "065",
+            "Paese": "SIRIA",
+            "Codice": "SYR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "SZ",
+            "Iso": "138",
+            "Paese": "SWAZILAND",
+            "Codice": "SWZ"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "TC",
+            "Iso": "210",
+            "Paese": "TURKS E CAICOS (ISOLE)",
+            "Codice": "TCA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "TD",
+            "Iso": "144",
+            "Paese": "CIAD",
+            "Codice": "TCD"
+        },
+        {
+            "BackList": "",
+            "Sigla": "TF",
+            "Iso": "183",
+            "Paese": "TERRITORI FRANCESI DEL SUD",
+            "Codice": "ATF"
+        },
+        {
+            "BackList": "",
+            "Sigla": "TG",
+            "Iso": "155",
+            "Paese": "TOGO",
+            "Codice": "TGO"
+        },
+        {
+            "BackList": "",
+            "Sigla": "TH",
+            "Iso": "072",
+            "Paese": "THAILANDIA",
+            "Codice": "THA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "TJ",
+            "Iso": "272",
+            "Paese": "TAGIKISTAN",
+            "Codice": "TJK"
+        },
+        {
+            "BackList": "",
+            "Sigla": "TK",
+            "Iso": "236",
+            "Paese": "TOKELAU",
+            "Codice": "TKL"
+        },
+        {
+            "BackList": "",
+            "Sigla": "TM",
+            "Iso": "273",
+            "Paese": "TURKMENISTAN",
+            "Codice": "TKM"
+        },
+        {
+            "BackList": "",
+            "Sigla": "TN",
+            "Iso": "075",
+            "Paese": "TUNISIA",
+            "Codice": "TUN"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "TO",
+            "Iso": "162",
+            "Paese": "TONGA",
+            "Codice": "TON"
+        },
+        {
+            "BackList": "",
+            "Sigla": "TP",
+            "Iso": "287",
+            "Paese": "TIMOR EST",
+            "Codice": "TMP"
+        },
+        {
+            "BackList": "",
+            "Sigla": "TR",
+            "Iso": "076",
+            "Paese": "TURCHIA",
+            "Codice": "TUR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "TT",
+            "Iso": "120",
+            "Paese": "TRINIDAD E TOBAGO",
+            "Codice": "TTO"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "TV",
+            "Iso": "193",
+            "Paese": "TUVALU",
+            "Codice": "TUV"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "TW",
+            "Iso": "022",
+            "Paese": "TAIWAN",
+            "Codice": "TWN"
+        },
+        {
+            "BackList": "",
+            "Sigla": "TZ",
+            "Iso": "057",
+            "Paese": "TANZANIA",
+            "Codice": "TZA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "UA",
+            "Iso": "263",
+            "Paese": "UCRAINA",
+            "Codice": "UKR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "UG",
+            "Iso": "132",
+            "Paese": "UGANDA",
+            "Codice": "UGA"
+        },
+        {
+            "BackList": "",
+            "Sigla": "US",
+            "Iso": "069",
+            "Paese": "STATI UNITI D'AMERICA",
+            "Codice": "USA"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "UY",
+            "Iso": "080",
+            "Paese": "URUGUAY",
+            "Codice": "URY"
+        },
+        {
+            "BackList": "",
+            "Sigla": "UZ",
+            "Iso": "271",
+            "Paese": "UZBEKISTAN",
+            "Codice": "UZB"
+        },
+        {
+            "BackList": "",
+            "Sigla": "VA",
+            "Iso": "093",
+            "Paese": "CITTA'DEL VATICANO",
+            "Codice": "VAT"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "VC",
+            "Iso": "196",
+            "Paese": "ST. VINCENT E LE GRENADINE",
+            "Codice": "VCT"
+        },
+        {
+            "BackList": "",
+            "Sigla": "VE",
+            "Iso": "081",
+            "Paese": "VENEZUELA",
+            "Codice": "VEN"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "VG",
+            "Iso": "249",
+            "Paese": "VERGINI BRITANNICHE (ISOLE)",
+            "Codice": "VGB"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "VI",
+            "Iso": "221",
+            "Paese": "VERGINI AMERICANE (ISOLE)",
+            "Codice": "VIR"
+        },
+        {
+            "BackList": "",
+            "Sigla": "VN",
+            "Iso": "062",
+            "Paese": "VIETNAM",
+            "Codice": "VNM"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "VU",
+            "Iso": "121",
+            "Paese": "VANUATU",
+            "Codice": "VUT"
+        },
+        {
+            "BackList": "",
+            "Sigla": "WF",
+            "Iso": "218",
+            "Paese": "WALLIS E FUTUNA (ISOLE)",
+            "Codice": "WLF"
+        },
+        {
+            "BackList": "b",
+            "Sigla": "WS",
+            "Iso": "131",
+            "Paese": "SAMOA",
+            "Codice": "WSM"
+        },
+        {
+            "BackList": "",
+            "Sigla": "XA",
+            "Iso": "234",
+            "Paese": "AZZORRE (ISOLE)",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "XB",
+            "Iso": "235",
+            "Paese": "MADEIRA",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "XC",
+            "Iso": "246",
+            "Paese": "CEUTA",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "XF",
+            "Iso": "230",
+            "Paese": "CHAFARINAS",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "XG",
+            "Iso": "228",
+            "Paese": "GOUGH",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "XH",
+            "Iso": "255",
+            "Paese": "CHAGOS (ISOLE)",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "XI",
+            "Iso": "",
+            "Paese": "IRLANDA DEL NORD",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "XK",
+            "Iso": "291",
+            "Paese": "KOSOVO",
+            "Codice": "XKX"
+        },
+        {
+            "BackList": "",
+            "Sigla": "XL",
+            "Iso": "231",
+            "Paese": "MELILLA",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "XM",
+            "Iso": "139",
+            "Paese": "CAMPIONE D'ITALIA",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "XP",
+            "Iso": "232",
+            "Paese": "PENON DE ALHUCEMAS",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "XQ",
+            "Iso": "233",
+            "Paese": "PENON DE VELEZ DE LA GOMERA",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "XR",
+            "Iso": "256",
+            "Paese": "CAROLINE ISOLE",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "XU",
+            "Iso": "229",
+            "Paese": "TRISTAN DA CUNHA",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "XW",
+            "Iso": "177",
+            "Paese": "MIDWAY (ISOLE)",
+            "Codice": ""
+        },
+        {
+            "BackList": "",
+            "Sigla": "YE",
+            "Iso": "042",
+            "Paese": "YEMEN",
+            "Codice": "YEM"
+        },
+        {
+            "BackList": "",
+            "Sigla": "YT",
+            "Iso": "226",
+            "Paese": "MAYOTTE",
+            "Codice": "MYT"
+        },
+        {
+            "BackList": "",
+            "Sigla": "ZA",
+            "Iso": "078",
+            "Paese": "SUD AFRICA REPUBBLICA",
+            "Codice": "ZAF"
+        },
+        {
+            "BackList": "",
+            "Sigla": "ZM",
+            "Iso": "058",
+            "Paese": "ZAMBIA",
+            "Codice": "ZMB"
+        },
+        {
+            "BackList": "",
+            "Sigla": "ZW",
+            "Iso": "073",
+            "Paese": "ZIMBABWE",
+            "Codice": "ZWE"
+        },
+        {
+            "BackList": "",
+            "Sigla": "ZZ",
+            "Iso": "799",
+            "Paese": "ALTRI Paesi NON CLASSIFICATI",
+            "Codice": ""
+        }
+]
