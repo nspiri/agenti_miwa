@@ -30,11 +30,16 @@ class AddCustomerController extends MyController {
   List<ZoneClienti> zoneClienti = [];
   ZoneClienti? zonaClienteSelezionata;
   List<CustomersFA> clientiFA = [];
-  CustomersFA? clienteFASelezionato;
   List<Pagamenti> pagamenti = [];
   Pagamenti? pagamentoSelezionato;
   List<TipoSocieta> tipoSocieta = [];
   TipoSocieta? tiposocietaSelezionata;
+
+  //Campi destinazione
+  TipoSocieta? tiposocietaSelezionataDest;
+  Nazionalita? nazionalitaSelezionataDest;
+  Paesi? paeseSelezionatoDest;
+  Comuni? comuneSelezionatoDest;
 
   List<ValueItem<TipoAttivita>> tipoAttivita = [];
 
@@ -42,10 +47,19 @@ class AddCustomerController extends MyController {
       TextEditingController();
   final TextEditingController paeseTextController = TextEditingController();
   final TextEditingController catCliTextController = TextEditingController();
-  final TextEditingController comunetaTextController = TextEditingController();
+  final TextEditingController comuneTextController = TextEditingController();
   final TextEditingController zoneCliTextController = TextEditingController();
-  final TextEditingController cliFATextController = TextEditingController();
   final TextEditingController pagamentiTextController = TextEditingController();
+  final TextEditingController tipoSocTextController = TextEditingController();
+
+  //Campi destinazione
+  final TextEditingController tipoSocDestTextController =
+      TextEditingController();
+  final TextEditingController nazionalitaDestTextController =
+      TextEditingController();
+  final TextEditingController paeseDestTextController = TextEditingController();
+  final TextEditingController comuneDestTextController =
+      TextEditingController();
 
   MyFormValidator basicValidator = MyFormValidator();
   final MultiSelectController<TipoAttivita> controllerTipoAttivita =
@@ -132,12 +146,6 @@ class AddCustomerController extends MyController {
           (a, b) => a.cydes!.toLowerCase().compareTo(b.cydes!.toLowerCase()));
       update();
     });
-    CustomersFA.dummyList.then((value) {
-      clientiFA = value;
-      clientiFA.sort((a, b) =>
-          a.descrizione!.toLowerCase().compareTo(b.descrizione!.toLowerCase()));
-      update();
-    });
     Pagamenti.dummyList.then((value) {
       pagamenti = value;
       pagamenti.sort((a, b) =>
@@ -214,7 +222,7 @@ class AddCustomerController extends MyController {
         validators: [],
         controller: TextEditingController());
     basicValidator.addField('internet',
-        required: true,
+        required: false,
         label: "",
         validators: [],
         controller: TextEditingController());
@@ -248,12 +256,12 @@ class AddCustomerController extends MyController {
         label: "",
         validators: [],
         controller: SuggestionsBoxController());
-    basicValidator.addField('cliFA',
+    basicValidator.addField('pagamenti',
         required: true,
         label: "",
         validators: [],
         controller: SuggestionsBoxController());
-    basicValidator.addField('pagamenti',
+    basicValidator.addField('tipoSoc',
         required: true,
         label: "",
         validators: [],
@@ -265,6 +273,57 @@ class AddCustomerController extends MyController {
         controller: TextEditingController());
     basicValidator.addField('codSDI',
         required: true,
+        label: "",
+        validators: [],
+        controller: TextEditingController());
+    //CAMPI DESTINAZIONE
+    basicValidator.addField('ragSocDest',
+        required: false,
+        label: "",
+        validators: [],
+        controller: TextEditingController());
+    basicValidator.addField('tipoSocDest',
+        required: false,
+        label: "",
+        validators: [],
+        controller: SuggestionsBoxController());
+    basicValidator.addField('codFiscDest',
+        required: false,
+        label: "",
+        validators: [],
+        controller: TextEditingController());
+    basicValidator.addField('partIvaDest',
+        required: false,
+        label: "",
+        validators: [],
+        controller: TextEditingController());
+    basicValidator.addField('nazionalitaDest',
+        required: false,
+        label: "",
+        validators: [],
+        controller: SuggestionsBoxController());
+    basicValidator.addField('paeseDest',
+        required: false,
+        label: "",
+        validators: [],
+        controller: SuggestionsBoxController());
+    basicValidator.addField('indirizzoDest',
+        required: false,
+        label: "",
+        validators: [],
+        controller: TextEditingController());
+    basicValidator.addField('capDest',
+        required: false,
+        label: "",
+        validators: [],
+        controller: TextEditingController());
+    basicValidator.addField('localitaDest',
+        required: false,
+        label: "",
+        validators: [],
+        controller: SuggestionsBoxController());
+    basicValidator.addField('provinciaDest',
+        required: false,
         label: "",
         validators: [],
         controller: TextEditingController());
@@ -334,6 +393,15 @@ class AddCustomerController extends MyController {
     return matches;
   }
 
+  List<TipoSocieta> getTipoSocieta(String query) {
+    List<TipoSocieta> matches = [];
+    matches.addAll(tipoSocieta);
+
+    matches.retainWhere(
+        (s) => s.descrizione!.toLowerCase().contains(query.toLowerCase()));
+    return matches;
+  }
+
   Future<void> inserisciCliente() async {
     loading = true;
     update();
@@ -386,10 +454,6 @@ class AddCustomerController extends MyController {
       basicValidator.addError("partIva", "Inserisci la partita iva");
       valido = false;
     }
-    if (basicValidator.getController("internet")?.text == "") {
-      basicValidator.addError("internet", "Inserisci il sito internet");
-      valido = false;
-    }
     if (basicValidator.getController("nota1")?.text == "") {
       basicValidator.addError("nota1", "Inserisci il giorno di chiusura");
       valido = false;
@@ -416,10 +480,6 @@ class AddCustomerController extends MyController {
     }
     if (zonaClienteSelezionata == null) {
       basicValidator.addError("zoneCli", "Seleziona la zona");
-      valido = false;
-    }
-    if (clienteFASelezionato == null) {
-      basicValidator.addError("cliFA", "Seleziona il cliente da fatturare");
       valido = false;
     }
     if (pagamentoSelezionato == null) {
@@ -477,7 +537,7 @@ class AddCustomerController extends MyController {
       "pcnds2": basicValidator.getController("nota2").text ?? "",
       "pccst": categoriaClienteSelezionata?.idC ?? 0,
       "pcona": zonaClienteSelezionata?.idC ?? 0,
-      "pcfta": clienteFASelezionato?.codice ?? "",
+      //"pcfta": clienteFASelezionato?.codice ?? "",
       "tipo_attivita": tipoAttivita
     };
     Response res = await DoRequest.doHttpRequest(
