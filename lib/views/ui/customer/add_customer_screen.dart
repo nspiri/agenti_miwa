@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foody/controller/ui/customer/add_customer_controller.dart';
 import 'package:foody/helpers/theme/app_themes.dart';
+import 'package:foody/helpers/utils/show_message_dialogs.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
@@ -39,7 +40,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
 
   @override
   void initState() {
-    controller = Get.put(AddCustomerController());
+    controller = Get.put(AddCustomerController(context: context));
     super.initState();
   }
 
@@ -93,7 +94,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         controller.basicValidator
                                             .getController("ragioneSociale"),
                                         controller.basicValidator
-                                            .getValidation("ragioneSociale")),
+                                            .getValidation("ragioneSociale"),
+                                        true),
                                   ),
                                   MyFlexItem(
                                     sizes: "md-6 sm-12",
@@ -197,7 +199,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         controller.basicValidator
                                             .getController("codFisc"),
                                         controller.basicValidator
-                                            .getValidation("codFisc")),
+                                            .getValidation("codFisc"),
+                                        true),
                                   ),
                                   MyFlexItem(
                                     sizes: "md-6 sm-12",
@@ -207,7 +210,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         controller.basicValidator
                                             .getController("partIva"),
                                         controller.basicValidator
-                                            .getValidation("partIva")),
+                                            .getValidation("partIva"),
+                                        !controller.isChecked),
                                   ),
                                   MyFlexItem(
                                       sizes: "md-6 sm-12",
@@ -366,7 +370,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         controller.basicValidator
                                             .getController("indirizzo"),
                                         controller.basicValidator
-                                            .getValidation("indirizzo")),
+                                            .getValidation("indirizzo"),
+                                        true),
                                   ),
                                   MyFlexItem(
                                     sizes: "md-3 sm-12",
@@ -376,7 +381,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         controller.basicValidator
                                             .getController("cap"),
                                         controller.basicValidator
-                                            .getValidation("cap")),
+                                            .getValidation("cap"),
+                                        false),
                                   ),
                                   MyFlexItem(
                                       sizes: "md-7 sm-12",
@@ -468,7 +474,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         controller.basicValidator
                                             .getController("provincia"),
                                         controller.basicValidator
-                                            .getValidation("provincia")),
+                                            .getValidation("provincia"),
+                                        false),
                                   ),
                                   MyFlexItem(
                                     sizes: "md-6 sm-12",
@@ -478,7 +485,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         controller.basicValidator
                                             .getController("telefono"),
                                         controller.basicValidator
-                                            .getValidation("telefono")),
+                                            .getValidation("telefono"),
+                                        true),
                                   ),
                                   MyFlexItem(
                                     sizes: "md-6 sm-12",
@@ -488,7 +496,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         controller.basicValidator
                                             .getController("fax"),
                                         controller.basicValidator
-                                            .getValidation("fax")),
+                                            .getValidation("fax"),
+                                        true),
                                   ),
                                   MyFlexItem(
                                     sizes: "md-12 sm-12",
@@ -498,7 +507,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         controller.basicValidator
                                             .getController("email"),
                                         controller.basicValidator
-                                            .getValidation("email")),
+                                            .getValidation("email"),
+                                        true),
                                   ),
                                   MyFlexItem(
                                     sizes: "md-8 sm-12",
@@ -508,7 +518,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         controller.basicValidator
                                             .getController("pec"),
                                         controller.basicValidator
-                                            .getValidation("pec")),
+                                            .getValidation("pec"),
+                                        true),
                                   ),
                                   MyFlexItem(
                                     sizes: "md-4 sm-12",
@@ -518,7 +529,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         controller.basicValidator
                                             .getController("codSDI"),
                                         controller.basicValidator
-                                            .getValidation("codSDI")),
+                                            .getValidation("codSDI"),
+                                        true),
                                   ),
                                   MyFlexItem(
                                     sizes: "md-12 sm-12",
@@ -528,7 +540,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         controller.basicValidator
                                             .getController("internet"),
                                         controller.basicValidator
-                                            .getValidation("internet")),
+                                            .getValidation("internet"),
+                                        true),
                                   ),
                                 ])),
                             MyFlexItem(
@@ -935,9 +948,23 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                                 TimeOfDay(hour: 21, minute: 00),
                                             timeStep: 30,
                                             timeBlock: 30,
-                                            onRangeCompleted: (range) {},
+                                            onRangeCompleted: (range) {
+                                              controller
+                                                  .setOrarioChiusura(range);
+                                            },
                                             onFirstTimeSelected:
                                                 (startHour) {})),
+                                    MyFlexItem(
+                                      sizes: "md-12 sm-12",
+                                      child: buildTextField(
+                                          'Note',
+                                          "Inserisci Le Note",
+                                          controller.basicValidator
+                                              .getController("nota2"),
+                                          controller.basicValidator
+                                              .getValidation("nota2"),
+                                          true),
+                                    ),
                                   ],
                                 )),
 
@@ -946,424 +973,473 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                             /* Separatore */
                             MyFlexItem(
                               sizes: "md-12 sm-12",
-                              child: MyText.titleMedium("Destinazione"),
+                              child: CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                contentPadding: EdgeInsets.zero,
+                                dense: true,
+                                title: MyText.bodyLarge(
+                                  "Destinazione diversa",
+                                  fontWeight: 600,
+                                ),
+                                value: controller.destDiversa,
+                                onChanged: (value) =>
+                                    controller.onChangeDestDiversa(value),
+                              ),
                             ),
                             MyFlexItem(
                                 sizes: "md-6 sm-12",
-                                child: MyFlex(
-                                  children: [
-                                    MyFlexItem(
-                                      sizes: "md-12 sm-12",
-                                      child: buildTextField(
-                                          'Rag. Sociale',
-                                          "Inserisci La Ragione Sociale",
-                                          controller.basicValidator
-                                              .getController("ragSocDest"),
-                                          controller.basicValidator
-                                              .getValidation("ragSocDest")),
-                                    ),
-                                    MyFlexItem(
+                                child: Visibility(
+                                  visible: controller.destDiversa,
+                                  child: MyFlex(
+                                    children: [
+                                      MyFlexItem(
                                         sizes: "md-12 sm-12",
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            MyText.labelMedium(
-                                              "Tipo società",
-                                            ),
-                                            MySpacing.height(8),
-                                            DropDownSearchFormField(
-                                              textFieldConfiguration:
-                                                  TextFieldConfiguration(
-                                                decoration: InputDecoration(
-                                                  hintText:
-                                                      "Seleziona Il Tipo Di Società",
-                                                  hintStyle:
-                                                      MyTextStyle.bodySmall(
-                                                          xMuted: true),
-                                                  border: outlineInputBorder,
-                                                  contentPadding:
-                                                      MySpacing.all(16),
-                                                  isCollapsed: true,
-                                                  floatingLabelBehavior:
-                                                      FloatingLabelBehavior
-                                                          .never,
-                                                  /*suffixIcon: InkWell(
-                                                onTap: () {
-                                                  _dropdownSearchFieldController
-                                                      .text = "";
-                                                  setState(() {});
-                                                },
-                                                child:
-                                                    Icon(Icons.cancel_outlined))*/
-                                                ),
-                                                controller: controller
-                                                    .tipoSocDestTextController,
-                                              ),
-                                              suggestionsCallback: (pattern) {
-                                                return controller
-                                                    .getTipoSocieta(pattern);
-                                              },
-                                              suggestionsBoxDecoration:
-                                                  SuggestionsBoxDecoration(
-                                                      color: contentTheme
-                                                          .background),
-                                              itemBuilder: (context,
-                                                  TipoSocieta suggestion) {
-                                                return ListTile(
-                                                  title: MyText.labelMedium(
-                                                    suggestion.descrizione ??
-                                                        "",
-                                                  ),
-                                                );
-                                              },
-                                              transitionBuilder: (context,
-                                                  suggestionsBox, controller) {
-                                                return suggestionsBox;
-                                              },
-                                              onSuggestionSelected:
-                                                  (TipoSocieta suggestion) {
-                                                controller
-                                                    .tipoSocDestTextController
-                                                    .text = suggestion
-                                                        .descrizione ??
-                                                    "";
-                                                controller
-                                                        .tiposocietaSelezionataDest =
-                                                    suggestion;
-                                              },
-                                              suggestionsBoxController:
-                                                  controller.basicValidator
-                                                      .getController(
-                                                          "tipoSocDest"),
-                                              validator: controller
-                                                  .basicValidator
-                                                  .getValidation("tipoSocDest"),
-                                              displayAllSuggestionWhenTap:
-                                                  false,
-                                            )
-                                          ],
-                                        )),
-                                    MyFlexItem(
-                                      sizes: "md-6 sm-12",
-                                      child: buildTextField(
-                                          'Cod. Fiscale',
-                                          "Inserisci Il Codice Fiscale",
-                                          controller.basicValidator
-                                              .getController("codFiscDest"),
-                                          controller.basicValidator
-                                              .getValidation("codFiscDest")),
-                                    ),
-                                    MyFlexItem(
-                                      sizes: "md-6 sm-12",
-                                      child: buildTextField(
-                                          'Partita Iva',
-                                          "Inserisci La Partita Iva",
-                                          controller.basicValidator
-                                              .getController("partIvaDest"),
-                                          controller.basicValidator
-                                              .getValidation("partIvaDest")),
-                                    ),
-                                    MyFlexItem(
+                                        child: buildTextField(
+                                            'Rag. Sociale',
+                                            "Inserisci La Ragione Sociale",
+                                            controller.basicValidator
+                                                .getController("ragSocDest"),
+                                            controller.basicValidator
+                                                .getValidation("ragSocDest"),
+                                            true),
+                                      ),
+                                      MyFlexItem(
                                         sizes: "md-6 sm-12",
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            MyText.labelMedium(
-                                              "Nazionalità",
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 16),
+                                          child: CheckboxListTile(
+                                            controlAffinity:
+                                                ListTileControlAffinity.leading,
+                                            contentPadding: EdgeInsets.zero,
+                                            dense: true,
+                                            title: MyText.bodyMedium(
+                                              "Privato",
+                                              fontWeight: 600,
                                             ),
-                                            MySpacing.height(8),
-                                            DropDownSearchFormField(
-                                              textFieldConfiguration:
-                                                  TextFieldConfiguration(
-                                                decoration: InputDecoration(
-                                                  hintText:
-                                                      "Seleziona La Nazionalità",
-                                                  hintStyle:
-                                                      MyTextStyle.bodySmall(
-                                                          xMuted: true),
-                                                  border: outlineInputBorder,
-                                                  contentPadding:
-                                                      MySpacing.all(16),
-                                                  isCollapsed: true,
-                                                  floatingLabelBehavior:
-                                                      FloatingLabelBehavior
-                                                          .never,
-                                                  /*suffixIcon: InkWell(
-                                                onTap: () {
-                                                  _dropdownSearchFieldController
-                                                      .text = "";
-                                                  setState(() {});
-                                                },
-                                                child:
-                                                    Icon(Icons.cancel_outlined))*/
-                                                ),
-                                                controller: controller
-                                                    .nazionalitaDestTextController,
+                                            value: controller.isCheckedDest,
+                                            onChanged: (value) => controller
+                                                .onChangeCheckBoxDest(value),
+                                          ),
+                                        ),
+                                      ),
+                                      MyFlexItem(
+                                          sizes: "md-6 sm-12",
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              MyText.labelMedium(
+                                                "Tipo società",
                                               ),
-                                              suggestionsCallback: (pattern) {
-                                                return controller
-                                                    .getNazionalita(pattern);
-                                              },
-                                              suggestionsBoxDecoration:
-                                                  SuggestionsBoxDecoration(
-                                                      color: contentTheme
-                                                          .background),
-                                              itemBuilder: (context,
-                                                  Nazionalita suggestion) {
-                                                return ListTile(
-                                                  title: MyText.labelMedium(
-                                                    suggestion.descrizione ??
-                                                        "",
+                                              MySpacing.height(8),
+                                              DropDownSearchFormField(
+                                                textFieldConfiguration:
+                                                    TextFieldConfiguration(
+                                                  decoration: InputDecoration(
+                                                    hintText:
+                                                        "Seleziona Il Tipo Di Società",
+                                                    hintStyle:
+                                                        MyTextStyle.bodySmall(
+                                                            xMuted: true),
+                                                    border: outlineInputBorder,
+                                                    contentPadding:
+                                                        MySpacing.all(16),
+                                                    isCollapsed: true,
+                                                    floatingLabelBehavior:
+                                                        FloatingLabelBehavior
+                                                            .never,
+                                                    /*suffixIcon: InkWell(
+                                                  onTap: () {
+                                                    _dropdownSearchFieldController
+                                                        .text = "";
+                                                    setState(() {});
+                                                  },
+                                                  child:
+                                                      Icon(Icons.cancel_outlined))*/
                                                   ),
-                                                );
-                                              },
-                                              transitionBuilder: (context,
-                                                  suggestionsBox, controller) {
-                                                return suggestionsBox;
-                                              },
-                                              onSuggestionSelected:
-                                                  (Nazionalita suggestion) {
-                                                controller
-                                                    .nazionalitaDestTextController
-                                                    .text = suggestion
-                                                        .descrizione ??
-                                                    "";
-                                                controller
-                                                        .nazionalitaSelezionataDest =
-                                                    suggestion;
-                                              },
-                                              suggestionsBoxController:
-                                                  controller.basicValidator
-                                                      .getController(
-                                                          "nazionalitaDest"),
-                                              validator: controller
-                                                  .basicValidator
-                                                  .getValidation(
-                                                      "nazionalitaDest"),
-                                              displayAllSuggestionWhenTap:
-                                                  false,
-                                            )
-                                          ],
-                                        )),
-                                    MyFlexItem(
-                                        sizes: "md-6 sm-12",
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            MyText.labelMedium(
-                                              "Paese",
-                                            ),
-                                            MySpacing.height(8),
-                                            DropDownSearchFormField(
-                                              textFieldConfiguration:
-                                                  TextFieldConfiguration(
-                                                decoration: InputDecoration(
-                                                  hintText:
-                                                      "Seleziona Il Paese",
-                                                  hintStyle:
-                                                      MyTextStyle.bodySmall(
-                                                          xMuted: true),
-                                                  border: outlineInputBorder,
-                                                  contentPadding:
-                                                      MySpacing.all(16),
-                                                  isCollapsed: true,
-                                                  floatingLabelBehavior:
-                                                      FloatingLabelBehavior
-                                                          .never,
-                                                  /*suffixIcon: InkWell(
-                                                onTap: () {
-                                                  _dropdownSearchFieldController
-                                                      .text = "";
-                                                  setState(() {});
-                                                },
-                                                child:
-                                                    Icon(Icons.cancel_outlined))*/
+                                                  controller: controller
+                                                      .tipoSocDestTextController,
                                                 ),
-                                                controller: controller
-                                                    .paeseDestTextController,
-                                              ),
-                                              suggestionsCallback: (pattern) {
-                                                return controller
-                                                    .getPaesi(pattern);
-                                              },
-                                              suggestionsBoxDecoration:
-                                                  SuggestionsBoxDecoration(
-                                                      color: contentTheme
-                                                          .background),
-                                              itemBuilder:
-                                                  (context, Paesi suggestion) {
-                                                return ListTile(
-                                                  title: MyText.labelMedium(
-                                                    suggestion.descrizione ??
-                                                        "",
-                                                  ),
-                                                );
-                                              },
-                                              transitionBuilder: (context,
-                                                  suggestionsBox, controller) {
-                                                return suggestionsBox;
-                                              },
-                                              onSuggestionSelected:
-                                                  (Paesi suggestion) {
-                                                controller
-                                                        .paeseDestTextController
-                                                        .text =
-                                                    suggestion.descrizione ??
-                                                        "";
-                                                controller
-                                                        .paeseSelezionatoDest =
-                                                    suggestion;
-                                              },
-                                              suggestionsBoxController:
+                                                suggestionsCallback: (pattern) {
+                                                  return controller
+                                                      .getTipoSocieta(pattern);
+                                                },
+                                                suggestionsBoxDecoration:
+                                                    SuggestionsBoxDecoration(
+                                                        color: contentTheme
+                                                            .background),
+                                                itemBuilder: (context,
+                                                    TipoSocieta suggestion) {
+                                                  return ListTile(
+                                                    title: MyText.labelMedium(
+                                                      suggestion.descrizione ??
+                                                          "",
+                                                    ),
+                                                  );
+                                                },
+                                                transitionBuilder: (context,
+                                                    suggestionsBox,
+                                                    controller) {
+                                                  return suggestionsBox;
+                                                },
+                                                onSuggestionSelected:
+                                                    (TipoSocieta suggestion) {
                                                   controller
-                                                      .basicValidator
-                                                      .getController(
-                                                          "paeseDest"),
-                                              validator: controller
-                                                  .basicValidator
-                                                  .getValidation("paeseDest"),
-                                              displayAllSuggestionWhenTap:
-                                                  false,
-                                            )
-                                          ],
-                                        )),
-                                    MyFlexItem(
-                                      sizes: "md-12 sm-12",
-                                      child: buildTextField(
-                                          'Indirizzo',
-                                          "Inserisci L'indirizzo",
-                                          controller.basicValidator
-                                              .getController("indirizzoDest"),
-                                          controller.basicValidator
-                                              .getValidation("indirizzoDest")),
-                                    ),
-                                    MyFlexItem(
-                                      sizes: "md-3 sm-12",
-                                      child: buildTextField(
-                                          'Cap',
-                                          "",
-                                          controller.basicValidator
-                                              .getController("capDest"),
-                                          controller.basicValidator
-                                              .getValidation("capDest")),
-                                    ),
-                                    MyFlexItem(
-                                        sizes: "md-7 sm-12",
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            MyText.labelMedium(
-                                              "Località",
-                                            ),
-                                            MySpacing.height(8),
-                                            DropDownSearchFormField(
-                                              textFieldConfiguration:
-                                                  TextFieldConfiguration(
-                                                decoration: InputDecoration(
-                                                  hintText:
-                                                      "Seleziona La Località",
-                                                  hintStyle:
-                                                      MyTextStyle.bodySmall(
-                                                          xMuted: true),
-                                                  border: outlineInputBorder,
-                                                  contentPadding:
-                                                      MySpacing.all(16),
-                                                  isCollapsed: true,
-                                                  floatingLabelBehavior:
-                                                      FloatingLabelBehavior
-                                                          .never,
-                                                  /*suffixIcon: InkWell(
-                                                onTap: () {
-                                                  _dropdownSearchFieldController
-                                                      .text = "";
-                                                  setState(() {});
+                                                      .tipoSocDestTextController
+                                                      .text = suggestion
+                                                          .descrizione ??
+                                                      "";
+                                                  controller
+                                                          .tiposocietaSelezionataDest =
+                                                      suggestion;
                                                 },
-                                                child:
-                                                    Icon(Icons.cancel_outlined))*/
-                                                ),
-                                                controller: controller
-                                                    .comuneDestTextController,
-                                              ),
-                                              suggestionsCallback: (pattern) {
-                                                return controller
-                                                    .getComuni(pattern);
-                                              },
-                                              suggestionsBoxDecoration:
-                                                  SuggestionsBoxDecoration(
-                                                      color: contentTheme
-                                                          .background),
-                                              itemBuilder:
-                                                  (context, Comuni suggestion) {
-                                                return ListTile(
-                                                  title: MyText.labelMedium(
-                                                    suggestion.localita ?? "",
-                                                  ),
-                                                );
-                                              },
-                                              transitionBuilder: (context,
-                                                  suggestionsBox, controller) {
-                                                return suggestionsBox;
-                                              },
-                                              onSuggestionSelected:
-                                                  (Comuni suggestion) {
-                                                controller
-                                                    .comuneDestTextController
-                                                    .text = suggestion
-                                                        .localita ??
-                                                    "";
-                                                controller
-                                                        .comuneSelezionatoDest =
-                                                    suggestion;
-                                                controller.basicValidator
-                                                    .getController("capDest")
-                                                    ?.text = suggestion
-                                                        .cap ??
-                                                    "";
-                                                controller.basicValidator
+                                                suggestionsBoxController:
+                                                    controller
+                                                        .basicValidator
                                                         .getController(
-                                                            "provinciaDest")
-                                                        ?.text =
-                                                    suggestion.provincia ?? "";
-                                              },
-                                              suggestionsBoxController:
-                                                  controller.basicValidator
-                                                      .getController(
-                                                          "localitaDest"),
-                                              validator: controller
-                                                  .basicValidator
-                                                  .getValidation(
-                                                      "localitaDest"),
-                                              displayAllSuggestionWhenTap:
-                                                  false,
-                                            )
-                                          ],
-                                        )),
-                                    MyFlexItem(
-                                      sizes: "md-2 sm-12",
-                                      child: buildTextField(
-                                          'Prov.',
-                                          "",
-                                          controller.basicValidator
-                                              .getController("provinciaDest"),
-                                          controller.basicValidator
-                                              .getValidation("provinciaDest")),
-                                    ),
-                                  ],
+                                                            "tipoSocDest"),
+                                                validator: controller
+                                                    .basicValidator
+                                                    .getValidation(
+                                                        "tipoSocDest"),
+                                                displayAllSuggestionWhenTap:
+                                                    false,
+                                              )
+                                            ],
+                                          )),
+                                      MyFlexItem(
+                                        sizes: "md-6 sm-12",
+                                        child: buildTextField(
+                                            'Cod. Fiscale',
+                                            "Inserisci Il Codice Fiscale",
+                                            controller.basicValidator
+                                                .getController("codFiscDest"),
+                                            controller.basicValidator
+                                                .getValidation("codFiscDest"),
+                                            true),
+                                      ),
+                                      MyFlexItem(
+                                        sizes: "md-6 sm-12",
+                                        child: buildTextField(
+                                            'Partita Iva',
+                                            "Inserisci La Partita Iva",
+                                            controller.basicValidator
+                                                .getController("partIvaDest"),
+                                            controller.basicValidator
+                                                .getValidation("partIvaDest"),
+                                            !controller.isCheckedDest),
+                                      ),
+                                    ],
+                                  ),
                                 )),
                             MyFlexItem(
-                              sizes: "md-6 sm-12",
-                              child: buildTextField(
-                                  'Note',
-                                  "Inserisci Le Note",
-                                  controller.basicValidator
-                                      .getController("nota2"),
-                                  controller.basicValidator
-                                      .getValidation("nota2")),
-                            ),
+                                sizes: "md-6 sm-12",
+                                child: Visibility(
+                                  visible: controller.destDiversa,
+                                  child: MyFlex(
+                                    children: [
+                                      MyFlexItem(
+                                          sizes: "md-6 sm-12",
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              MyText.labelMedium(
+                                                "Nazionalità",
+                                              ),
+                                              MySpacing.height(8),
+                                              DropDownSearchFormField(
+                                                textFieldConfiguration:
+                                                    TextFieldConfiguration(
+                                                  decoration: InputDecoration(
+                                                    hintText:
+                                                        "Seleziona La Nazionalità",
+                                                    hintStyle:
+                                                        MyTextStyle.bodySmall(
+                                                            xMuted: true),
+                                                    border: outlineInputBorder,
+                                                    contentPadding:
+                                                        MySpacing.all(16),
+                                                    isCollapsed: true,
+                                                    floatingLabelBehavior:
+                                                        FloatingLabelBehavior
+                                                            .never,
+                                                    /*suffixIcon: InkWell(
+                                                  onTap: () {
+                                                    _dropdownSearchFieldController
+                                                        .text = "";
+                                                    setState(() {});
+                                                  },
+                                                  child:
+                                                      Icon(Icons.cancel_outlined))*/
+                                                  ),
+                                                  controller: controller
+                                                      .nazionalitaDestTextController,
+                                                ),
+                                                suggestionsCallback: (pattern) {
+                                                  return controller
+                                                      .getNazionalita(pattern);
+                                                },
+                                                suggestionsBoxDecoration:
+                                                    SuggestionsBoxDecoration(
+                                                        color: contentTheme
+                                                            .background),
+                                                itemBuilder: (context,
+                                                    Nazionalita suggestion) {
+                                                  return ListTile(
+                                                    title: MyText.labelMedium(
+                                                      suggestion.descrizione ??
+                                                          "",
+                                                    ),
+                                                  );
+                                                },
+                                                transitionBuilder: (context,
+                                                    suggestionsBox,
+                                                    controller) {
+                                                  return suggestionsBox;
+                                                },
+                                                onSuggestionSelected:
+                                                    (Nazionalita suggestion) {
+                                                  controller
+                                                      .nazionalitaDestTextController
+                                                      .text = suggestion
+                                                          .descrizione ??
+                                                      "";
+                                                  controller
+                                                          .nazionalitaSelezionataDest =
+                                                      suggestion;
+                                                },
+                                                suggestionsBoxController:
+                                                    controller
+                                                        .basicValidator
+                                                        .getController(
+                                                            "nazionalitaDest"),
+                                                validator: controller
+                                                    .basicValidator
+                                                    .getValidation(
+                                                        "nazionalitaDest"),
+                                                displayAllSuggestionWhenTap:
+                                                    false,
+                                              )
+                                            ],
+                                          )),
+                                      MyFlexItem(
+                                          sizes: "md-6 sm-12",
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              MyText.labelMedium(
+                                                "Paese",
+                                              ),
+                                              MySpacing.height(8),
+                                              DropDownSearchFormField(
+                                                textFieldConfiguration:
+                                                    TextFieldConfiguration(
+                                                  decoration: InputDecoration(
+                                                    hintText:
+                                                        "Seleziona Il Paese",
+                                                    hintStyle:
+                                                        MyTextStyle.bodySmall(
+                                                            xMuted: true),
+                                                    border: outlineInputBorder,
+                                                    contentPadding:
+                                                        MySpacing.all(16),
+                                                    isCollapsed: true,
+                                                    floatingLabelBehavior:
+                                                        FloatingLabelBehavior
+                                                            .never,
+                                                    /*suffixIcon: InkWell(
+                                                  onTap: () {
+                                                    _dropdownSearchFieldController
+                                                        .text = "";
+                                                    setState(() {});
+                                                  },
+                                                  child:
+                                                      Icon(Icons.cancel_outlined))*/
+                                                  ),
+                                                  controller: controller
+                                                      .paeseDestTextController,
+                                                ),
+                                                suggestionsCallback: (pattern) {
+                                                  return controller
+                                                      .getPaesi(pattern);
+                                                },
+                                                suggestionsBoxDecoration:
+                                                    SuggestionsBoxDecoration(
+                                                        color: contentTheme
+                                                            .background),
+                                                itemBuilder: (context,
+                                                    Paesi suggestion) {
+                                                  return ListTile(
+                                                    title: MyText.labelMedium(
+                                                      suggestion.descrizione ??
+                                                          "",
+                                                    ),
+                                                  );
+                                                },
+                                                transitionBuilder: (context,
+                                                    suggestionsBox,
+                                                    controller) {
+                                                  return suggestionsBox;
+                                                },
+                                                onSuggestionSelected:
+                                                    (Paesi suggestion) {
+                                                  controller
+                                                      .paeseDestTextController
+                                                      .text = suggestion
+                                                          .descrizione ??
+                                                      "";
+                                                  controller
+                                                          .paeseSelezionatoDest =
+                                                      suggestion;
+                                                },
+                                                suggestionsBoxController:
+                                                    controller
+                                                        .basicValidator
+                                                        .getController(
+                                                            "paeseDest"),
+                                                validator: controller
+                                                    .basicValidator
+                                                    .getValidation("paeseDest"),
+                                                displayAllSuggestionWhenTap:
+                                                    false,
+                                              )
+                                            ],
+                                          )),
+                                      MyFlexItem(
+                                        sizes: "md-12 sm-12",
+                                        child: buildTextField(
+                                            'Indirizzo',
+                                            "Inserisci L'indirizzo",
+                                            controller.basicValidator
+                                                .getController("indirizzoDest"),
+                                            controller.basicValidator
+                                                .getValidation("indirizzoDest"),
+                                            true),
+                                      ),
+                                      MyFlexItem(
+                                        sizes: "md-3 sm-12",
+                                        child: buildTextField(
+                                            'Cap',
+                                            "",
+                                            controller.basicValidator
+                                                .getController("capDest"),
+                                            controller.basicValidator
+                                                .getValidation("capDest"),
+                                            false),
+                                      ),
+                                      MyFlexItem(
+                                          sizes: "md-7 sm-12",
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              MyText.labelMedium(
+                                                "Località",
+                                              ),
+                                              MySpacing.height(8),
+                                              DropDownSearchFormField(
+                                                textFieldConfiguration:
+                                                    TextFieldConfiguration(
+                                                  decoration: InputDecoration(
+                                                    hintText:
+                                                        "Seleziona La Località",
+                                                    hintStyle:
+                                                        MyTextStyle.bodySmall(
+                                                            xMuted: true),
+                                                    border: outlineInputBorder,
+                                                    contentPadding:
+                                                        MySpacing.all(16),
+                                                    isCollapsed: true,
+                                                    floatingLabelBehavior:
+                                                        FloatingLabelBehavior
+                                                            .never,
+                                                    /*suffixIcon: InkWell(
+                                                  onTap: () {
+                                                    _dropdownSearchFieldController
+                                                        .text = "";
+                                                    setState(() {});
+                                                  },
+                                                  child:
+                                                      Icon(Icons.cancel_outlined))*/
+                                                  ),
+                                                  controller: controller
+                                                      .comuneDestTextController,
+                                                ),
+                                                suggestionsCallback: (pattern) {
+                                                  return controller
+                                                      .getComuni(pattern);
+                                                },
+                                                suggestionsBoxDecoration:
+                                                    SuggestionsBoxDecoration(
+                                                        color: contentTheme
+                                                            .background),
+                                                itemBuilder: (context,
+                                                    Comuni suggestion) {
+                                                  return ListTile(
+                                                    title: MyText.labelMedium(
+                                                      suggestion.localita ?? "",
+                                                    ),
+                                                  );
+                                                },
+                                                transitionBuilder: (context,
+                                                    suggestionsBox,
+                                                    controller) {
+                                                  return suggestionsBox;
+                                                },
+                                                onSuggestionSelected:
+                                                    (Comuni suggestion) {
+                                                  controller
+                                                      .comuneDestTextController
+                                                      .text = suggestion
+                                                          .localita ??
+                                                      "";
+                                                  controller
+                                                          .comuneSelezionatoDest =
+                                                      suggestion;
+                                                  controller.basicValidator
+                                                      .getController("capDest")
+                                                      ?.text = suggestion
+                                                          .cap ??
+                                                      "";
+                                                  controller.basicValidator
+                                                          .getController(
+                                                              "provinciaDest")
+                                                          ?.text =
+                                                      suggestion.provincia ??
+                                                          "";
+                                                },
+                                                suggestionsBoxController:
+                                                    controller
+                                                        .basicValidator
+                                                        .getController(
+                                                            "localitaDest"),
+                                                validator: controller
+                                                    .basicValidator
+                                                    .getValidation(
+                                                        "localitaDest"),
+                                                displayAllSuggestionWhenTap:
+                                                    false,
+                                              )
+                                            ],
+                                          )),
+                                      MyFlexItem(
+                                        sizes: "md-2 sm-12",
+                                        child: buildTextField(
+                                            'Prov.',
+                                            "",
+                                            controller.basicValidator
+                                                .getController("provinciaDest"),
+                                            controller.basicValidator
+                                                .getValidation("provinciaDest"),
+                                            false),
+                                      ),
+                                    ],
+                                  ),
+                                )),
                           ],
                         ),
                         MySpacing.height(12),
@@ -1372,9 +1448,12 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              MyContainer.bordered(
+                              /* MyContainer.bordered(
                                 paddingAll: 8,
-                                onTap: () {},
+                                onTap: () {
+                                  showErrorMessage(context, "Attenzione",
+                                      "La partita iva esiste gia' con altro codice nello stesso gruppo/mastro <501.07571>");
+                                },
                                 child: Row(
                                   children: [
                                     Icon(LucideIcons.x, size: 20),
@@ -1385,7 +1464,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                     )
                                   ],
                                 ),
-                              ),
+                              ),*/
                               MySpacing.width(12),
                               MyButton.rounded(
                                 onPressed: controller.inserisciCliente,
@@ -1408,7 +1487,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         : Container(),
                                     if (controller.loading) MySpacing.width(16),
                                     MyText.bodySmall(
-                                      'Login',
+                                      'Salva',
                                       color: contentTheme.onPrimary,
                                     ),
                                   ],
@@ -1416,7 +1495,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                               ),
                             ],
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -1429,8 +1508,12 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
     );
   }
 
-  buildTextField(String fieldTitle, String hintText,
-      TextEditingController? controller, String? Function(String?)? validator) {
+  buildTextField(
+      String fieldTitle,
+      String hintText,
+      TextEditingController? controller,
+      String? Function(String?)? validator,
+      bool enabled) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1439,6 +1522,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
         ),
         MySpacing.height(8),
         TextFormField(
+          enabled: enabled,
           controller: controller,
           validator: validator,
           decoration: InputDecoration(

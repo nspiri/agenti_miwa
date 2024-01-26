@@ -1,7 +1,7 @@
 enum MyScreenMediaType {
-  xs(576, "xs"), //Mobile
-  sm(768, "sm"), //Tablet
-  md(1200, "md"), //Laptop
+  xs(1000, "xs"), //Mobile
+  sm(1200, "sm"), //Tablet era 768
+  md(1300, "md"), //Laptop era 1200
   lg(1400, "lg"), //Desktop
   xl(1800, "xl"), //Large Desktop
   xxl(4000, "xxl"); //Extra Large Desktop

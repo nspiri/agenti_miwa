@@ -4,7 +4,7 @@ import 'package:foody/helpers/services/json_decoder.dart';
 import 'package:foody/model/identifier_model.dart';
 
 class TipoSocieta extends IdentifierModel {
-  int? numero;
+  String? numero;
   String? descrizione;
 
   TipoSocieta(super.id, this.numero, this.descrizione);
@@ -12,7 +12,7 @@ class TipoSocieta extends IdentifierModel {
   static TipoSocieta fromJSON(Map<String, dynamic> json) {
     JSONDecoder decoder = JSONDecoder(json);
 
-    int numero = decoder.getInt('numero');
+    String numero = decoder.getString('numero');
     String descrizione = decoder.getString('desc');
 
     return TipoSocieta(decoder.getId, numero, descrizione);

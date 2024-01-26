@@ -1,11 +1,10 @@
 import 'dart:convert';
-
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
+import 'package:foody/helpers/utils/show_message_dialogs.dart';
 import 'package:foody/helpers/widgets/my_form_validator.dart';
-import 'package:foody/helpers/widgets/my_validators.dart';
 import 'package:foody/model/customer_category.dart';
 import 'package:foody/model/customers_fa.dart';
 import 'package:foody/model/nazionalita.dart';
@@ -16,9 +15,14 @@ import 'package:foody/model/tipo_soc.dart';
 import 'package:foody/model/zone_clienti.dart';
 import 'package:foody/views/my_controller.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:time_range/time_range.dart';
 
 class AddCustomerController extends MyController {
-  bool loading = false, isChecked = false;
+  BuildContext context;
+  bool loading = false,
+      isChecked = false,
+      destDiversa = false,
+      isCheckedDest = false;
   List<Nazionalita> nazionalita = [];
   Nazionalita? nazionalitaSelezionata;
   List<Paesi> paesi = [];
@@ -40,6 +44,8 @@ class AddCustomerController extends MyController {
   Nazionalita? nazionalitaSelezionataDest;
   Paesi? paeseSelezionatoDest;
   Comuni? comuneSelezionatoDest;
+
+  String orarioChiusura = "";
 
   List<ValueItem<TipoAttivita>> tipoAttivita = [];
 
@@ -113,6 +119,8 @@ class AddCustomerController extends MyController {
 
   List giorniSelezionati = [];
 
+  AddCustomerController({required this.context});
+
   @override
   void onInit() {
     inizializzaCampi();
@@ -172,6 +180,18 @@ class AddCustomerController extends MyController {
 
   void onChangeCheckBox(bool? value) {
     isChecked = value ?? isChecked;
+    basicValidator.getController("partIva").text = " ";
+    update();
+  }
+
+  void onChangeCheckBoxDest(bool? value) {
+    isCheckedDest = value ?? isCheckedDest;
+    basicValidator.getController("partIvaDest").text = " ";
+    update();
+  }
+
+  void onChangeDestDiversa(bool? value) {
+    destDiversa = value ?? destDiversa;
     update();
   }
 
@@ -189,7 +209,7 @@ class AddCustomerController extends MyController {
     basicValidator.addField('email',
         required: true,
         label: "",
-        validators: [MyEmailValidator()],
+        validators: [],
         controller: TextEditingController());
     basicValidator.addField('cap',
         required: true,
@@ -202,7 +222,7 @@ class AddCustomerController extends MyController {
         validators: [],
         controller: TextEditingController());
     basicValidator.addField('telefono',
-        required: true,
+        required: false,
         label: "",
         validators: [],
         controller: TextEditingController());
@@ -217,7 +237,7 @@ class AddCustomerController extends MyController {
         validators: [],
         controller: TextEditingController());
     basicValidator.addField('partIva',
-        required: true,
+        required: !isChecked,
         label: "",
         validators: [],
         controller: TextEditingController());
@@ -227,7 +247,7 @@ class AddCustomerController extends MyController {
         validators: [],
         controller: TextEditingController());
     basicValidator.addField('nota2',
-        required: true,
+        required: false,
         label: "",
         validators: [],
         controller: TextEditingController());
@@ -278,52 +298,52 @@ class AddCustomerController extends MyController {
         controller: TextEditingController());
     //CAMPI DESTINAZIONE
     basicValidator.addField('ragSocDest',
-        required: false,
+        required: destDiversa,
         label: "",
         validators: [],
         controller: TextEditingController());
     basicValidator.addField('tipoSocDest',
-        required: false,
+        required: destDiversa,
         label: "",
         validators: [],
         controller: SuggestionsBoxController());
     basicValidator.addField('codFiscDest',
-        required: false,
+        required: destDiversa,
         label: "",
         validators: [],
         controller: TextEditingController());
     basicValidator.addField('partIvaDest',
-        required: false,
+        required: destDiversa && !isCheckedDest,
         label: "",
         validators: [],
         controller: TextEditingController());
     basicValidator.addField('nazionalitaDest',
-        required: false,
+        required: destDiversa,
         label: "",
         validators: [],
         controller: SuggestionsBoxController());
     basicValidator.addField('paeseDest',
-        required: false,
+        required: destDiversa,
         label: "",
         validators: [],
         controller: SuggestionsBoxController());
     basicValidator.addField('indirizzoDest',
-        required: false,
+        required: destDiversa,
         label: "",
         validators: [],
         controller: TextEditingController());
     basicValidator.addField('capDest',
-        required: false,
+        required: destDiversa,
         label: "",
         validators: [],
         controller: TextEditingController());
     basicValidator.addField('localitaDest',
-        required: false,
+        required: destDiversa,
         label: "",
         validators: [],
         controller: SuggestionsBoxController());
     basicValidator.addField('provinciaDest',
-        required: false,
+        required: destDiversa,
         label: "",
         validators: [],
         controller: TextEditingController());
@@ -402,6 +422,21 @@ class AddCustomerController extends MyController {
     return matches;
   }
 
+  setOrarioChiusura(TimeRangeResult? range) {
+    String minutiStart = "00";
+    String minutiEnd = "00";
+    if (range != null) {
+      if (range.start.minute > 0) {
+        minutiStart = range.start.minute.toString();
+      }
+      if (range.end.minute > 0) {
+        minutiEnd = range.end.minute.toString();
+      }
+    }
+    orarioChiusura =
+        "Chiuso dalle ${range?.start.hour}:$minutiStart alle ${range?.end.hour}:$minutiEnd";
+  }
+
   Future<void> inserisciCliente() async {
     loading = true;
     update();
@@ -412,14 +447,16 @@ class AddCustomerController extends MyController {
     } else {
       controlloCampiInserimento();
     }
-    loading = false;
-    update();
   }
 
   bool controlloCampiInserimento() {
     var valido = true;
     if (basicValidator.getController("ragioneSociale")?.text == "") {
       basicValidator.addError("ragioneSociale", "Inserisci la ragione sociale");
+      valido = false;
+    }
+    if (tiposocietaSelezionata == null) {
+      basicValidator.addError("tipoSoc", "Inserisci il tipo di società");
       valido = false;
     }
     if (basicValidator.getController("indirizzo")?.text == "") {
@@ -436,10 +473,6 @@ class AddCustomerController extends MyController {
     }
     if (basicValidator.getController("provincia")?.text == "") {
       basicValidator.addError("provincia", "Inserisci la provincia");
-      valido = false;
-    }
-    if (basicValidator.getController("telefono")?.text == "") {
-      basicValidator.addError("telefono", "Inserisci il telefono");
       valido = false;
     }
     if (basicValidator.getController("fax")?.text == "") {
@@ -495,18 +528,66 @@ class AddCustomerController extends MyController {
       valido = false;
     }
 
+    if (destDiversa) {
+      if (basicValidator.getController("ragSocDest")?.text == "") {
+        basicValidator.addError("ragSocDest", "Inserisci la ragione sociale");
+        valido = false;
+      }
+
+      if (tiposocietaSelezionataDest == null) {
+        basicValidator.addError("tipoSocDest", "Inserisci il tipo di società");
+        valido = false;
+      }
+      if (basicValidator.getController("codFiscDest")?.text == "") {
+        basicValidator.addError("codFiscDest", "Inserisci il codice fiscale");
+        valido = false;
+      }
+      if (basicValidator.getController("partIvaDest")?.text == "") {
+        basicValidator.addError("partIvaDest", "Inserisci la partita iva");
+        valido = false;
+      }
+      if (nazionalitaSelezionataDest == null) {
+        basicValidator.addError("nazionalitaDest", "Seleziona la nazionalità");
+        valido = false;
+      }
+      if (paeseSelezionatoDest == null) {
+        basicValidator.addError("paeseDest", "Seleziona il paese");
+        valido = false;
+      }
+      if (basicValidator.getController("indirizzoDest")?.text == "") {
+        basicValidator.addError("indirizzoDest", "Inserisci l'indirizzo");
+        valido = false;
+      }
+      if (basicValidator.getController("capDest")?.text == "") {
+        basicValidator.addError("capDest", "Inserisci il cap");
+        valido = false;
+      }
+      if (comuneSelezionatoDest == null) {
+        basicValidator.addError("localitaDest", "Seleziona la località");
+        valido = false;
+      }
+      if (basicValidator.getController("provinciaDest")?.text == "") {
+        basicValidator.addError("provinciaDest", "Inserisci la provincia");
+        valido = false;
+      }
+    }
+
     basicValidator.validateForm();
     basicValidator.clearErrors();
+    if (!valido) {
+      loading = false;
+      update();
+    }
     return valido;
   }
 
   Future<String> sendRequest() async {
-    String giorniChiusura = "";
+    String giorniChiusura = "Chiuso: ";
     List tipoAttivita = [];
-    for (var element in controllerGiorni.options) {
-      giorniChiusura += (element.value as List)[0]["id"] + " ; ";
+    for (var element in controllerGiorni.selectedOptions) {
+      giorniChiusura += (element.value as List)[0]["id"] + " ";
     }
-    for (var element in controllerTipoAttivita.options) {
+    for (var element in controllerTipoAttivita.selectedOptions) {
       tipoAttivita.add({"num": (element.value as TipoAttivita).numero});
     }
     var dati = {
@@ -523,33 +604,60 @@ class AddCustomerController extends MyController {
       "pcint": basicValidator.getController("email").text ?? "",
       "pcurl": basicValidator.getController("internet").text ?? "",
       "pccfi": basicValidator.getController("codFisc").text ?? "",
-      //"pctpp": tipoPartitaIvaSelezionata == TipoPartitaIva.N ? "N" : "P",
-      "pcnpi": basicValidator.getController("partIva").text ?? "",
+      "pctpp": isChecked ? "P" : "N",
+      "pcnpi":
+          isChecked ? "" : basicValidator.getController("partIva").text ?? "",
       "pcpec": basicValidator.getController("pec").text ?? "",
       "pcsdi": basicValidator.getController("codSDI").text ?? "",
-      /*  "pctps": tipoSocietaSelezionata == TipoSocieta.N
-          ? "N"
-          : tipoSocietaSelezionata == TipoSocieta.C
-              ? "C"
-              : "P",*/
-      "pcpag": pagamentoSelezionato?.numero == 0,
+      "pctps": tiposocietaSelezionata?.numero,
+      "pcpag": pagamentoSelezionato?.numero ?? 0,
       "pcnds1": giorniChiusura,
-      "pcnds2": basicValidator.getController("nota2").text ?? "",
+      "pcnds2": orarioChiusura,
       "pccst": categoriaClienteSelezionata?.idC ?? 0,
       "pcona": zonaClienteSelezionata?.idC ?? 0,
-      //"pcfta": clienteFASelezionato?.codice ?? "",
-      "tipo_attivita": tipoAttivita
+      "tipo_attivita": tipoAttivita,
+      "note": basicValidator.getController("nota2").text ?? "",
+      //if (isCheckedDest)
+      "destinazione": {
+        "pcdes": basicValidator.getController("ragSocDest").text ?? "",
+        "pcnaz": nazionalitaSelezionataDest?.codice ?? "",
+        "pcpae": paeseSelezionatoDest?.codice ?? "",
+        "pcind": basicValidator.getController("indirizzoDest").text ?? "",
+        "pccap": comuneSelezionatoDest?.cap ?? "",
+        "pcloc": comuneSelezionatoDest?.localita ?? "",
+        "pcpro": comuneSelezionatoDest?.provincia ?? "",
+        "pccfi": basicValidator.getController("codFiscDest").text ?? "",
+        "pctpp": isCheckedDest ? "P" : "N",
+        "pcnpi": isCheckedDest
+            ? ""
+            : basicValidator.getController("partIvaDest").text ?? "",
+        "pctps": tiposocietaSelezionataDest?.numero,
+      }
     };
     Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrcli", etichettaCollage: "CLIENTE_NUOVO", dati: dati);
 
     if (res.code == 200) {
       var a = res.result as List<dynamic>;
-      if (a.isEmpty) {
-        return "";
+      if (res.error != "") {
+        if (a.isEmpty) {
+          showErrorMessage(context, "Cliente non inserito", res.error);
+        } else {
+          showAlertMessage(context, "Cliente inserito", res.error);
+        }
+        loading = false;
+        update();
+        return res.error;
+      } else {
+        showSuccessMessage(context, "Cliente inserito", res.error);
+        //TODO pulisci tutti i campi
+        loading = false;
+        update();
+        return jsonEncode(a);
       }
-      return jsonEncode(a);
     } else {
+      loading = false;
+      update();
       return "";
     }
   }

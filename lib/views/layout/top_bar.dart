@@ -55,7 +55,7 @@ class _TopBarState extends State<TopBar>
                     color: topBarTheme.onBackground,
                   )),
               MySpacing.width(24),
-              SizedBox(
+              /* SizedBox(
                 width: 200,
                 child: TextFormField(
                   maxLines: 1,
@@ -80,7 +80,7 @@ class _TopBarState extends State<TopBar>
                       isCollapsed: true,
                       floatingLabelBehavior: FloatingLabelBehavior.never),
                 ),
-              ),
+              ),*/
             ],
           ),
           Expanded(

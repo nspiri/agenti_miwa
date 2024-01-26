@@ -458,6 +458,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "top_snackbar_flutter",
+      "rootUri": "file:///C:/Users/utente/AppData/Local/Pub/Cache/hosted/pub.dev/top_snackbar_flutter-3.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
       "name": "typed_data",
       "rootUri": "file:///C:/Users/utente/AppData/Local/Pub/Cache/hosted/pub.dev/typed_data-1.3.2",
       "packageUri": "lib/",
@@ -548,7 +554,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2024-01-25T10:55:21.239049Z",
+  "generated": "2024-01-26T09:28:24.898681Z",
   "generator": "pub",
   "generatorVersion": "3.2.5"
 }
