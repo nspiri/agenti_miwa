@@ -12,7 +12,7 @@ class CustomerListController extends MyController {
   @override
   void onInit() {
     CustomersList.dummyList.then((value) {
-      customers = value.sublist(10, value.length);
+      customers = value; //.sublist(10, value.length);
       customers.sort((a, b) =>
           a.descrizione!.toLowerCase().compareTo(b.descrizione!.toLowerCase()));
       data = MyData(customers);

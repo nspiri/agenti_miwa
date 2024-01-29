@@ -617,7 +617,6 @@ class AddCustomerController extends MyController {
       "pcona": zonaClienteSelezionata?.idC ?? 0,
       "tipo_attivita": tipoAttivita,
       "note": basicValidator.getController("nota2").text ?? "",
-      //if (isCheckedDest)
       "destinazione": {
         "pcdes": basicValidator.getController("ragSocDest").text ?? "",
         "pcnaz": nazionalitaSelezionataDest?.codice ?? "",
@@ -650,7 +649,7 @@ class AddCustomerController extends MyController {
         return res.error;
       } else {
         showSuccessMessage(context, "Cliente inserito", res.error);
-        //TODO pulisci tutti i campi
+        pulisciCampi();
         loading = false;
         update();
         return jsonEncode(a);
@@ -660,5 +659,50 @@ class AddCustomerController extends MyController {
       update();
       return "";
     }
+  }
+
+  void pulisciCampi() {
+    basicValidator.getController("ragioneSociale").text = "";
+    basicValidator.getController("indirizzo").text = "";
+    basicValidator.getController("email").text = "";
+    basicValidator.getController("cap").text = "";
+    basicValidator.getController("provincia").text = "";
+    basicValidator.getController("telefono").text = "";
+    basicValidator.getController("fax").text = "";
+    basicValidator.getController("codFisc").text = "";
+    basicValidator.getController("partIva").text = "";
+    basicValidator.getController("internet").text = "";
+    basicValidator.getController("nota2").text = "";
+    nazionalitaSelezionata = null;
+    nazionalitaTextController.text = "";
+    paeseSelezionato = null;
+    paeseTextController.text = "";
+    categoriaClienteSelezionata = null;
+    catCliTextController.text = "";
+    comuneSelezionato = null;
+    comuneTextController.text = "";
+    zonaClienteSelezionata = null;
+    zoneCliTextController.text = "";
+    pagamentoSelezionato = null;
+    pagamentiTextController.text = "";
+    tiposocietaSelezionata = null;
+    tipoSocTextController.text = "";
+    basicValidator.getController("pec").text = "";
+    basicValidator.getController("codSDI").text = "";
+    //CAMPI DESTINAZIONE
+    basicValidator.getController("ragSocDest").text = "";
+    tiposocietaSelezionataDest = null;
+    tipoSocDestTextController.text = "";
+    basicValidator.getController("codFiscDest").text = "";
+    basicValidator.getController("partIvaDest").text = "";
+    nazionalitaSelezionataDest = null;
+    nazionalitaDestTextController.text = "";
+    paeseSelezionatoDest = null;
+    paeseDestTextController.text = "";
+    basicValidator.getController("indirizzoDest").text = "";
+    basicValidator.getController("capDest").text = "";
+    comuneSelezionatoDest = null;
+    comuneDestTextController.text = "";
+    basicValidator.getController("provinciaDest").text = "";
   }
 }

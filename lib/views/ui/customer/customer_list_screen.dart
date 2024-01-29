@@ -70,9 +70,10 @@ class _CustomerListScreenState extends State<CustomerListScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (controller.data != null)
-                            Container(
+                            SizedBox(
                               width: double.infinity,
                               child: PaginatedDataTable(
+                                showCheckboxColumn: false,
                                 header: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -121,6 +122,11 @@ class _CustomerListScreenState extends State<CustomerListScreen>
                                     )
                                   ],
                                 ),
+                                /*rows: controller.customers
+                                          .mapIndexed((index, data) =>
+                                              row(controller.customers[index]))
+                                          .toList(),*/
+
                                 source: controller.data!,
                                 columns: [
                                   DataColumn(
@@ -137,7 +143,7 @@ class _CustomerListScreenState extends State<CustomerListScreen>
                                   DataColumn(
                                       onSort: (columnIndex, ascending) =>
                                           controller.orderByProvincia(),
-                                      label: MyText.bodyMedium('Provincia',
+                                      label: MyText.bodyMedium('Prov.',
                                           fontWeight: 600)),
                                   DataColumn(
                                       onSort: (columnIndex, ascending) =>
@@ -153,22 +159,18 @@ class _CustomerListScreenState extends State<CustomerListScreen>
                                       label: MyText.bodyMedium('E-mail',
                                           fontWeight: 600)),
                                   DataColumn(
-                                      label: MyText.bodyMedium('Partita Iva',
+                                      label: MyText.bodyMedium('Part. Iva',
                                           fontWeight: 600)),
                                   DataColumn(
                                       onSort: (columnIndex, ascending) =>
                                           controller.orderByUltimaConsegna(),
-                                      label: MyText.bodyMedium(
-                                          'Ultima Consegna',
-                                          fontWeight: 600)),
-                                  DataColumn(
-                                      label: MyText.bodyMedium('Azioni',
+                                      label: MyText.bodyMedium('Ult. Cons.',
                                           fontWeight: 600)),
                                 ],
-                                columnSpacing: 56,
-                                horizontalMargin: 50,
-                                rowsPerPage: 10,
-                                dataRowMaxHeight: 60,
+                                columnSpacing: 10,
+                                horizontalMargin: 20,
+                                rowsPerPage: 20,
+                                dataRowMaxHeight: 48,
                               ),
                             ),
                         ],
@@ -205,6 +207,33 @@ class MyData extends DataTableSource with UIMixin {
 
     return DataRow(
       cells: [
+        DataCell(
+          Row(
+            children: [
+              /*MyContainer.rounded(
+              paddingAll: 0,
+              height: 40,
+              width: 40,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Image.asset(Images.avatars[index % Images.avatars.length]),
+            ),*/
+              MySpacing.width(0),
+              Visibility(
+                visible: customer.descrizione!.length > 40,
+                child: Tooltip(
+                    message: customer.descrizione ?? "",
+                    child: MyText.bodySmall(
+                        "${customer.descrizione?.substring(0, customer.descrizione!.length > 40 ? 40 : customer.descrizione?.length) ?? ''} ${customer.descrizione!.length > 40 ? '...' : ''}")),
+              ),
+              Visibility(
+                visible: customer.descrizione!.length <= 40,
+                child: MyText.bodySmall("${customer.descrizione}"),
+              ),
+            ],
+          ),
+        ),
+        DataCell(MyText.bodySmall(customer.localita ?? "")),
+        DataCell(MyText.bodySmall(customer.provincia ?? "")),
         DataCell(Row(
           children: [
             /*MyContainer.rounded(
@@ -214,61 +243,46 @@ class MyData extends DataTableSource with UIMixin {
               clipBehavior: Clip.antiAliasWithSaveLayer,
               child: Image.asset(Images.avatars[index % Images.avatars.length]),
             ),*/
-            MySpacing.width(8),
-            MyText.bodyMedium(customer.descrizione ?? ""),
+            MySpacing.width(0),
+            Visibility(
+              visible: customer.indirizzo!.length > 20,
+              child: Tooltip(
+                  message: customer.indirizzo ?? "",
+                  child: MyText.bodySmall(
+                      "${customer.indirizzo?.substring(0, customer.indirizzo!.length > 20 ? 20 : customer.indirizzo?.length) ?? ''} ${customer.indirizzo!.length > 20 ? '...' : ''}")),
+            ),
+            Visibility(
+              visible: customer.indirizzo!.length <= 20,
+              child: MyText.bodySmall("${customer.indirizzo}"),
+            ),
           ],
         )),
-        DataCell(MyText.bodyMedium(customer.localita ?? "")),
-        DataCell(MyText.bodyMedium(customer.provincia ?? "")),
-        DataCell(MyText.bodyMedium(customer.indirizzo ?? "")),
-        DataCell(MyText.bodyMedium(customer.telefono ?? "")),
-        DataCell(MyText.bodyMedium(customer.email ?? "")),
-        DataCell(MyText.bodyMedium(customer.pIva ?? "")),
+        DataCell(MyText.bodySmall(customer.telefono ?? "")),
+        DataCell(Row(
+          children: [
+            Visibility(
+              visible: customer.email!.length > 20,
+              child: Tooltip(
+                  message: customer.email ?? "",
+                  child: MyText.bodySmall(
+                      "${customer.email?.substring(0, customer.email!.length > 20 ? 20 : customer.email?.length) ?? ''} ${customer.email!.length > 20 ? '...' : ''}")),
+            ),
+            Visibility(
+              visible: customer.email!.length <= 20,
+              child: MyText.bodySmall("${customer.email}"),
+            ),
+          ],
+        )),
+        DataCell(MyText.bodySmall(customer.pIva ?? "")),
         DataCell(
-          MyText.bodyMedium(
+          MyText.bodySmall(
             Utils.getFormattedDate(customer.dataUltimaConsegna ?? ""),
           ),
         ),
-        /*DataCell(
-          MyContainer(
-            padding: MySpacing.xy(12, 4),
-            borderRadiusAll: 100,
-            color: customer.status == 'Active'
-                ? contentTheme.success.withAlpha(36)
-                : customer.status == 'Block'
-                    ? contentTheme.danger.withAlpha(36)
-                    : null,
-            child: MyText.bodyMedium(
-              customer.status,
-              fontWeight: 600,
-              color: customer.status == 'Active'
-                  ? contentTheme.success
-                  : customer.status == 'Block'
-                      ? contentTheme.danger
-                      : null,
-            ),
-          ),
-        ),*/
-        DataCell(Row(
-          children: [
-            InkWell(
-              onTap: () => gotoEdit(customer.codice ?? ""),
-              child: Icon(
-                LucideIcons.edit,
-                size: 20,
-              ),
-            ),
-            MySpacing.width(12),
-            InkWell(
-              onTap: () => gotoDetail(customer.codice ?? ""),
-              child: Icon(
-                LucideIcons.eye,
-                size: 20,
-              ),
-            ),
-          ],
-        ))
       ],
+      onSelectChanged: (value) {
+        gotoDetail(customer.codice ?? "");
+      },
     );
   }
 

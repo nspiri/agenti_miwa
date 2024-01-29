@@ -25,12 +25,17 @@ class DoRequest {
       var jsonDecoded = jsonDecode(response.body);
       Map<String, dynamic> res = jsonDecoded;
       String errore = "";
-      if ((res["error"] as List).isNotEmpty) {
-        errore = res["error"][0]["response-message"];
+      if (response.statusCode == 200) {
+        if ((res["error"] as List).isNotEmpty) {
+          errore = res["error"][0]["response-message"];
+        }
+      } else {
+        if (res["error"].isNotEmpty) {
+          errore = res["error"]["response-message"];
+        }
       }
       Response resp = Response(
           code: response.statusCode, result: res["result"], error: errore);
-
       return resp;
     } on TimeoutException {
       return "404";

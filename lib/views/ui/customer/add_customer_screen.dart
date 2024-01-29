@@ -76,7 +76,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
               Padding(
                 padding: MySpacing.x(flexSpacing),
                 child: MyContainer(
-                  padding: MySpacing.xy(20, 20),
+                  padding: MySpacing.xy(10, 20),
                   child: Form(
                     key: controller.basicValidator.formKey,
                     child: Column(
