@@ -27,7 +27,7 @@ class MyFlex extends StatelessWidget {
 
   getPadding(index, length) {
     if (contentPadding) {
-      return MySpacing.x((spacing ?? flexSpacing) / 2);
+      return MySpacing.x((spacing ?? flexSpacing) / 4);
     } else {
       return MySpacing.fromLTRB(index == 0 ? 0 : (spacing ?? flexSpacing) / 2,
           0, index == length - 1 ? 0 : (spacing ?? flexSpacing) / 2, 0);

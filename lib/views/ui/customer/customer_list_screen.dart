@@ -283,12 +283,15 @@ class MyData extends DataTableSource with UIMixin {
       onSelectChanged: (value) {
         gotoDetail(customer.codice ?? "");
       },
+      onLongPress: () {
+        gotoOrder(customer.codice ?? "");
+      },
     );
   }
 
-  void gotoEdit(String clientId) {
+  void gotoOrder(String clientId) {
     codClienteSelezionato = clientId;
-    Get.toNamed('/admin/customers/edit', arguments: clientId);
+    Get.toNamed('/cart', arguments: clientId);
   }
 
   void gotoDetail(String clientId) {

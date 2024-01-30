@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foody/controller/ui/customer/add_customer_controller.dart';
 import 'package:foody/helpers/theme/app_themes.dart';
-import 'package:foody/helpers/utils/show_message_dialogs.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
@@ -14,7 +13,6 @@ import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/helpers/widgets/my_text_style.dart';
 import 'package:foody/helpers/widgets/responsive.dart';
 import 'package:foody/model/customer_category.dart';
-import 'package:foody/model/customers_fa.dart';
 import 'package:foody/model/nazionalita.dart';
 import 'package:foody/model/pagamenti.dart';
 import 'package:foody/model/tipo_attivita.dart';
@@ -22,7 +20,6 @@ import 'package:foody/model/tipo_soc.dart';
 import 'package:foody/model/zone_clienti.dart';
 import 'package:foody/views/layout/layout.dart';
 import 'package:get/get.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:time_range/time_range.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
@@ -76,16 +73,17 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
               Padding(
                 padding: MySpacing.x(flexSpacing),
                 child: MyContainer(
-                  padding: MySpacing.xy(10, 20),
+                  padding: MySpacing.xy(0, 10),
                   child: Form(
                     key: controller.basicValidator.formKey,
                     child: Column(
                       children: [
                         MyFlex(
+                          runSpacing: 8,
                           children: [
                             MyFlexItem(
                                 sizes: "md-6 sm-12",
-                                child: MyFlex(children: [
+                                child: MyFlex(runSpacing: 8, children: [
                                   MyFlexItem(
                                     sizes: "md-12 sm-12",
                                     child: buildTextField(
@@ -100,7 +98,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                   MyFlexItem(
                                     sizes: "md-6 sm-12",
                                     child: Padding(
-                                      padding: const EdgeInsets.only(top: 16),
+                                      padding: const EdgeInsets.only(top: 12),
                                       child: CheckboxListTile(
                                         controlAffinity:
                                             ListTileControlAffinity.leading,
@@ -125,7 +123,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                           MyText.labelMedium(
                                             "Tipo società",
                                           ),
-                                          MySpacing.height(8),
+                                          MySpacing.height(4),
                                           DropDownSearchFormField(
                                             textFieldConfiguration:
                                                 TextFieldConfiguration(
@@ -137,7 +135,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                                         xMuted: true),
                                                 border: outlineInputBorder,
                                                 contentPadding:
-                                                    MySpacing.all(16),
+                                                    MySpacing.all(12),
                                                 isCollapsed: true,
                                                 floatingLabelBehavior:
                                                     FloatingLabelBehavior.never,
@@ -222,7 +220,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                           MyText.labelMedium(
                                             "Nazionalità",
                                           ),
-                                          MySpacing.height(8),
+                                          MySpacing.height(4),
                                           DropDownSearchFormField(
                                             textFieldConfiguration:
                                                 TextFieldConfiguration(
@@ -234,7 +232,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                                         xMuted: true),
                                                 border: outlineInputBorder,
                                                 contentPadding:
-                                                    MySpacing.all(16),
+                                                    MySpacing.all(12),
                                                 isCollapsed: true,
                                                 floatingLabelBehavior:
                                                     FloatingLabelBehavior.never,
@@ -298,7 +296,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                           MyText.labelMedium(
                                             "Paese",
                                           ),
-                                          MySpacing.height(8),
+                                          MySpacing.height(4),
                                           DropDownSearchFormField(
                                             textFieldConfiguration:
                                                 TextFieldConfiguration(
@@ -309,7 +307,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                                         xMuted: true),
                                                 border: outlineInputBorder,
                                                 contentPadding:
-                                                    MySpacing.all(16),
+                                                    MySpacing.all(12),
                                                 isCollapsed: true,
                                                 floatingLabelBehavior:
                                                     FloatingLabelBehavior.never,
@@ -393,7 +391,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                           MyText.labelMedium(
                                             "Località",
                                           ),
-                                          MySpacing.height(8),
+                                          MySpacing.height(4),
                                           DropDownSearchFormField(
                                             textFieldConfiguration:
                                                 TextFieldConfiguration(
@@ -405,7 +403,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                                         xMuted: true),
                                                 border: outlineInputBorder,
                                                 contentPadding:
-                                                    MySpacing.all(16),
+                                                    MySpacing.all(12),
                                                 isCollapsed: true,
                                                 floatingLabelBehavior:
                                                     FloatingLabelBehavior.never,
@@ -547,6 +545,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                             MyFlexItem(
                                 sizes: "md-6 sm-12",
                                 child: MyFlex(
+                                  runSpacing: 8,
                                   children: [
                                     MyFlexItem(
                                         sizes: "md-12 sm-12",
@@ -557,7 +556,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                             MyText.labelMedium(
                                               "Pagamento",
                                             ),
-                                            MySpacing.height(8),
+                                            MySpacing.height(4),
                                             DropDownSearchFormField(
                                               textFieldConfiguration:
                                                   TextFieldConfiguration(
@@ -569,7 +568,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                                           xMuted: true),
                                                   border: outlineInputBorder,
                                                   contentPadding:
-                                                      MySpacing.all(16),
+                                                      MySpacing.all(12),
                                                   isCollapsed: true,
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
@@ -640,7 +639,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                             MyText.labelMedium(
                                               "Zone Clienti",
                                             ),
-                                            MySpacing.height(8),
+                                            MySpacing.height(4),
                                             DropDownSearchFormField(
                                               textFieldConfiguration:
                                                   TextFieldConfiguration(
@@ -651,7 +650,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                                           xMuted: true),
                                                   border: outlineInputBorder,
                                                   contentPadding:
-                                                      MySpacing.all(16),
+                                                      MySpacing.all(12),
                                                   isCollapsed: true,
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
@@ -717,7 +716,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                             MyText.labelMedium(
                                               "Categoria Cliente",
                                             ),
-                                            MySpacing.height(8),
+                                            MySpacing.height(4),
                                             DropDownSearchFormField(
                                               textFieldConfiguration:
                                                   TextFieldConfiguration(
@@ -729,7 +728,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                                           xMuted: true),
                                                   border: outlineInputBorder,
                                                   contentPadding:
-                                                      MySpacing.all(16),
+                                                      MySpacing.all(12),
                                                   isCollapsed: true,
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
@@ -797,7 +796,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                             MyText.labelMedium(
                                               "Tipo Attività",
                                             ),
-                                            MySpacing.height(8),
+                                            MySpacing.height(4),
                                             MultiSelectDropDown(
                                               hint: "Seleziona Tipo Attività",
                                               showClearIcon: false,
@@ -808,42 +807,9 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                                   TipoAttivita>>[
                                                 ...controller.tipoAttivita
                                               ],
+
                                               optionTextStyle:
                                                   MyTextStyle.labelMedium(),
-                                              /* selectedItemBuilder: (p0, p1) {
-                                        return Container(
-                                          padding: EdgeInsets.all(8),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                              color: contentTheme.primary),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Flexible(
-                                                  child: MyText.labelMedium(
-                                                      p1.label)),
-                                              Flexible(
-                                                  child: InkWell(
-                                                      onTap: () {
-                                                        controller.controller
-                                                            .clearSelection(p1);
-                                                        controller.update();
-                                                      },
-                                                      child:
-                                                          Icon(Icons.cancel)))
-                                            ],
-                                          ),
-                                        );
-                                      },*/
-                                              /*onOptionRemoved: (index, option) {
-                                        controller.controller
-                                            .clearSelection(option);
-                                        controller.update();
-                                      },*/
                                               inputDecoration: BoxDecoration(
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(4)),
@@ -882,7 +848,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                             MyText.labelMedium(
                                               "Giorni di chiusura",
                                             ),
-                                            MySpacing.height(8),
+                                            MySpacing.height(4),
                                             MultiSelectDropDown(
                                               hint:
                                                   "Seleziona giorni di chiusura",
@@ -969,7 +935,11 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                 )),
 
                             /* Separatore */
-                            MyFlexItem(child: Divider()),
+                            MyFlexItem(
+                                child: Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Divider(),
+                            )),
                             /* Separatore */
                             MyFlexItem(
                               sizes: "md-12 sm-12",
@@ -992,6 +962,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                 child: Visibility(
                                   visible: controller.destDiversa,
                                   child: MyFlex(
+                                    runSpacing: 8,
                                     children: [
                                       MyFlexItem(
                                         sizes: "md-12 sm-12",
@@ -1008,7 +979,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         sizes: "md-6 sm-12",
                                         child: Padding(
                                           padding:
-                                              const EdgeInsets.only(top: 16),
+                                              const EdgeInsets.only(top: 12),
                                           child: CheckboxListTile(
                                             controlAffinity:
                                                 ListTileControlAffinity.leading,
@@ -1033,7 +1004,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                               MyText.labelMedium(
                                                 "Tipo società",
                                               ),
-                                              MySpacing.height(8),
+                                              MySpacing.height(4),
                                               DropDownSearchFormField(
                                                 textFieldConfiguration:
                                                     TextFieldConfiguration(
@@ -1045,7 +1016,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                                             xMuted: true),
                                                     border: outlineInputBorder,
                                                     contentPadding:
-                                                        MySpacing.all(16),
+                                                        MySpacing.all(12),
                                                     isCollapsed: true,
                                                     floatingLabelBehavior:
                                                         FloatingLabelBehavior
@@ -1139,6 +1110,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                 child: Visibility(
                                   visible: controller.destDiversa,
                                   child: MyFlex(
+                                    runSpacing: 8,
                                     children: [
                                       MyFlexItem(
                                           sizes: "md-6 sm-12",
@@ -1149,7 +1121,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                               MyText.labelMedium(
                                                 "Nazionalità",
                                               ),
-                                              MySpacing.height(8),
+                                              MySpacing.height(4),
                                               DropDownSearchFormField(
                                                 textFieldConfiguration:
                                                     TextFieldConfiguration(
@@ -1161,7 +1133,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                                             xMuted: true),
                                                     border: outlineInputBorder,
                                                     contentPadding:
-                                                        MySpacing.all(16),
+                                                        MySpacing.all(12),
                                                     isCollapsed: true,
                                                     floatingLabelBehavior:
                                                         FloatingLabelBehavior
@@ -1234,7 +1206,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                               MyText.labelMedium(
                                                 "Paese",
                                               ),
-                                              MySpacing.height(8),
+                                              MySpacing.height(4),
                                               DropDownSearchFormField(
                                                 textFieldConfiguration:
                                                     TextFieldConfiguration(
@@ -1246,7 +1218,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                                             xMuted: true),
                                                     border: outlineInputBorder,
                                                     contentPadding:
-                                                        MySpacing.all(16),
+                                                        MySpacing.all(12),
                                                     isCollapsed: true,
                                                     floatingLabelBehavior:
                                                         FloatingLabelBehavior
@@ -1340,7 +1312,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                               MyText.labelMedium(
                                                 "Località",
                                               ),
-                                              MySpacing.height(8),
+                                              MySpacing.height(4),
                                               DropDownSearchFormField(
                                                 textFieldConfiguration:
                                                     TextFieldConfiguration(
@@ -1352,7 +1324,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                                             xMuted: true),
                                                     border: outlineInputBorder,
                                                     contentPadding:
-                                                        MySpacing.all(16),
+                                                        MySpacing.all(12),
                                                     isCollapsed: true,
                                                     floatingLabelBehavior:
                                                         FloatingLabelBehavior
@@ -1520,7 +1492,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
         MyText.labelMedium(
           fieldTitle,
         ),
-        MySpacing.height(8),
+        MySpacing.height(4),
         TextFormField(
           enabled: enabled,
           controller: controller,
@@ -1529,7 +1501,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
             hintText: hintText,
             hintStyle: MyTextStyle.bodySmall(xMuted: true),
             border: outlineInputBorder,
-            contentPadding: MySpacing.all(16),
+            contentPadding: MySpacing.all(12),
             isCollapsed: true,
             floatingLabelBehavior: FloatingLabelBehavior.never,
           ),

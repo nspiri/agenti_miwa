@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foody/controller/ui/cart_controller.dart';
+import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
@@ -23,10 +24,14 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen>
     with SingleTickerProviderStateMixin, UIMixin {
   late CartController controller;
+  late dynamic codCliente;
 
   @override
   void initState() {
-    controller = Get.put(CartController());
+    codCliente = Get.arguments;
+    codCliente ??= codClienteSelezionato;
+    controller = Get.put(CartController(codCliente: codCliente ?? ""));
+    controller.getData(codCliente ?? "");
     super.initState();
   }
 
@@ -44,13 +49,13 @@ class _CartScreenState extends State<CartScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MyText.titleMedium(
-                      "Cart",
+                      "Ordine",
                       fontSize: 18,
                       fontWeight: 600,
                     ),
                     MyBreadcrumb(
                       children: [
-                        MyBreadcrumbItem(name: 'Cart', active: true),
+                        MyBreadcrumbItem(name: 'Ordine', active: true),
                       ],
                     ),
                   ],

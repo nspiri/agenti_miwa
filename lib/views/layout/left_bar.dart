@@ -117,26 +117,26 @@ class _LeftBarState extends State<LeftBar>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MySpacing.height(16),
-                  LabelWidget(isCondensed: isCondensed, label: "Client App"),
+                  //LabelWidget(isCondensed: isCondensed, label: "Client App"),
                   NavigationItem(
                     iconData: LucideIcons.home,
                     title: "Home",
                     isCondensed: isCondensed,
                     route: '/home',
                   ),
-                  NavigationItem(
+                  /* NavigationItem(
                     iconData: LucideIcons.shoppingBag,
                     title: "Foods",
                     isCondensed: isCondensed,
                     route: '/foods',
-                  ),
+                  ),*/
                   NavigationItem(
                     iconData: LucideIcons.shoppingCart,
-                    title: "Cart",
+                    title: "Ordine",
                     isCondensed: isCondensed,
                     route: '/cart',
                   ),
-                  NavigationItem(
+                  /*  NavigationItem(
                     iconData: LucideIcons.listOrdered,
                     title: "Order",
                     isCondensed: isCondensed,
@@ -173,7 +173,7 @@ class _LeftBarState extends State<LeftBar>
                         iconData: LucideIcons.listOrdered,
                       ),
                     ],
-                  ),
+                  ),*/
                   MenuWidget(
                     iconData: LucideIcons.users,
                     isCondensed: isCondensed,
@@ -194,14 +194,14 @@ class _LeftBarState extends State<LeftBar>
                         isCondensed: isCondensed,
                         route: '/admin/customers/create',
                       ),
-                      MenuItem(
+                      /*  MenuItem(
                         title: "Modifica",
                         isCondensed: isCondensed,
                         route: '/admin/customers/edit',
-                      ),
+                      ),*/
                     ],
                   ),
-                  MenuWidget(
+                  /*MenuWidget(
                     iconData: LucideIcons.users,
                     isCondensed: isCondensed,
                     title: "Sellers",
@@ -254,8 +254,14 @@ class _LeftBarState extends State<LeftBar>
                         route: '/admin/restaurants/edit',
                       ),
                     ],
+                  ),*/
+                  NavigationItem(
+                    iconData: LucideIcons.dessert,
+                    title: "Articoli",
+                    isCondensed: isCondensed,
+                    route: '/admin/food',
                   ),
-                  MenuWidget(
+                  /*MenuWidget(
                     iconData: LucideIcons.dessert,
                     isCondensed: isCondensed,
                     title: "Food",
@@ -326,7 +332,7 @@ class _LeftBarState extends State<LeftBar>
                               )
                             ],
                           ),
-                        )),
+                        )),*/
                   // MySpacing.height(16),
 
                   // NavigationItem(
@@ -711,7 +717,7 @@ class _NavigationItemState extends State<NavigationItem> with UIMixin {
         if (widget.route != null) {
           Get.toNamed(widget.route!);
 
-          MyRouter.pushReplacementNamed(context, widget.route!, arguments: 1);
+          //MyRouter.pushReplacementNamed(context, widget.route!, arguments: 1);
         }
       },
       child: MouseRegion(
