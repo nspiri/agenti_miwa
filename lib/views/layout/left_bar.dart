@@ -190,16 +190,28 @@ class _LeftBarState extends State<LeftBar>
                         route: '/admin/customers/detail',
                       ),
                       MenuItem(
+                        title: "Storico",
+                        isCondensed: isCondensed,
+                        route: '/admin/customers/edit',
+                      ),
+                      MenuItem(
                         title: "Aggiungi",
                         isCondensed: isCondensed,
                         route: '/admin/customers/create',
                       ),
-                      /*  MenuItem(
-                        title: "Modifica",
-                        isCondensed: isCondensed,
-                        route: '/admin/customers/edit',
-                      ),*/
                     ],
+                  ),
+                  NavigationItem(
+                    iconData: LucideIcons.dessert,
+                    title: "Articoli",
+                    isCondensed: isCondensed,
+                    route: '/admin/food',
+                  ),
+                  NavigationItem(
+                    iconData: LucideIcons.shoppingCart,
+                    title: "Scadenziario",
+                    isCondensed: isCondensed,
+                    route: '/admin/restaurants',
                   ),
                   /*MenuWidget(
                     iconData: LucideIcons.users,
@@ -255,12 +267,6 @@ class _LeftBarState extends State<LeftBar>
                       ),
                     ],
                   ),*/
-                  NavigationItem(
-                    iconData: LucideIcons.dessert,
-                    title: "Articoli",
-                    isCondensed: isCondensed,
-                    route: '/admin/food',
-                  ),
                   /*MenuWidget(
                     iconData: LucideIcons.dessert,
                     isCondensed: isCondensed,
@@ -643,9 +649,12 @@ class _MenuItemState extends State<MenuItem> with UIMixin {
     return GestureDetector(
       onTap: () {
         if (widget.route != null) {
-          if (widget.route == "/admin/customers/detail") {
-            if (codClienteSelezionato != null) {
+          if (widget.route == "/admin/customers/detail" ||
+              widget.route == "/admin/customers/edit") {
+            if (clienteSelezionato != null) {
               Get.toNamed(widget.route!);
+            } else {
+              Get.toNamed("/admin/customers/list");
             }
           } else {
             Get.toNamed(widget.route!);

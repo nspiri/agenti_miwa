@@ -3,7 +3,7 @@ import 'package:foody/helpers/widgets/my_text_utils.dart';
 import 'package:foody/model/order_list.dart';
 import 'package:foody/views/my_controller.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:foody/views/ui/restaurants/restaurant_detail_screen.dart';
+import 'package:foody/views/ui/Scadenziario/restaurant_detail_screen.dart';
 
 class ChartSampleData {
   ChartSampleData(

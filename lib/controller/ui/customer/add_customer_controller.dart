@@ -25,17 +25,17 @@ class AddCustomerController extends MyController {
       isCheckedDest = false;
   List<Nazionalita> nazionalita = [];
   Nazionalita? nazionalitaSelezionata;
-  List<Paesi> paesi = [];
+  List<Paesi> paesi = [], paesiFiltrati = [], paesiDestFiltrati = [];
   Paesi? paeseSelezionato;
-  List<Comuni> comuni = [];
+  List<Comuni> comuni = [], comuniFiltrati = [], comuniDestFiltrati = [];
   Comuni? comuneSelezionato;
   List<CustomerCategory> categorieClienti = [];
   CustomerCategory? categoriaClienteSelezionata;
   List<ZoneClienti> zoneClienti = [];
   ZoneClienti? zonaClienteSelezionata;
   List<CustomersFA> clientiFA = [];
-  List<Pagamenti> pagamenti = [];
-  Pagamenti? pagamentoSelezionato;
+  /*List<Pagamenti> pagamenti = [];
+  Pagamenti? pagamentoSelezionato;*/
   List<TipoSocieta> tipoSocieta = [];
   TipoSocieta? tiposocietaSelezionata;
 
@@ -48,24 +48,6 @@ class AddCustomerController extends MyController {
   String orarioChiusura = "";
 
   List<ValueItem<TipoAttivita>> tipoAttivita = [];
-
-  final TextEditingController nazionalitaTextController =
-      TextEditingController();
-  final TextEditingController paeseTextController = TextEditingController();
-  final TextEditingController catCliTextController = TextEditingController();
-  final TextEditingController comuneTextController = TextEditingController();
-  final TextEditingController zoneCliTextController = TextEditingController();
-  final TextEditingController pagamentiTextController = TextEditingController();
-  final TextEditingController tipoSocTextController = TextEditingController();
-
-  //Campi destinazione
-  final TextEditingController tipoSocDestTextController =
-      TextEditingController();
-  final TextEditingController nazionalitaDestTextController =
-      TextEditingController();
-  final TextEditingController paeseDestTextController = TextEditingController();
-  final TextEditingController comuneDestTextController =
-      TextEditingController();
 
   MyFormValidator basicValidator = MyFormValidator();
   final MultiSelectController<TipoAttivita> controllerTipoAttivita =
@@ -128,18 +110,33 @@ class AddCustomerController extends MyController {
       nazionalita = value;
       nazionalita.sort((a, b) =>
           a.descrizione!.toLowerCase().compareTo(b.descrizione!.toLowerCase()));
+      nazionalitaSelezionata =
+          nazionalita.where((element) => element.codice == "I").first;
+      nazionalitaSelezionataDest =
+          nazionalita.where((element) => element.codice == "I").first;
       update();
     });
     Paesi.dummyList.then((value) {
       paesi = value;
       paesi.sort((a, b) =>
           a.descrizione!.toLowerCase().compareTo(b.descrizione!.toLowerCase()));
+      paesiFiltrati = paesi;
+      paesiDestFiltrati = paesi;
+      paeseSelezionato = paesi.where((element) => element.sigla == "IT").first;
+      basicValidator.getController("paese").text =
+          paeseSelezionato?.descrizione;
+      paeseSelezionatoDest =
+          paesi.where((element) => element.sigla == "IT").toList().first;
+      basicValidator.getController("paeseDest").text =
+          paeseSelezionato?.descrizione;
       update();
     });
     Comuni.dummyList.then((value) {
       comuni = value;
       comuni.sort((a, b) =>
           a.localita!.toLowerCase().compareTo(b.localita!.toLowerCase()));
+      comuniFiltrati = comuni;
+      comuniDestFiltrati = comuni;
       update();
     });
     CustomerCategory.dummyList.then((value) {
@@ -154,12 +151,15 @@ class AddCustomerController extends MyController {
           (a, b) => a.cydes!.toLowerCase().compareTo(b.cydes!.toLowerCase()));
       update();
     });
-    Pagamenti.dummyList.then((value) {
+    /* Pagamenti.dummyList.then((value) {
       pagamenti = value;
       pagamenti.sort((a, b) =>
           a.descrizione!.toLowerCase().compareTo(b.descrizione!.toLowerCase()));
+      if (pagamenti.length == 1) {
+        pagamentoSelezionato = pagamenti[0];
+      }
       update();
-    });
+    });*/
     TipoAttivita.dummyList.then((value) {
       for (var element in value) {
         tipoAttivita.add(ValueItem<TipoAttivita>(
@@ -176,6 +176,54 @@ class AddCustomerController extends MyController {
       update();
     });
     super.onInit();
+  }
+
+  filtraPaesi(String value) {
+    if (value == "") {
+      paesiFiltrati = paesi;
+    } else {
+      paesiFiltrati = paesi
+          .where((element) =>
+              element.descrizione!.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    }
+    update();
+  }
+
+  filtraPaesiDest(String value) {
+    if (value == "") {
+      paesiDestFiltrati = paesi;
+    } else {
+      paesiDestFiltrati = paesi
+          .where((element) =>
+              element.descrizione!.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    }
+    update();
+  }
+
+  filtraComuni(String value) {
+    if (value == "") {
+      comuniFiltrati = comuni;
+    } else {
+      comuniFiltrati = comuni
+          .where((element) =>
+              element.localita!.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    }
+    update();
+  }
+
+  filtraComuniDest(String value) {
+    if (value == "") {
+      comuniDestFiltrati = comuni;
+    } else {
+      comuniDestFiltrati = comuni
+          .where((element) =>
+              element.localita!.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    }
+    update();
   }
 
   void onChangeCheckBox(bool? value) {
@@ -260,7 +308,7 @@ class AddCustomerController extends MyController {
         required: true,
         label: "",
         validators: [],
-        controller: SuggestionsBoxController());
+        controller: TextEditingController());
     basicValidator.addField('catCli',
         required: true,
         label: "",
@@ -270,17 +318,17 @@ class AddCustomerController extends MyController {
         required: true,
         label: "",
         validators: [],
-        controller: SuggestionsBoxController());
+        controller: TextEditingController());
     basicValidator.addField('zoneCli',
         required: true,
         label: "",
         validators: [],
         controller: SuggestionsBoxController());
-    basicValidator.addField('pagamenti',
+    /*basicValidator.addField('pagamenti',
         required: true,
         label: "",
         validators: [],
-        controller: SuggestionsBoxController());
+        controller: SuggestionsBoxController());*/
     basicValidator.addField('tipoSoc',
         required: true,
         label: "",
@@ -326,7 +374,7 @@ class AddCustomerController extends MyController {
         required: destDiversa,
         label: "",
         validators: [],
-        controller: SuggestionsBoxController());
+        controller: TextEditingController());
     basicValidator.addField('indirizzoDest',
         required: destDiversa,
         label: "",
@@ -341,7 +389,7 @@ class AddCustomerController extends MyController {
         required: destDiversa,
         label: "",
         validators: [],
-        controller: SuggestionsBoxController());
+        controller: TextEditingController());
     basicValidator.addField('provinciaDest',
         required: destDiversa,
         label: "",
@@ -404,14 +452,14 @@ class AddCustomerController extends MyController {
     return matches;
   }
 
-  List<Pagamenti> getPagamenti(String query) {
+  /* List<Pagamenti> getPagamenti(String query) {
     List<Pagamenti> matches = [];
     matches.addAll(pagamenti);
 
     matches.retainWhere(
         (s) => s.descrizione!.toLowerCase().contains(query.toLowerCase()));
     return matches;
-  }
+  }*/
 
   List<TipoSocieta> getTipoSocieta(String query) {
     List<TipoSocieta> matches = [];
@@ -455,6 +503,7 @@ class AddCustomerController extends MyController {
       basicValidator.addError("ragioneSociale", "Inserisci la ragione sociale");
       valido = false;
     }
+
     if (tiposocietaSelezionata == null) {
       basicValidator.addError("tipoSoc", "Inserisci il tipo di società");
       valido = false;
@@ -476,7 +525,7 @@ class AddCustomerController extends MyController {
       valido = false;
     }
     if (basicValidator.getController("fax")?.text == "") {
-      basicValidator.addError("fax", "Inserisci il fax");
+      basicValidator.addError("fax", "Inserisci il cellulare");
       valido = false;
     }
     if (basicValidator.getController("codFisc")?.text == "") {
@@ -515,10 +564,10 @@ class AddCustomerController extends MyController {
       basicValidator.addError("zoneCli", "Seleziona la zona");
       valido = false;
     }
-    if (pagamentoSelezionato == null) {
+    /* if (pagamentoSelezionato == null) {
       basicValidator.addError("pagamenti", "Seleziona il pagamento");
       valido = false;
-    }
+    }*/
     if (basicValidator.getController("pec")?.text == "") {
       basicValidator.addError("pec", "Inserisci la PEC");
       valido = false;
@@ -592,25 +641,51 @@ class AddCustomerController extends MyController {
     }
     var dati = {
       "agente": LocalStorage.getLoggedUser()?.codiceAgente,
-      "pcdes": basicValidator.getController("ragioneSociale").text ?? "",
+      "pcdes": basicValidator
+          .getController("ragioneSociale")
+          .text
+          .toString()
+          .toUpperCase(),
       "pcnaz": nazionalitaSelezionata?.codice ?? "",
       "pcpae": paeseSelezionato?.codice ?? "",
-      "pcind": basicValidator.getController("indirizzo").text ?? "",
+      "pcind": basicValidator
+          .getController("indirizzo")
+          .text
+          .toString()
+          .toUpperCase(),
       "pccap": comuneSelezionato?.cap ?? "",
       "pcloc": comuneSelezionato?.localita ?? "",
       "pcpro": comuneSelezionato?.provincia ?? "",
-      "pctel": basicValidator.getController("telefono").text ?? "",
-      "pcfax": basicValidator.getController("fax").text ?? "",
-      "pcint": basicValidator.getController("email").text ?? "",
-      "pcurl": basicValidator.getController("internet").text ?? "",
-      "pccfi": basicValidator.getController("codFisc").text ?? "",
+      "pctel": basicValidator
+          .getController("telefono")
+          .text
+          .toString()
+          .toUpperCase(),
+      "pcfax":
+          basicValidator.getController("fax").text.toString().toUpperCase(),
+      "pcint":
+          basicValidator.getController("email").text.toString().toLowerCase(),
+      "pcurl": basicValidator
+          .getController("internet")
+          .text
+          .toString()
+          .toLowerCase(),
+      "pccfi":
+          basicValidator.getController("codFisc").text.toString().toUpperCase(),
       "pctpp": isChecked ? "P" : "N",
-      "pcnpi":
-          isChecked ? "" : basicValidator.getController("partIva").text ?? "",
-      "pcpec": basicValidator.getController("pec").text ?? "",
-      "pcsdi": basicValidator.getController("codSDI").text ?? "",
+      "pcnpi": isChecked
+          ? ""
+          : basicValidator
+              .getController("partIva")
+              .text
+              .toString()
+              .toUpperCase(),
+      "pcpec":
+          basicValidator.getController("pec").text.toString().toLowerCase(),
+      "pcsdi":
+          basicValidator.getController("codSDI").text.toString().toUpperCase(),
       "pctps": tiposocietaSelezionata?.numero,
-      "pcpag": pagamentoSelezionato?.numero ?? 0,
+      //"pcpag": pagamentoSelezionato?.numero ?? 0,
       "pcnds1": giorniChiusura,
       "pcnds2": orarioChiusura,
       "pccst": categoriaClienteSelezionata?.idC ?? 0,
@@ -618,18 +693,34 @@ class AddCustomerController extends MyController {
       "tipo_attivita": tipoAttivita,
       "note": basicValidator.getController("nota2").text ?? "",
       "destinazione": {
-        "pcdes": basicValidator.getController("ragSocDest").text ?? "",
+        "pcdes": basicValidator
+            .getController("ragSocDest")
+            .text
+            .toString()
+            .toUpperCase(),
         "pcnaz": nazionalitaSelezionataDest?.codice ?? "",
         "pcpae": paeseSelezionatoDest?.codice ?? "",
-        "pcind": basicValidator.getController("indirizzoDest").text ?? "",
+        "pcind": basicValidator
+            .getController("indirizzoDest")
+            .text
+            .toString()
+            .toUpperCase(),
         "pccap": comuneSelezionatoDest?.cap ?? "",
         "pcloc": comuneSelezionatoDest?.localita ?? "",
         "pcpro": comuneSelezionatoDest?.provincia ?? "",
-        "pccfi": basicValidator.getController("codFiscDest").text ?? "",
+        "pccfi": basicValidator
+            .getController("codFiscDest")
+            .text
+            .toString()
+            .toUpperCase(),
         "pctpp": isCheckedDest ? "P" : "N",
         "pcnpi": isCheckedDest
             ? ""
-            : basicValidator.getController("partIvaDest").text ?? "",
+            : basicValidator
+                .getController("partIvaDest")
+                .text
+                .toString()
+                .toUpperCase(),
         "pctps": tiposocietaSelezionataDest?.numero,
       }
     };
@@ -662,6 +753,7 @@ class AddCustomerController extends MyController {
   }
 
   void pulisciCampi() {
+    basicValidator.resetForm();
     basicValidator.getController("ragioneSociale").text = "";
     basicValidator.getController("indirizzo").text = "";
     basicValidator.getController("email").text = "";
@@ -673,36 +765,38 @@ class AddCustomerController extends MyController {
     basicValidator.getController("partIva").text = "";
     basicValidator.getController("internet").text = "";
     basicValidator.getController("nota2").text = "";
-    nazionalitaSelezionata = null;
-    nazionalitaTextController.text = "";
-    paeseSelezionato = null;
-    paeseTextController.text = "";
+    nazionalitaSelezionata =
+        nazionalita.where((element) => element.codice == "I").first;
+    paeseSelezionato = paesi.where((element) => element.sigla == "IT").first;
+    basicValidator.getController("paese").text = paeseSelezionato?.descrizione;
+    basicValidator.getController("paese").text = paeseSelezionato?.descrizione;
     categoriaClienteSelezionata = null;
-    catCliTextController.text = "";
     comuneSelezionato = null;
-    comuneTextController.text = "";
+    basicValidator.getController("localita").text = "";
     zonaClienteSelezionata = null;
-    zoneCliTextController.text = "";
-    pagamentoSelezionato = null;
-    pagamentiTextController.text = "";
     tiposocietaSelezionata = null;
-    tipoSocTextController.text = "";
     basicValidator.getController("pec").text = "";
     basicValidator.getController("codSDI").text = "";
+    tipoAttivita = [];
+    controllerTipoAttivita.clearAllSelection();
+    giorniSelezionati = [];
+    controllerGiorni.clearAllSelection();
     //CAMPI DESTINAZIONE
     basicValidator.getController("ragSocDest").text = "";
     tiposocietaSelezionataDest = null;
-    tipoSocDestTextController.text = "";
     basicValidator.getController("codFiscDest").text = "";
     basicValidator.getController("partIvaDest").text = "";
-    nazionalitaSelezionataDest = null;
-    nazionalitaDestTextController.text = "";
-    paeseSelezionatoDest = null;
-    paeseDestTextController.text = "";
+    nazionalitaSelezionataDest =
+        nazionalita.where((element) => element.codice == "I").first;
+    paeseSelezionatoDest =
+        paesi.where((element) => element.sigla == "IT").toList().first;
+    basicValidator.getController("paeseDest").text =
+        paeseSelezionatoDest?.descrizione;
     basicValidator.getController("indirizzoDest").text = "";
     basicValidator.getController("capDest").text = "";
     comuneSelezionatoDest = null;
-    comuneDestTextController.text = "";
+    basicValidator.getController("localitaDest").text = "";
     basicValidator.getController("provinciaDest").text = "";
+    update();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:foody/helpers/extention/date_time_extention.dart';
+import 'package:foody/model/listino.dart';
 import 'package:intl/intl.dart';
 
 class Utils {
@@ -98,5 +99,21 @@ class Utils {
 
   static String dateToString(DateTime date) {
     return DateFormat('dd-MM-yyyy').format(date);
+  }
+
+  static String formatStringDecimal(double? value, int decimali) {
+    return value
+            ?.toStringAsFixed(value.truncateToDouble() == value ? 0 : decimali)
+            .replaceAll(".", ",") ??
+        "";
+  }
+
+  static Future<List<Listino>> getNomeListini() async {
+    List<Listino> lista = await Listino.dummyList;
+    return lista;
+    /*Listino.dummyList.then((value) {
+      lista = value;
+      return lista;
+    });*/
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/model/request.dart';
 import 'package:foody/model/user.dart';
@@ -10,8 +11,8 @@ class AuthService {
   /* static User get dummyUser =>
       User(-1, "foody@getappui.com", "Denish", "Navadiya");*/
 
-  static Future<Map<String, String>?> loginUser(
-      Map<String, dynamic> data) async {
+  static Future<String?> loginUser(
+      Map<String, dynamic> data, BuildContext? context) async {
     Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrute",
         etichettaCollage: "LOGIN",
@@ -20,15 +21,16 @@ class AuthService {
     if (res.code == 200) {
       var a = res.result as List<dynamic>;
       if (a.isEmpty) {
-        var message = res.error[0]["response-message"];
-        return {"password": message};
+        var message = res.error;
+        return message;
       }
       isLoggedIn = true;
       await LocalStorage.setLoggedInUser(true);
       await LocalStorage.setLoggedUser(User.fromJson(a[0]));
       return null;
     } else {
-      return {"password": res.error["response-detail"]};
+      var message = res.error;
+      return message;
     }
   }
 }

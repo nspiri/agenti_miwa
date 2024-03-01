@@ -42,6 +42,9 @@ class CustomerDetail extends IdentifierModel {
   String? codCatSconti;
   String? descCatSconti;
   String? scontoIncondizionato;
+  List<TipoAttivita>? tipoAttivita;
+  String? tipoSconto;
+  double? sconto;
 
   CustomerDetail(
       super.id,
@@ -84,7 +87,10 @@ class CustomerDetail extends IdentifierModel {
       this.descCatProv,
       this.codCatSconti,
       this.descCatSconti,
-      this.scontoIncondizionato);
+      this.scontoIncondizionato,
+      this.tipoAttivita,
+      this.tipoSconto,
+      this.sconto);
 
   static CustomerDetail fromJSON(Map<String, dynamic> json) {
     JSONDecoder decoder = JSONDecoder(json);
@@ -129,6 +135,15 @@ class CustomerDetail extends IdentifierModel {
     String? codCatSconti = decoder.getString('pccsc');
     String? descCatSconti = decoder.getString('pccsc_desc');
     String? scontoIncondizionato = decoder.getString('pcsco');
+    String? tipoSconto = decoder.getString('pcpag_cptis');
+    double? sconto = decoder.getDouble('pcpag_cpsco');
+    List<TipoAttivita>? tipoAttivita;
+    if (json['tipo_attivita'] != null) {
+      tipoAttivita = <TipoAttivita>[];
+      json['tipo_attivita'].forEach((v) {
+        tipoAttivita?.add(new TipoAttivita.fromJson(v));
+      });
+    }
 
     return CustomerDetail(
         decoder.getId,
@@ -171,13 +186,14 @@ class CustomerDetail extends IdentifierModel {
         descCatProv,
         codCatSconti,
         descCatSconti,
-        scontoIncondizionato);
+        scontoIncondizionato,
+        tipoAttivita,
+        tipoSconto,
+        sconto);
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    //data['pccod'] = codice;
-
     return data;
   }
 
@@ -186,51 +202,21 @@ class CustomerDetail extends IdentifierModel {
   }
 }
 
+class TipoAttivita {
+  int? num;
+  String? des;
 
+  TipoAttivita({this.num, this.des});
 
-
-
-/*class CustomersList extends IdentifierModel {
-  final String customerName, email, phone, status;
-  final int order;
-  final double totalOrders;
-  final DateTime customerSince;
-
-  CustomersList(super.id, this.customerName, this.email, this.phone,
-      this.status, this.order, this.totalOrders, this.customerSince);
-
-  static CustomersList fromJSON(Map<String, dynamic> json) {
-    JSONDecoder decoder = JSONDecoder(json);
-
-    String customerName = decoder.getString('customer_name');
-    String email = decoder.getString('email');
-    String phone = decoder.getString('phone');
-    String status = decoder.getString('status');
-    int order = decoder.getInt('order');
-    double totalOrders = decoder.getDouble('total_orders');
-    DateTime customerSince = decoder.getDateTime('customer_since');
-
-    return CustomersList(decoder.getId, customerName, email, phone, status,
-        order, totalOrders, customerSince);
+  TipoAttivita.fromJson(Map<String, dynamic> json) {
+    num = json['num'];
+    des = json['des'];
   }
 
-  static List<CustomersList> listFromJSON(List<dynamic> list) {
-    return list.map((e) => CustomersList.fromJSON(e)).toList();
-  }
-
-  static List<CustomersList>? _dummyList;
-
-  static Future<List<CustomersList>> get dummyList async {
-    if (_dummyList == null) {
-      dynamic data = json.decode(await getData());
-      _dummyList = listFromJSON(data);
-    }
-
-    return _dummyList!.sublist(0, 50);
-  }
-
-  static Future<String> getData() async {
-    return await rootBundle.loadString('assets/data/customers_list.json');
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['num'] = num;
+    data['des'] = des;
+    return data;
   }
 }
-*/

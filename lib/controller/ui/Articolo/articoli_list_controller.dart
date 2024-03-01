@@ -10,6 +10,7 @@ class FoodController extends MyController {
   DataTableSource? data;
   bool sortPrezzo = false;
   bool sortDisp = false;
+  bool loading = true;
 
   FoodController({required this.context});
 
@@ -20,6 +21,7 @@ class FoodController extends MyController {
       articoli.sort((a, b) =>
           a.descrizione!.toLowerCase().compareTo(b.descrizione!.toLowerCase()));
       data = MyData(articoli, context);
+      loading = false;
       update();
     });
     super.onInit();

@@ -1,2 +1,35 @@
-2024/01/30-09:49:03.026 2f8c Creating DB C:\Users\utente\AppData\Local\Temp\flutter_tools.59fd822f\flutter_tools_chrome_device.b41f1480\Default\Local Storage\leveldb since it was missing.
-2024/01/30-09:49:03.067 2f8c Reusing MANIFEST C:\Users\utente\AppData\Local\Temp\flutter_tools.59fd822f\flutter_tools_chrome_device.b41f1480\Default\Local Storage\leveldb/MANIFEST-000001
+2024/02/29-13:16:49.215 10fc Reusing MANIFEST C:\Users\Utente\AppData\Local\Temp\flutter_tools.a8806794\flutter_tools_chrome_device.1d259717\Default\Local Storage\leveldb/MANIFEST-000001
+2024/02/29-13:16:49.229 10fc Recovering log #48
+2024/02/29-13:16:49.232 10fc Reusing old log C:\Users\Utente\AppData\Local\Temp\flutter_tools.a8806794\flutter_tools_chrome_device.1d259717\Default\Local Storage\leveldb/000048.log 
+2024/02/29-13:16:49.233 10fc Delete type=0 #3
+2024/02/29-13:16:49.233 10fc Delete type=0 #6
+2024/02/29-13:16:49.233 10fc Delete type=2 #7
+2024/02/29-13:16:49.233 10fc Delete type=0 #9
+2024/02/29-13:16:49.233 10fc Delete type=2 #10
+2024/02/29-13:16:49.233 10fc Delete type=2 #12
+2024/02/29-13:16:49.233 10fc Delete type=0 #13
+2024/02/29-13:16:49.233 10fc Delete type=0 #15
+2024/02/29-13:16:49.233 10fc Delete type=2 #16
+2024/02/29-13:16:49.233 10fc Delete type=2 #20
+2024/02/29-13:16:49.233 10fc Delete type=0 #21
+2024/02/29-13:16:49.233 10fc Delete type=2 #22
+2024/02/29-13:16:49.233 10fc Delete type=2 #25
+2024/02/29-13:16:49.233 10fc Delete type=0 #26
+2024/02/29-13:16:49.233 10fc Delete type=2 #27
+2024/02/29-13:16:49.233 10fc Delete type=2 #31
+2024/02/29-13:16:49.233 10fc Delete type=0 #32
+2024/02/29-13:16:49.234 10fc Delete type=2 #33
+2024/02/29-13:16:49.234 10fc Delete type=0 #39
+2024/02/29-13:16:49.234 10fc Delete type=0 #45
+2024/02/29-14:48:01.428 62f0 Level-0 table #52: started
+2024/02/29-14:48:01.433 62f0 Level-0 table #52: 14118 bytes OK
+2024/02/29-14:48:01.435 62f0 Delete type=0 #48
+2024/02/29-14:48:01.436 10fc Compacting 4@0 + 1@1 files
+2024/02/29-14:48:01.447 10fc Generated table #53@0: 249 keys, 101598 bytes
+2024/02/29-14:48:01.447 10fc Compacted 4@0 + 1@1 files => 101598 bytes
+2024/02/29-14:48:01.448 10fc compacted to: files[ 0 1 1 0 0 0 0 ]
+2024/02/29-14:48:01.448 10fc Delete type=2 #41
+2024/02/29-14:48:01.448 10fc Delete type=2 #44
+2024/02/29-14:48:01.448 10fc Delete type=2 #46
+2024/02/29-14:48:01.448 10fc Delete type=2 #49
+2024/02/29-14:48:01.448 10fc Delete type=2 #52

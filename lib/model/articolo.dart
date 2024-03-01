@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
+import 'package:drop_down_search_field/drop_down_search_field.dart';
+import 'package:flutter/material.dart';
 import 'package:foody/helpers/services/json_decoder.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/model/identifier_model.dart';
@@ -14,14 +17,27 @@ class Articolo extends IdentifierModel {
   String? codAlt;
   String? um1;
   String? iva;
-  int? confArt;
+  double? conf = 0;
+  double? qtaArt;
   int? codCatScontiQta;
   int? numDecArt;
   String? notaArt;
-  int? disponibile;
+  double? disponibile;
   int? codCatProvv;
   int? esistenza;
   List<Arprz>? prezzoListini;
+  Uint8List? icona;
+  PrezzoArticolo? prezzoArticolo;
+  Arprz? listinoSelezionato;
+  ScalaSconti? scontoSelezionato;
+  double importo = 0;
+  double importoTotale = 0;
+  bool applicaOmaggio = false;
+  bool loading = true;
+  final TextEditingController textControllerListino = TextEditingController();
+  final SuggestionsBoxController controllerListino = SuggestionsBoxController();
+  final TextEditingController textControllerSconto = TextEditingController();
+  final SuggestionsBoxController controllerSconto = SuggestionsBoxController();
 
   Articolo(
       super.id,
@@ -33,7 +49,7 @@ class Articolo extends IdentifierModel {
       this.codAlt,
       this.um1,
       this.iva,
-      this.confArt,
+      this.qtaArt,
       this.codCatScontiQta,
       this.numDecArt,
       this.notaArt,
@@ -53,11 +69,11 @@ class Articolo extends IdentifierModel {
     String codAlt = decoder.getString('aralt');
     String um1 = decoder.getString('arum1');
     String iva = decoder.getString('ariva');
-    int confArt = decoder.getInt('arcon');
+    double qtaArt = decoder.getDouble('arcon');
     int codCatScontiQta = decoder.getInt('arscq');
     int numDecArt = decoder.getInt('ardec');
     String notaArt = decoder.getString('arnds');
-    int disponibile = decoder.getInt('aqdin');
+    double disponibile = decoder.getDouble('aqdin');
     int codCatProvv = decoder.getInt('arpro');
     int esistenza = decoder.getInt('aqesi');
     List<Arprz> prezzoListini = [];
@@ -69,23 +85,24 @@ class Articolo extends IdentifierModel {
     }
 
     return Articolo(
-        decoder.getId,
-        codArt,
-        codCatSconti,
-        descrizione,
-        codCatListini,
-        catStatistica,
-        codAlt,
-        um1,
-        iva,
-        confArt,
-        codCatScontiQta,
-        numDecArt,
-        notaArt,
-        disponibile,
-        codCatProvv,
-        esistenza,
-        prezzoListini);
+      decoder.getId,
+      codArt,
+      codCatSconti,
+      descrizione,
+      codCatListini,
+      catStatistica,
+      codAlt,
+      um1,
+      iva,
+      qtaArt,
+      codCatScontiQta,
+      numDecArt,
+      notaArt,
+      disponibile,
+      codCatProvv,
+      esistenza,
+      prezzoListini,
+    );
   }
 
   static List<Articolo> listFromJSON(List<dynamic> list) {
@@ -125,6 +142,7 @@ class Articolo extends IdentifierModel {
 class Arprz {
   int? listino;
   double? valore;
+  String descrizione = "";
 
   Arprz({this.listino, this.valore});
 
@@ -137,6 +155,98 @@ class Arprz {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['listino'] = listino;
     data['valore'] = valore;
+    return data;
+  }
+}
+
+class PrezzoArticolo {
+  double? prezzo;
+  Omaggio? omaggio;
+  String? sconto;
+  List<ScalaSconti>? scalaSconti;
+  String? tipoProvvigione;
+  double? provvigione;
+
+  PrezzoArticolo(
+      {this.prezzo,
+      this.omaggio,
+      this.sconto,
+      this.scalaSconti,
+      this.tipoProvvigione,
+      this.provvigione});
+
+  PrezzoArticolo.fromJson(Map<String, dynamic> json) {
+    prezzo = json['prezzo'];
+    omaggio =
+        json['omaggio'] != null ? new Omaggio.fromJson(json['omaggio']) : null;
+    sconto = json['sconto'];
+    if (json['scala_sconti'] != null) {
+      scalaSconti = <ScalaSconti>[];
+      json['scala_sconti'].forEach((v) {
+        scalaSconti!.add(new ScalaSconti.fromJson(v));
+      });
+    }
+    tipoProvvigione = json['tipo_provvigione'];
+    provvigione = json['provvigione'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['prezzo'] = prezzo;
+    if (omaggio != null) {
+      data['omaggio'] = omaggio!.toJson();
+    }
+    data['sconto'] = sconto;
+    if (scalaSconti != null) {
+      data['scala_sconti'] = scalaSconti!.map((v) => v.toJson()).toList();
+    }
+    data['tipo_provvigione'] = tipoProvvigione;
+    data['provvigione'] = provvigione;
+    return data;
+  }
+}
+
+class Omaggio {
+  int? qtaPresa;
+  int? qtaPagata;
+
+  Omaggio({this.qtaPresa, this.qtaPagata});
+
+  Omaggio.fromJson(Map<String, dynamic> json) {
+    qtaPresa = json['qta_presa'];
+    qtaPagata = json['qta_pagata'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['qta_presa'] = qtaPresa;
+    data['qta_pagata'] = qtaPagata;
+    return data;
+  }
+}
+
+class ScalaSconti {
+  double? prezzo;
+  String? sconto;
+  String? tipoProvvigione;
+  double? provvigione;
+
+  ScalaSconti(
+      {this.prezzo, this.sconto, this.tipoProvvigione, this.provvigione});
+
+  ScalaSconti.fromJson(Map<String, dynamic> json) {
+    prezzo = json['prezzo'];
+    sconto = json['sconto'];
+    tipoProvvigione = json['tipo_provvigione'];
+    provvigione = json['provvigione'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['prezzo'] = prezzo;
+    data['sconto'] = sconto;
+    data['tipo_provvigione'] = tipoProvvigione;
+    data['provvigione'] = provvigione;
     return data;
   }
 }

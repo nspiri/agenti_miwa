@@ -1,5 +1,5 @@
 class Storico {
-  int? codice;
+  int? colli;
   String? data;
   double? prezzo;
   String? documento;
@@ -9,12 +9,12 @@ class Storico {
   int? numero;
   String? um;
   String? desc;
-  int? qta;
+  double? qta;
   String? sconto;
   double? importo;
 
   Storico(
-      {this.codice,
+      {this.colli,
       this.data,
       this.prezzo,
       this.documento,
@@ -29,7 +29,7 @@ class Storico {
       this.importo});
 
   Storico.fromJson(Map<String, dynamic> json) {
-    codice = json['mmcol'];
+    colli = json['mmcol'];
     data = json['mmdat'];
     prezzo = json['mmprz'];
     documento = json['mmsig'];
@@ -46,7 +46,7 @@ class Storico {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['mmcol'] = codice;
+    data['mmcol'] = colli;
     data['mmdat'] = data;
     data['mmprz'] = prezzo;
     data['mmsig'] = documento;

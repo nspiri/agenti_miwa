@@ -30,6 +30,7 @@ class _CustomerListScreenState extends State<CustomerListScreen>
   @override
   void initState() {
     controller = Get.put(CustomerListController());
+    controller.init();
     super.initState();
   }
 
@@ -47,14 +48,13 @@ class _CustomerListScreenState extends State<CustomerListScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MyText.titleMedium(
-                      "Lista clienti",
+                      "Clienti",
                       fontSize: 18,
                       fontWeight: 600,
                     ),
                     MyBreadcrumb(
                       children: [
-                        MyBreadcrumbItem(name: 'Admin'),
-                        MyBreadcrumbItem(name: 'Lista clienti', active: true),
+                        MyBreadcrumbItem(name: 'Clienti', active: true),
                       ],
                     ),
                   ],
@@ -69,110 +69,117 @@ class _CustomerListScreenState extends State<CustomerListScreen>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (controller.data != null)
-                            SizedBox(
-                              width: double.infinity,
-                              child: PaginatedDataTable(
-                                showCheckboxColumn: false,
-                                header: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: MySpacing.top(24),
-                                      child: SizedBox(
-                                        width: 250,
-                                        child: TextField(
-                                          decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(4),
-                                                ),
-                                              ),
-                                              prefixIcon: Icon(
-                                                  LucideIcons.search,
-                                                  size: 20),
-                                              hintText: 'Cerca',
-                                              contentPadding:
-                                                  MySpacing.xy(12, 8)),
-                                          onChanged: (value) {
-                                            controller.filterByName(value);
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    MyContainer(
-                                      onTap: () => controller.gotoCustomerAdd(),
-                                      paddingAll: 8,
-                                      color: contentTheme.primary,
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            LucideIcons.plus,
-                                            size: 20,
-                                            color: contentTheme.onPrimary,
+                          !controller.loading
+                              ? SizedBox(
+                                  width: double.infinity,
+                                  child: PaginatedDataTable(
+                                    showCheckboxColumn: false,
+                                    header: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: MySpacing.top(24),
+                                          child: SizedBox(
+                                            width: 250,
+                                            child: TextField(
+                                              decoration: InputDecoration(
+                                                  border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(4),
+                                                    ),
+                                                  ),
+                                                  prefixIcon: Icon(
+                                                      LucideIcons.search,
+                                                      size: 20),
+                                                  hintText: 'Cerca',
+                                                  contentPadding:
+                                                      MySpacing.xy(12, 8)),
+                                              onChanged: (value) {
+                                                controller.filterByName(value);
+                                              },
+                                            ),
                                           ),
-                                          MySpacing.width(8),
-                                          MyText.bodyMedium(
-                                            "Aggiungi nuovo cliente",
-                                            color: contentTheme.onPrimary,
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
+                                        ),
+                                        MyContainer(
+                                          onTap: () =>
+                                              controller.gotoCustomerAdd(),
+                                          paddingAll: 8,
+                                          color: contentTheme.primary,
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                LucideIcons.plus,
+                                                size: 20,
+                                                color: contentTheme.onPrimary,
+                                              ),
+                                              MySpacing.width(8),
+                                              MyText.bodyMedium(
+                                                "Nuovo cliente",
+                                                color: contentTheme.onPrimary,
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    source: controller.data!,
+                                    columns: [
+                                      DataColumn(
+                                          onSort: (columnIndex, ascending) =>
+                                              controller.orderByName(),
+                                          label: ordinamento("Ragione Sociale",
+                                              controller.ragSoc)),
+                                      DataColumn(
+                                          onSort: (columnIndex, ascending) =>
+                                              controller.orderByLocalita(),
+                                          label: ordinamento(
+                                              "Località", controller.localita)),
+                                      DataColumn(
+                                          onSort: (columnIndex, ascending) =>
+                                              controller.orderByProvincia(),
+                                          label: ordinamento("Provincia",
+                                              controller.provincia)),
+                                      /* DataColumn(
+                                          onSort: (columnIndex, ascending) =>
+                                              controller.orderByIndirizzo(),
+                                          label: MyText.bodyMedium('Indirizzo',
+                                              fontWeight: 600)),
+                                      DataColumn(
+                                          label: MyText.bodyMedium('Telefono',
+                                              fontWeight: 600)),
+                                      DataColumn(
+                                          onSort: (columnIndex, ascending) =>
+                                              controller.orderByEmail(),
+                                          label: MyText.bodyMedium('E-mail',
+                                              fontWeight: 600)),
+                                      DataColumn(
+                                          label: MyText.bodyMedium('Part. Iva',
+                                              fontWeight: 600)),*/
+                                      DataColumn(
+                                          onSort: (columnIndex, ascending) =>
+                                              controller
+                                                  .orderByUltimaConsegna(),
+                                          label: ordinamento("Ultima Consegna",
+                                              controller.ultCons)),
+                                    ],
+                                    columnSpacing: 10,
+                                    horizontalMargin: 20,
+                                    rowsPerPage: controller.data!.rowCount > 20
+                                        ? 20
+                                        : controller.data!.rowCount == 0
+                                            ? 1
+                                            : controller.data!.rowCount,
+                                    dataRowMaxHeight: 48,
+                                  ),
+                                )
+                              : Center(
+                                  child: CircularProgressIndicator(
+                                    color: contentTheme.primary,
+                                    strokeWidth: 3,
+                                  ),
                                 ),
-                                /*rows: controller.customers
-                                          .mapIndexed((index, data) =>
-                                              row(controller.customers[index]))
-                                          .toList(),*/
-
-                                source: controller.data!,
-                                columns: [
-                                  DataColumn(
-                                      onSort: (columnIndex, ascending) =>
-                                          controller.orderByName(),
-                                      label: MyText.bodyMedium(
-                                          'Ragione Sociale',
-                                          fontWeight: 600)),
-                                  DataColumn(
-                                      onSort: (columnIndex, ascending) =>
-                                          controller.orderByLocalita(),
-                                      label: MyText.bodyMedium('Località',
-                                          fontWeight: 600)),
-                                  DataColumn(
-                                      onSort: (columnIndex, ascending) =>
-                                          controller.orderByProvincia(),
-                                      label: MyText.bodyMedium('Prov.',
-                                          fontWeight: 600)),
-                                  DataColumn(
-                                      onSort: (columnIndex, ascending) =>
-                                          controller.orderByIndirizzo(),
-                                      label: MyText.bodyMedium('Indirizzo',
-                                          fontWeight: 600)),
-                                  DataColumn(
-                                      label: MyText.bodyMedium('Telefono',
-                                          fontWeight: 600)),
-                                  DataColumn(
-                                      onSort: (columnIndex, ascending) =>
-                                          controller.orderByEmail(),
-                                      label: MyText.bodyMedium('E-mail',
-                                          fontWeight: 600)),
-                                  DataColumn(
-                                      label: MyText.bodyMedium('Part. Iva',
-                                          fontWeight: 600)),
-                                  DataColumn(
-                                      onSort: (columnIndex, ascending) =>
-                                          controller.orderByUltimaConsegna(),
-                                      label: MyText.bodyMedium('Ult. Cons.',
-                                          fontWeight: 600)),
-                                ],
-                                columnSpacing: 10,
-                                horizontalMargin: 20,
-                                rowsPerPage: 20,
-                                dataRowMaxHeight: 48,
-                              ),
-                            ),
                         ],
                       ),
                     ),
@@ -185,12 +192,26 @@ class _CustomerListScreenState extends State<CustomerListScreen>
       ),
     );
   }
+
+  Widget ordinamento(String titolo, bool? valore) {
+    return Row(
+      children: [
+        MyText.bodyMedium(titolo, fontWeight: 600),
+        valore == null
+            ? Text("")
+            : valore
+                ? Icon(Icons.arrow_drop_down_outlined)
+                : Icon(Icons.arrow_drop_up_outlined)
+      ],
+    );
+  }
 }
 
 class MyData extends DataTableSource with UIMixin {
   List<CustomersList> orderList = [];
+  CustomerListController controller;
 
-  MyData(this.orderList);
+  MyData(this.orderList, this.controller);
 
   @override
   bool get isRowCountApproximate => false;
@@ -208,33 +229,11 @@ class MyData extends DataTableSource with UIMixin {
     return DataRow(
       cells: [
         DataCell(
-          Row(
-            children: [
-              /*MyContainer.rounded(
-              paddingAll: 0,
-              height: 40,
-              width: 40,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: Image.asset(Images.avatars[index % Images.avatars.length]),
-            ),*/
-              MySpacing.width(0),
-              Visibility(
-                visible: customer.descrizione!.length > 40,
-                child: Tooltip(
-                    message: customer.descrizione ?? "",
-                    child: MyText.bodySmall(
-                        "${customer.descrizione?.substring(0, customer.descrizione!.length > 40 ? 40 : customer.descrizione?.length) ?? ''} ${customer.descrizione!.length > 40 ? '...' : ''}")),
-              ),
-              Visibility(
-                visible: customer.descrizione!.length <= 40,
-                child: MyText.bodySmall("${customer.descrizione}"),
-              ),
-            ],
-          ),
+          MyText.bodySmall("${customer.descrizione}"),
         ),
         DataCell(MyText.bodySmall(customer.localita ?? "")),
         DataCell(MyText.bodySmall(customer.provincia ?? "")),
-        DataCell(Row(
+        /*DataCell(Row(
           children: [
             /*MyContainer.rounded(
               paddingAll: 0,
@@ -273,7 +272,7 @@ class MyData extends DataTableSource with UIMixin {
             ),
           ],
         )),
-        DataCell(MyText.bodySmall(customer.pIva ?? "")),
+        DataCell(MyText.bodySmall(customer.pIva ?? "")),*/
         DataCell(
           MyText.bodySmall(
             Utils.getFormattedDate(customer.dataUltimaConsegna ?? ""),
@@ -290,12 +289,10 @@ class MyData extends DataTableSource with UIMixin {
   }
 
   void gotoOrder(String clientId) {
-    codClienteSelezionato = clientId;
-    Get.toNamed('/cart', arguments: clientId);
+    controller.goToOrder(clientId);
   }
 
   void gotoDetail(String clientId) {
-    codClienteSelezionato = clientId;
-    Get.toNamed('/admin/customers/detail', arguments: clientId);
+    controller.goToDetail(clientId);
   }
 }

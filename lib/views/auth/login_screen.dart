@@ -128,15 +128,14 @@ class _LoginScreenState extends State<LoginScreen>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            InkWell(
-                              onTap: () => controller
-                                  .onChangeCheckBox(!controller.isChecked),
+                            /*Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
                               child: Row(
                                 children: [
                                   Checkbox(
                                     onChanged: controller.onChangeCheckBox,
                                     value: controller.isChecked,
-                                    fillColor:
+                                    fillC olor:
                                         MaterialStatePropertyAll(Colors.white),
                                     activeColor: theme.colorScheme.primary,
                                     checkColor: contentTheme.primary,
@@ -150,8 +149,8 @@ class _LoginScreenState extends State<LoginScreen>
                                   ),
                                 ],
                               ),
-                            ),
-                            MyButton.text(
+                            ),*/
+                            /*  MyButton.text(
                               onPressed: controller.goToForgotPassword,
                               elevation: 0,
                               padding: MySpacing.xy(8, 0),
@@ -161,13 +160,15 @@ class _LoginScreenState extends State<LoginScreen>
                                 'Password dimenticata?',
                                 color: contentTheme.secondary,
                               ),
-                            ),
+                            ),*/
                           ],
                         ),
                         MySpacing.height(28),
                         Center(
                           child: MyButton.rounded(
-                            onPressed: controller.onLogin,
+                            onPressed: () {
+                              controller.onLogin(context);
+                            },
                             elevation: 0,
                             padding: MySpacing.xy(20, 16),
                             backgroundColor: contentTheme.primary,
@@ -193,6 +194,12 @@ class _LoginScreenState extends State<LoginScreen>
                             ),
                           ),
                         ),
+                        controller.errore != ""
+                            ? MyText.bodySmall(
+                                controller.errore,
+                                color: contentTheme.red,
+                              )
+                            : Text(""),
                         /*Center(
                           child: MyButton.text(
                             onPressed: controller.gotoRegister,

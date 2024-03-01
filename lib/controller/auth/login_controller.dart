@@ -7,11 +7,8 @@ import 'package:get/get.dart';
 
 class LoginController extends MyController {
   MyFormValidator basicValidator = MyFormValidator();
-
+  String errore = "";
   bool showPassword = false, loading = false, isChecked = false;
-
-  final String _dummyEmail = "foody@getappui.com";
-  final String _dummyPassword = "1234567";
 
   var greeting = "Buon giorno";
   late int currentTime = DateTime.now().hour;
@@ -20,14 +17,16 @@ class LoginController extends MyController {
   void onInit() {
     basicValidator.addField('email',
         required: true,
-        label: "Email",
-        validators: [MyLengthValidator(min: 6, max: 10) /*MyEmailValidator()*/],
+        label: "Utente",
+        validators: [
+          /*MyLengthValidator(min: 6, max: 10)*/ /*MyEmailValidator()*/
+        ],
         controller: TextEditingController());
 
     basicValidator.addField('password',
         required: true,
         label: "Password",
-        validators: [MyLengthValidator(min: 2, max: 10)],
+        validators: [/*MyLengthValidator(min: 2, max: 10)*/],
         controller: TextEditingController());
 
     if ((currentTime < 6) || (currentTime > 21)) {
@@ -52,15 +51,16 @@ class LoginController extends MyController {
     update();
   }
 
-  Future<void> onLogin() async {
+  Future<void> onLogin(BuildContext c) async {
+    errore = "";
+    update();
     if (basicValidator.validateForm()) {
       loading = true;
       update();
-      var errors = await AuthService.loginUser(basicValidator.getData());
+      var errors = await AuthService.loginUser(basicValidator.getData(), c);
       if (errors != null) {
-        basicValidator.addErrors(errors);
-        basicValidator.validateForm();
-        basicValidator.clearErrors();
+        errore = errors;
+        update();
       } else {
         String nextUrl =
             Uri.parse(ModalRoute.of(Get.context!)?.settings.name ?? "")
@@ -71,6 +71,16 @@ class LoginController extends MyController {
         );
       }
       loading = false;
+      update();
+    } else {
+      if (basicValidator.getController("email").text == "") {
+        basicValidator.addError("email", "Inserisci un username");
+      }
+      if (basicValidator.getController("password").text == "") {
+        basicValidator.addError("password", "Inserisci una password");
+      }
+      basicValidator.validateForm();
+      basicValidator.clearErrors();
       update();
     }
   }

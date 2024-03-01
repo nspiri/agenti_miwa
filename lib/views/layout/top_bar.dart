@@ -5,6 +5,7 @@ import 'package:foody/helpers/theme/app_notifire.dart';
 import 'package:foody/helpers/theme/app_style.dart';
 import 'package:foody/helpers/theme/app_themes.dart';
 import 'package:foody/helpers/theme/theme_customizer.dart';
+import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/helpers/utils/my_shadow.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
 import 'package:foody/helpers/widgets/my_button.dart';
@@ -55,6 +56,13 @@ class _TopBarState extends State<TopBar>
                     color: topBarTheme.onBackground,
                   )),
               MySpacing.width(24),
+              SizedBox(
+                child: Row(
+                  children: [
+                    MyText.labelLarge(clienteSelezionato?.ragioneSociale ?? ""),
+                  ],
+                ),
+              )
               /* SizedBox(
                 width: 200,
                 child: TextFormField(
@@ -125,8 +133,8 @@ class _TopBarState extends State<TopBar>
                   ),
                   menuBuilder: (_) => buildLanguageSelector(),
                 ),*/
-                MySpacing.width(6),
-                CustomPopupMenu(
+                //MySpacing.width(6),
+                /* CustomPopupMenu(
                   backdrop: true,
                   onChange: (_) {},
                   offsetX: -120,
@@ -140,8 +148,8 @@ class _TopBarState extends State<TopBar>
                     ),
                   ),
                   menuBuilder: (_) => buildNotifications(),
-                ),
-                MySpacing.width(4),
+                ),*/
+                //MySpacing.width(4),
                 CustomPopupMenu(
                   backdrop: true,
                   onChange: (_) {},
@@ -154,12 +162,14 @@ class _TopBarState extends State<TopBar>
                       children: [
                         MyContainer.rounded(
                             paddingAll: 0,
-                            child: Image.asset(
+                            child: Icon(LucideIcons
+                                .user) /*Image.asset(
                               Images.avatars[0],
                               height: 28,
                               width: 28,
                               fit: BoxFit.cover,
-                            )),
+                            )*/
+                            ),
                         MySpacing.width(8),
                         MyText.labelLarge(
                             LocalStorage.getLoggedUser()?.utente ?? "")

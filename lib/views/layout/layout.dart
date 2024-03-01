@@ -87,9 +87,11 @@ class Layout extends StatelessWidget {
         ],
       ),
       drawer: LeftBar(),
-      body: SingleChildScrollView(
-        key: controller.scrollKey,
-        child: child,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          key: controller.scrollKey,
+          child: child,
+        ),
       ),
     );
   }
@@ -109,41 +111,43 @@ class Layout extends StatelessWidget {
     return Scaffold(
       key: controller.scaffoldKey,
       endDrawer: RightBar(),
-      body: Row(
-        children: [
-          LeftBar(isCondensed: ThemeCustomizer.instance.leftBarCondensed),
-          Expanded(
-              child: Stack(
-            children: [
-              Positioned(
-                top: 0,
-                right: 0,
-                left: 0,
-                bottom: 0,
-                child: SingleChildScrollView(
-                  padding:
-                      MySpacing.fromLTRB(0, 58 + flexSpacing, 0, flexSpacing),
-                  key: controller.scrollKey,
-                  child: child,
+      body: SafeArea(
+        child: Row(
+          children: [
+            LeftBar(isCondensed: ThemeCustomizer.instance.leftBarCondensed),
+            Expanded(
+                child: Stack(
+              children: [
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                  child: SingleChildScrollView(
+                    padding:
+                        MySpacing.fromLTRB(0, 58 + flexSpacing, 0, flexSpacing),
+                    key: controller.scrollKey,
+                    child: child,
+                  ),
                 ),
-              ),
-              Positioned(top: 0, left: 0, right: 0, child: TopBar()),
-            ],
-          )),
-          // Expanded(
-          //     child: Column(
-          //   crossAxisAlignment: CrossAxisAlignment.start,
-          //   children: [
-          //     TopBar(),
-          //     Expanded(
-          //         child: SingleChildScrollView(
-          //       padding: MySpacing.y(flexSpacing),
-          //       key: controller.scrollKey,
-          //       child: child,
-          //     )),
-          //   ],
-          // ))
-        ],
+                Positioned(top: 0, left: 0, right: 0, child: TopBar()),
+              ],
+            )),
+            // Expanded(
+            //     child: Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     TopBar(),
+            //     Expanded(
+            //         child: SingleChildScrollView(
+            //       padding: MySpacing.y(flexSpacing),
+            //       key: controller.scrollKey,
+            //       child: child,
+            //     )),
+            //   ],
+            // ))
+          ],
+        ),
       ),
     );
   }

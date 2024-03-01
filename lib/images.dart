@@ -27,6 +27,7 @@ class Images {
       3,
       (index) =>
           'assets/images/restaurant_logo/restaurant_logo_${index + 1}.png');
+  static String noImage = 'assets/images/food/no_image.jpg';
 
   static String randomImage(List<String> images) {
     return images[Random().nextInt(images.length)];

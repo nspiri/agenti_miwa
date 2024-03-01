@@ -1,0 +1,14 @@
+[
+    {
+        "numero": "N",
+        "desc": "Non specificato"
+    },
+    {
+        "numero": "C",
+        "desc": "Società di Capitali"
+    },
+    {
+        "numero": "P",
+        "desc": "Società di Persone"
+    }
+]

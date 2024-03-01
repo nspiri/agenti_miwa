@@ -38,7 +38,7 @@ class ForgotPasswordController extends MyController {
     if (basicValidator.validateForm()) {
       loading = true;
       update();
-      var errors = await AuthService.loginUser(basicValidator.getData());
+      var errors = await AuthService.loginUser(basicValidator.getData(), null);
       if (errors != null) {
         basicValidator.validateForm();
         basicValidator.clearErrors();

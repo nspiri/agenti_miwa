@@ -1,0 +1,4 @@
+#Fri Mar 01 11:21:54 CET 2024
+base.0=C\:\\Users\\Utente\\Desktop\\Cartelle\\Progetti\\prog flutt\\agenti_miwa\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

@@ -24,7 +24,7 @@ mixin UIMixin {
         borderSide: BorderSide(
             width: 1,
             strokeAlign: 0,
-            color: theme.colorScheme.onBackground.withAlpha(80)),
+            color: theme.colorScheme.onBackground.withAlpha(70)),
       );
 
   OutlineInputBorder focusedInputBorder = OutlineInputBorder(

@@ -60,7 +60,9 @@ showAlertMessage(BuildContext context, String titolo, String messaggio) {
             ),
           ],
         ),
-        content: MyText.labelMedium(messaggio),
+        content: Container(
+            constraints: BoxConstraints(minWidth: 100, maxWidth: 500),
+            child: MyText.labelMedium(messaggio, maxLines: 10)),
         actions: <Widget>[
           TextButton(
             style: TextButton.styleFrom(

@@ -6,6 +6,7 @@ import 'package:foody/controller/ui/Articolo/articoli_list_controller.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/helpers/utils/show_message_dialogs.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
+import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
 import 'package:foody/helpers/widgets/my_flex.dart';
@@ -72,103 +73,112 @@ class _FoodListScreenState extends State<FoodListScreen>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (controller.data != null)
-                            SizedBox(
-                              width: double.infinity,
-                              child: PaginatedDataTable(
-                                dataRowMaxHeight: 48,
-                                columnSpacing: 10,
-                                header: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: MySpacing.top(24),
-                                      child: SizedBox(
-                                        width: 250,
-                                        child: TextField(
-                                          decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(4),
-                                                ),
-                                              ),
-                                              prefixIcon: Icon(
-                                                  LucideIcons.search,
-                                                  size: 20),
-                                              hintText: 'Cerca',
-                                              contentPadding:
-                                                  MySpacing.xy(12, 4)),
-                                          onChanged: (value) {
-                                            controller.filterByName(value);
-                                          },
+                          !controller.loading
+                              ? SizedBox(
+                                  width: double.infinity,
+                                  child: PaginatedDataTable(
+                                    dataRowMaxHeight: 48,
+                                    columnSpacing: 10,
+                                    header: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: MySpacing.top(24),
+                                          child: SizedBox(
+                                            width: 250,
+                                            child: TextField(
+                                              decoration: InputDecoration(
+                                                  border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(4),
+                                                    ),
+                                                  ),
+                                                  prefixIcon: Icon(
+                                                      LucideIcons.search,
+                                                      size: 20),
+                                                  hintText: 'Cerca',
+                                                  contentPadding:
+                                                      MySpacing.xy(12, 4)),
+                                              onChanged: (value) {
+                                                controller.filterByName(value);
+                                              },
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                      ],
                                     ),
-                                  ],
+                                    showCheckboxColumn: false,
+                                    columns: [
+                                      DataColumn(
+                                          label: MyText.bodyMedium(
+                                        'Cod. Art',
+                                      )),
+                                      DataColumn(
+                                          onSort: (columnIndex, ascending) {
+                                            controller.orderByDesc();
+                                          },
+                                          label: MyText.bodyMedium(
+                                            'Descrizione',
+                                          )),
+                                      DataColumn(
+                                          onSort: (columnIndex, ascending) {
+                                            controller.orderByCodAlt();
+                                          },
+                                          label: MyText.bodyMedium(
+                                            'Cod. Alternativo',
+                                          )),
+                                      DataColumn(
+                                          label: MyText.bodyMedium(
+                                        'Um',
+                                      )),
+                                      DataColumn(
+                                          numeric: true,
+                                          label: MyText.bodyMedium(
+                                            'Q.tà',
+                                          )),
+                                      DataColumn(
+                                          numeric: true,
+                                          onSort: (columnIndex, ascending) {
+                                            controller.orderByPrezzo();
+                                          },
+                                          label: MyText.bodyMedium(
+                                            'Prezzo Listino',
+                                          )),
+                                      DataColumn(
+                                          numeric: true,
+                                          onSort: (columnIndex, ascending) {
+                                            controller.orderByDispo();
+                                          },
+                                          label: MyText.bodyMedium(
+                                            'Disp',
+                                          )),
+                                      DataColumn(
+                                          label: MyText.bodyMedium(
+                                        'Nota Magazzino',
+                                      )),
+                                      DataColumn(
+                                          onSort: (columnIndex, ascending) {
+                                            controller.orderByCatArt();
+                                          },
+                                          label: MyText.bodyMedium(
+                                            'Categoria Articolo',
+                                          )),
+                                    ],
+                                    source: controller.data!,
+                                    horizontalMargin: 20,
+                                    rowsPerPage: controller.data!.rowCount < 20
+                                        ? controller.data!.rowCount
+                                        : 20,
+                                  ),
+                                )
+                              : Center(
+                                  child: CircularProgressIndicator(
+                                    color: contentTheme.primary,
+                                    strokeWidth: 3,
+                                  ),
                                 ),
-                                showCheckboxColumn: false,
-                                columns: [
-                                  DataColumn(
-                                      label: MyText.bodyMedium(
-                                    'Cod. Art',
-                                  )),
-                                  DataColumn(
-                                      onSort: (columnIndex, ascending) {
-                                        controller.orderByDesc();
-                                      },
-                                      label: MyText.bodyMedium(
-                                        'Descrizione',
-                                      )),
-                                  DataColumn(
-                                      onSort: (columnIndex, ascending) {
-                                        controller.orderByCodAlt();
-                                      },
-                                      label: MyText.bodyMedium(
-                                        'Cod. Alternativo',
-                                      )),
-                                  DataColumn(
-                                      label: MyText.bodyMedium(
-                                    'Um',
-                                  )),
-                                  DataColumn(
-                                      numeric: true,
-                                      label: MyText.bodyMedium(
-                                        'Q.tà',
-                                      )),
-                                  DataColumn(
-                                      numeric: true,
-                                      onSort: (columnIndex, ascending) {
-                                        controller.orderByPrezzo();
-                                      },
-                                      label: MyText.bodyMedium(
-                                        'Prezzo Listino',
-                                      )),
-                                  DataColumn(
-                                      numeric: true,
-                                      onSort: (columnIndex, ascending) {
-                                        controller.orderByDispo();
-                                      },
-                                      label: MyText.bodyMedium(
-                                        'Disp',
-                                      )),
-                                  DataColumn(
-                                      label: MyText.bodyMedium(
-                                    'Nota Magazzino',
-                                  )),
-                                  DataColumn(
-                                      onSort: (columnIndex, ascending) {
-                                        controller.orderByCatArt();
-                                      },
-                                      label: MyText.bodyMedium(
-                                        'Categoria Articolo',
-                                      )),
-                                ],
-                                source: controller.data!,
-                                horizontalMargin: 20,
-                                rowsPerPage: 20,
-                              ),
-                            ),
                         ],
                       ),
                     ),
@@ -208,8 +218,9 @@ class MyData extends DataTableSource with UIMixin {
         DataCell(MyText.bodySmall("${articolo.descrizione}")),
         DataCell(MyText.bodySmall("${articolo.codAlt}")),
         DataCell(MyText.bodySmall("${articolo.um1}")),
-        DataCell(MyText.bodySmall("${articolo.confArt}")),
-        DataCell(MyText.bodySmall("${articolo.prezzoListini?[0].valore}")),
+        DataCell(MyText.bodySmall("${articolo.qtaArt}")),
+        DataCell(MyText.bodySmall(
+            "€ ${Utils.formatStringDecimal(articolo.prezzoListini?[0].valore, 2)}")),
         DataCell(MyText.bodySmall("${articolo.disponibile}")),
         DataCell(MyText.bodySmall("${articolo.notaArt}")),
         DataCell(MyText.bodySmall("${articolo.catStatistica}")),
@@ -224,33 +235,37 @@ class MyData extends DataTableSource with UIMixin {
         if (res.code == 200) {
           var result = res.result as List<dynamic>;
           if (result.isNotEmpty) {
-            for (var element in result[0]["arime"]) {
-              img += element;
+            if (result[0]["arime"] != null) {
+              for (var element in result[0]["arime"]) {
+                img += element;
+              }
+              await showDialog(
+                  context: context,
+                  builder: (_) => Dialog(
+                        child: Stack(
+                          children: [
+                            Image.memory(
+                              base64.decode(img
+                                  .replaceAll(RegExp(r'\s+'), '')
+                                  .replaceAll("[", "")),
+                              //base64Decode(img),
+                              fit: BoxFit.cover,
+                            ),
+                            Positioned(
+                                right: 0,
+                                child: IconButton(
+                                  icon: Icon(Icons.cancel),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  alignment: Alignment.topRight,
+                                ))
+                          ],
+                        ),
+                      ));
+            } else {
+              showErrorMessage(context, "Nessuna immagine", "");
             }
-            await showDialog(
-                context: context,
-                builder: (_) => Dialog(
-                      child: Stack(
-                        children: [
-                          Image.memory(
-                            base64.decode(img
-                                .replaceAll(RegExp(r'\s+'), '')
-                                .replaceAll("[", "")),
-                            //base64Decode(img),
-                            fit: BoxFit.cover,
-                          ),
-                          Positioned(
-                              right: 0,
-                              child: IconButton(
-                                icon: Icon(Icons.cancel),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                alignment: Alignment.topRight,
-                              ))
-                        ],
-                      ),
-                    ));
           }
         } else {
           showErrorMessage(context, "Nessuna immagine", "");

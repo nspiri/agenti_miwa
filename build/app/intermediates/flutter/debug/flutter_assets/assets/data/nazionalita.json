@@ -1,0 +1,22 @@
+[   
+    {
+        "naz": "Italia",
+        "cod": "I"
+    },
+    {
+        "naz": "CEE",
+        "cod": "C"
+    },
+    {
+        "naz": "Estero (no CEE)",
+        "cod": "E"
+    },
+    {
+        "naz": "RSM",
+        "cod": "R"
+    },
+    {
+        "naz": "Vaticano",
+        "cod": "V"
+    }
+]
