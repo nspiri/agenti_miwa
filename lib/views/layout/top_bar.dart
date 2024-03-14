@@ -370,7 +370,8 @@ class _TopBarState extends State<TopBar>
             padding: MySpacing.xy(8, 8),
             child: MyButton(
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              onPressed: () {
+              onPressed: () async {
+                await LocalStorage.setLoggedInUser(false);
                 languageHideFn?.call();
                 Get.offAll(LoginScreen());
               },

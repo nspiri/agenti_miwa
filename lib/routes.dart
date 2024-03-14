@@ -3,8 +3,13 @@ import 'package:foody/helpers/services/auth_services.dart';
 import 'package:foody/views/auth/forgot_password_screen.dart';
 import 'package:foody/views/auth/login_screen.dart';
 import 'package:foody/views/auth/register_account_screen.dart';
+import 'package:foody/views/ui/Ordini/ordine_dettaglio_screen.dart';
+import 'package:foody/views/ui/Ordini/ordini_screen.dart';
 import 'package:foody/views/ui/cart_screen.dart';
 import 'package:foody/views/home_screen.dart';
+import 'package:foody/views/ui/customer/attrezzature_customer.dart';
+import 'package:foody/views/ui/customer/ordini_customer_screen.dart';
+import 'package:foody/views/ui/customer/scadenziario_customer_screen.dart';
 import 'package:foody/views/ui/customer/storico_customer_screen.dart';
 import 'package:foody/views/ui/Articolo/add_food_screen.dart';
 import 'package:foody/views/ui/Articolo/food_detail_screen.dart';
@@ -21,7 +26,6 @@ import 'package:foody/views/ui/customer/add_customer_screen.dart';
 import 'package:foody/views/ui/customer/customer_detail_screen.dart';
 import 'package:foody/views/ui/customer/customer_list_screen.dart';
 import 'package:foody/views/ui/dashboard_screen.dart';
-import 'package:foody/views/ui/order/order_detail_screen.dart';
 import 'package:foody/views/ui/order/order_list_screen.dart';
 import 'package:foody/views/ui/seller/add_seller_screen.dart';
 import 'package:foody/views/ui/seller/seller_detail_screen.dart';
@@ -72,15 +76,25 @@ getPageRoute() {
         page: () => const ChatScreen(),
         middlewares: [AuthMiddleware()]),
 
-    /// Orders
+    /// ORDINI
     GetPage(
+        name: '/admin/orders',
+        page: () => const OrdiniListScreen(),
+        middlewares: [AuthMiddleware()]),
+    GetPage(
+        name: '/admin/orderdetail',
+        page: () => const OrderDetailScreen(),
+        middlewares: [AuthMiddleware()]),
+
+    /// Orders
+    /*  GetPage(
         name: '/admin/orders',
         page: () => const OrderListScreen(),
         middlewares: [AuthMiddleware()]),
     GetPage(
         name: '/admin/orders/detail',
         page: () => const OrderDetailScreen(),
-        middlewares: [AuthMiddleware()]),
+        middlewares: [AuthMiddleware()]),*/
 
     /// Customers
     GetPage(
@@ -96,8 +110,20 @@ getPageRoute() {
         page: () => const AddCustomerScreen(),
         middlewares: [AuthMiddleware()]),
     GetPage(
-        name: '/admin/customers/edit',
+        name: '/admin/customers/historical',
         page: () => const EditCustomerScreen(),
+        middlewares: [AuthMiddleware()]),
+    GetPage(
+        name: '/admin/customers/orders',
+        page: () => const OrdiniListCustomerScreen(),
+        middlewares: [AuthMiddleware()]),
+    GetPage(
+        name: '/admin/customers/timetable',
+        page: () => const ScadenziarioScreen(),
+        middlewares: [AuthMiddleware()]),
+    GetPage(
+        name: '/admin/customers/equipment',
+        page: () => const AttrezzatureScreen(),
         middlewares: [AuthMiddleware()]),
 
     /// Seller
@@ -120,8 +146,8 @@ getPageRoute() {
 
     /// Restaurants
     GetPage(
-        name: '/admin/restaurants',
-        page: () => const RestaurantsListScreen(),
+        name: '/admin/timetable',
+        page: () => const ScadenziarioListScreen(),
         middlewares: [AuthMiddleware()]),
     GetPage(
         name: '/admin/restaurants/detail',

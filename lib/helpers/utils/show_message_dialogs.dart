@@ -21,17 +21,19 @@ showErrorMessage(BuildContext context, String titolo, String messaggio) {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10),
-              child: MyText.titleLarge(titolo),
+              child: MyText.titleSmall(titolo),
             ),
           ],
         ),
-        content: MyText.labelMedium(messaggio),
+        content: Container(
+            constraints: BoxConstraints(minWidth: 100, maxWidth: 500),
+            child: MyText.labelSmall(messaggio, maxLines: 10)),
         actions: <Widget>[
           TextButton(
             style: TextButton.styleFrom(
               textStyle: Theme.of(context).textTheme.labelLarge,
             ),
-            child: MyText.labelMedium("Ok"),
+            child: MyText.labelSmall("Ok"),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -56,19 +58,26 @@ showAlertMessage(BuildContext context, String titolo, String messaggio) {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10),
-              child: MyText.titleLarge(titolo),
+              child: Row(
+                children: [
+                  MyText.titleSmall(
+                    titolo,
+                    maxLines: 3,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
         content: Container(
             constraints: BoxConstraints(minWidth: 100, maxWidth: 500),
-            child: MyText.labelMedium(messaggio, maxLines: 10)),
+            child: MyText.labelSmall(messaggio, maxLines: 10)),
         actions: <Widget>[
           TextButton(
             style: TextButton.styleFrom(
               textStyle: Theme.of(context).textTheme.labelLarge,
             ),
-            child: MyText.labelMedium("Ok"),
+            child: MyText.labelSmall("Ok"),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -93,7 +102,7 @@ showSuccessMessage(BuildContext context, String titolo, String messaggio) {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10),
-              child: MyText.titleLarge(titolo),
+              child: MyText.titleSmall(titolo),
             ),
           ],
         ),
@@ -102,7 +111,7 @@ showSuccessMessage(BuildContext context, String titolo, String messaggio) {
             style: TextButton.styleFrom(
               textStyle: Theme.of(context).textTheme.labelLarge,
             ),
-            child: MyText.labelMedium("Ok"),
+            child: MyText.labelSmall("Ok"),
             onPressed: () {
               Navigator.of(context).pop();
             },

@@ -21,7 +21,7 @@ class ModalListaArtController extends MyController {
   DataTableSource? data;
   List<Listino>? listini;
   bool? sortCodArt,
-      sortDesc = true,
+      sortDesc = false,
       sortCodAlt,
       sortConf,
       sortPrezzo1,
@@ -84,28 +84,37 @@ class ModalListaArtController extends MyController {
   }
 
   modificaConfArt() {
-    //TODO correggere aggiornamento conf quando si riapre
-    for (var c = 0; c < articoliFiltrati.length; c++) {
-      for (var i = 0; i < articoliSelezionati.length; i++) {
-        if (articoliFiltrati[c].codArt == articoliSelezionati[i].codArt) {
-          articoliFiltrati[c].conf = articoliSelezionati[i].conf;
-          break;
-        }
+    if (articoliSelezionati.isEmpty) {
+      for (var c = 0; c < articoli.length; c++) {
+        articoli[c].conf = 0;
+        articoliFiltrati = articoli;
       }
-      for (var i = 0; i < articoliCancellati.length; i++) {
-        if (articoliFiltrati[c].codArt == articoliCancellati[i].codArt) {
-          articoliFiltrati[c].conf = 0;
-          break;
+    } else {
+      for (var c = 0; c < articoliFiltrati.length; c++) {
+        for (var i = 0; i < articoliSelezionati.length; i++) {
+          if (articoliFiltrati[c].codArt == articoliSelezionati[i].codArt) {
+            articoliFiltrati[c].conf = articoliSelezionati[i].conf;
+            break;
+          }
+        }
+        for (var i = 0; i < articoliCancellati.length; i++) {
+          if (articoliFiltrati[c].codArt == articoliCancellati[i].codArt) {
+            articoliFiltrati[c].conf = 0;
+            break;
+          }
         }
       }
     }
+
     update();
   }
 
-  tuttiGliArticoli() {
+  tuttiGliArticoli(List<Articolo> artSel, List<Articolo> artCanc) {
     isPromo = false;
     isAll = true;
     isTop10 = false;
+    articoliSelezionati = artSel;
+    articoliCancellati = artCanc;
     setLoading(true);
     Articolo.dummyList.then((value) {
       articoli = value;
@@ -126,17 +135,18 @@ class ModalListaArtController extends MyController {
     r.Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrart",
         etichettaCollage: "TOP_VENDITE",
-        dati: {"magazzino": 1, "cliente": codCli, "top": 10});
+        dati: {"magazzino": 1, "cliente": codCli, "top": 70});
 
     if (res.code == 200) {
       var a = res.result as List<dynamic>;
       if (a.isEmpty) {
-        MyDataListArtModal([], context, this);
+        articoliFiltrati = [];
+        setData();
       }
       dynamic dati = json.decode(jsonEncode(a));
       articoliFiltrati = Articolo.listFromJSON(dati);
       sortArt();
-      data = MyDataListArtModal(articoliFiltrati, context, this);
+      setData();
       modificaConfArt();
       setLoading(false);
       update();
@@ -144,6 +154,10 @@ class ModalListaArtController extends MyController {
       setLoading(false);
       return "";
     }
+  }
+
+  setData() {
+    data = MyDataListArtModal(articoliFiltrati, context, this);
   }
 
   promo() async {

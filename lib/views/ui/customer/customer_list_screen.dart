@@ -8,6 +8,7 @@ import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
 import 'package:foody/helpers/widgets/my_container.dart';
 import 'package:foody/helpers/widgets/my_flex.dart';
 import 'package:foody/helpers/widgets/my_flex_item.dart';
+import 'package:foody/helpers/widgets/my_responsiv.dart';
 import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/helpers/widgets/responsive.dart';
@@ -26,10 +27,9 @@ class CustomerListScreen extends StatefulWidget {
 class _CustomerListScreenState extends State<CustomerListScreen>
     with SingleTickerProviderStateMixin, UIMixin {
   late CustomerListController controller;
-
   @override
   void initState() {
-    controller = Get.put(CustomerListController());
+    controller = Get.put(CustomerListController(context: context));
     controller.init();
     super.initState();
   }
@@ -37,159 +37,295 @@ class _CustomerListScreenState extends State<CustomerListScreen>
   @override
   Widget build(BuildContext context) {
     return Layout(
-      child: GetBuilder(
-        init: controller,
-        builder: (controller) {
-          return Column(
+      child: MyResponsive(builder: (BuildContext context, _, screenMT) {
+        return GetBuilder(
+          init: controller,
+          builder: (controller) {
+            return screenMT.isMobile ? mobile() : desktop();
+          },
+        );
+      }),
+    );
+  }
+
+  Widget desktop() {
+    return Column(
+      children: [
+        Padding(
+          padding: MySpacing.x(flexSpacing),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: MySpacing.x(flexSpacing),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    MyText.titleMedium(
-                      "Clienti",
-                      fontSize: 18,
-                      fontWeight: 600,
-                    ),
-                    MyBreadcrumb(
-                      children: [
-                        MyBreadcrumbItem(name: 'Clienti', active: true),
-                      ],
-                    ),
-                  ],
-                ),
+              MyText.titleMedium(
+                "Clienti",
+                fontSize: 18,
+                fontWeight: 600,
               ),
-              MySpacing.height(flexSpacing),
-              Padding(
-                padding: MySpacing.x(flexSpacing / 2),
-                child: MyFlex(
+              MyBreadcrumb(
+                children: [
+                  MyBreadcrumbItem(name: 'Clienti', active: true),
+                ],
+              ),
+            ],
+          ),
+        ),
+        MySpacing.height(flexSpacing),
+        Padding(
+          padding: MySpacing.x(flexSpacing / 2),
+          child: MyFlex(
+            children: [
+              MyFlexItem(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MyFlexItem(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          !controller.loading
-                              ? SizedBox(
-                                  width: double.infinity,
-                                  child: PaginatedDataTable(
-                                    showCheckboxColumn: false,
-                                    header: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding: MySpacing.top(24),
-                                          child: SizedBox(
-                                            width: 250,
-                                            child: TextField(
-                                              decoration: InputDecoration(
-                                                  border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(4),
-                                                    ),
-                                                  ),
-                                                  prefixIcon: Icon(
-                                                      LucideIcons.search,
-                                                      size: 20),
-                                                  hintText: 'Cerca',
-                                                  contentPadding:
-                                                      MySpacing.xy(12, 8)),
-                                              onChanged: (value) {
-                                                controller.filterByName(value);
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                        MyContainer(
-                                          onTap: () =>
-                                              controller.gotoCustomerAdd(),
-                                          paddingAll: 8,
-                                          color: contentTheme.primary,
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                LucideIcons.plus,
-                                                size: 20,
-                                                color: contentTheme.onPrimary,
+                    !controller.loading
+                        ? SizedBox(
+                            width: double.infinity,
+                            child: PaginatedDataTable(
+                              showCheckboxColumn: false,
+                              header: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: MySpacing.top(24),
+                                    child: SizedBox(
+                                      width: 250,
+                                      child: TextField(
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(4),
                                               ),
-                                              MySpacing.width(8),
-                                              MyText.bodyMedium(
-                                                "Nuovo cliente",
-                                                color: contentTheme.onPrimary,
-                                              )
-                                            ],
-                                          ),
+                                            ),
+                                            prefixIcon: Icon(LucideIcons.search,
+                                                size: 20),
+                                            hintText: 'Cerca',
+                                            contentPadding:
+                                                MySpacing.xy(12, 8)),
+                                        onChanged: (value) {
+                                          controller.filterByName(value);
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  MyContainer(
+                                    onTap: () => controller.gotoCustomerAdd(),
+                                    paddingAll: 8,
+                                    color: contentTheme.primary,
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          LucideIcons.plus,
+                                          size: 20,
+                                          color: contentTheme.onPrimary,
+                                        ),
+                                        MySpacing.width(8),
+                                        MyText.bodyMedium(
+                                          "Nuovo cliente",
+                                          color: contentTheme.onPrimary,
                                         )
                                       ],
                                     ),
-                                    source: controller.data!,
-                                    columns: [
-                                      DataColumn(
-                                          onSort: (columnIndex, ascending) =>
-                                              controller.orderByName(),
-                                          label: ordinamento("Ragione Sociale",
-                                              controller.ragSoc)),
-                                      DataColumn(
-                                          onSort: (columnIndex, ascending) =>
-                                              controller.orderByLocalita(),
-                                          label: ordinamento(
-                                              "Località", controller.localita)),
-                                      DataColumn(
-                                          onSort: (columnIndex, ascending) =>
-                                              controller.orderByProvincia(),
-                                          label: ordinamento("Provincia",
-                                              controller.provincia)),
-                                      /* DataColumn(
-                                          onSort: (columnIndex, ascending) =>
-                                              controller.orderByIndirizzo(),
-                                          label: MyText.bodyMedium('Indirizzo',
-                                              fontWeight: 600)),
-                                      DataColumn(
-                                          label: MyText.bodyMedium('Telefono',
-                                              fontWeight: 600)),
-                                      DataColumn(
-                                          onSort: (columnIndex, ascending) =>
-                                              controller.orderByEmail(),
-                                          label: MyText.bodyMedium('E-mail',
-                                              fontWeight: 600)),
-                                      DataColumn(
-                                          label: MyText.bodyMedium('Part. Iva',
-                                              fontWeight: 600)),*/
-                                      DataColumn(
-                                          onSort: (columnIndex, ascending) =>
-                                              controller
-                                                  .orderByUltimaConsegna(),
-                                          label: ordinamento("Ultima Consegna",
-                                              controller.ultCons)),
-                                    ],
-                                    columnSpacing: 10,
-                                    horizontalMargin: 20,
-                                    rowsPerPage: controller.data!.rowCount > 20
-                                        ? 20
-                                        : controller.data!.rowCount == 0
-                                            ? 1
-                                            : controller.data!.rowCount,
-                                    dataRowMaxHeight: 48,
-                                  ),
-                                )
-                              : Center(
-                                  child: CircularProgressIndicator(
-                                    color: contentTheme.primary,
-                                    strokeWidth: 3,
-                                  ),
-                                ),
-                        ],
-                      ),
-                    ),
+                                  )
+                                ],
+                              ),
+                              source: controller.data!,
+                              columns: [
+                                DataColumn(
+                                    onSort: (columnIndex, ascending) =>
+                                        controller.orderByName(),
+                                    label: ordinamento(
+                                        "Ragione Sociale", controller.ragSoc)),
+                                DataColumn(
+                                    onSort: (columnIndex, ascending) =>
+                                        controller.orderByLocalita(),
+                                    label: ordinamento(
+                                        "Località", controller.localita)),
+                                DataColumn(
+                                    onSort: (columnIndex, ascending) =>
+                                        controller.orderByProvincia(),
+                                    label: ordinamento(
+                                        "Provincia", controller.provincia)),
+                                /* DataColumn(
+                                              onSort: (columnIndex, ascending) =>
+                                                  controller.orderByIndirizzo(),
+                                              label: MyText.bodyMedium('Indirizzo',
+                                                  fontWeight: 600)),
+                                          DataColumn(
+                                              label: MyText.bodyMedium('Telefono',
+                                                  fontWeight: 600)),
+                                          DataColumn(
+                                              onSort: (columnIndex, ascending) =>
+                                                  controller.orderByEmail(),
+                                              label: MyText.bodyMedium('E-mail',
+                                                  fontWeight: 600)),
+                                          DataColumn(
+                                              label: MyText.bodyMedium('Part. Iva',
+                                                  fontWeight: 600)),*/
+                                DataColumn(
+                                    onSort: (columnIndex, ascending) =>
+                                        controller.orderByUltimaConsegna(),
+                                    label: ordinamento(
+                                        "Ultima Consegna", controller.ultCons)),
+                              ],
+                              columnSpacing: 10,
+                              horizontalMargin: 20,
+                              rowsPerPage: controller.data!.rowCount > 20
+                                  ? 20
+                                  : controller.data!.rowCount == 0
+                                      ? 1
+                                      : controller.data!.rowCount,
+                              dataRowMaxHeight: 48,
+                            ),
+                          )
+                        : Center(
+                            child: CircularProgressIndicator(
+                              color: contentTheme.primary,
+                              strokeWidth: 3,
+                            ),
+                          ),
                   ],
                 ),
               ),
             ],
-          );
-        },
-      ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget mobile() {
+    return Column(
+      children: [
+        Padding(
+          padding: MySpacing.x(flexSpacing),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              MyText.titleMedium(
+                "Clienti",
+                fontSize: 18,
+                fontWeight: 600,
+              ),
+              MyContainer(
+                onTap: () => controller.gotoCustomerAdd(),
+                paddingAll: 8,
+                color: contentTheme.primary,
+                child: Row(
+                  children: [
+                    Icon(
+                      LucideIcons.plus,
+                      size: 20,
+                      color: contentTheme.onPrimary,
+                    ),
+                    MySpacing.width(8),
+                    MyText.bodyMedium(
+                      "Nuovo cliente",
+                      color: contentTheme.onPrimary,
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+        MySpacing.height(flexSpacing),
+        Padding(
+          padding: MySpacing.x(flexSpacing),
+          child: SizedBox(
+            child: TextField(
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(4),
+                    ),
+                  ),
+                  prefixIcon: Icon(LucideIcons.search, size: 20),
+                  hintText: 'Cerca',
+                  contentPadding: MySpacing.xy(12, 8)),
+              onChanged: (value) {
+                controller.filterByName(value);
+              },
+            ),
+          ),
+        ),
+        MySpacing.height(flexSpacing),
+        Padding(
+          padding: MySpacing.x(flexSpacing / 2),
+          child: MyFlex(
+            children: [
+              MyFlexItem(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    !controller.loading
+                        ? SizedBox(
+                            width: double.infinity,
+                            child: ListView.separated(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: controller.filterCustomers.length,
+                              itemBuilder: (context, index) {
+                                CustomersList data =
+                                    controller.filterCustomers[index];
+                                return Column(
+                                  children: [
+                                    MyContainer(
+                                        onTap: () => controller
+                                            .goToDetail(data.codice ?? ""),
+                                        width: double.infinity,
+                                        // height: 200,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Flexible(
+                                              child: MyText.bodyMedium(
+                                                  fontWeight: 600,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  data.descrizione ?? ""),
+                                            ),
+                                            Flexible(
+                                              child: MyText.bodySmall(
+                                                  // fontWeight: 600,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  "${data.localita} (${data.provincia})"),
+                                            ),
+                                            Flexible(
+                                              child: MyText.bodySmall(
+                                                  // fontWeight: 600,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  "Ultima consegna: ${Utils.getFormattedDate(data.dataUltimaConsegna ?? "")}"),
+                                            ),
+                                          ],
+                                        ))
+                                  ],
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return SizedBox(
+                                  height: 12,
+                                );
+                              },
+                            ))
+                        : Center(
+                            child: CircularProgressIndicator(
+                              color: contentTheme.primary,
+                              strokeWidth: 3,
+                            ),
+                          ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 

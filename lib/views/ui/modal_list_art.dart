@@ -42,7 +42,8 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
         context: context,
         articoliSelezionati: widget.articoliSelezionati,
         articoliCancellati: widget.articoliCancellati));
-    controller.tuttiGliArticoli();
+    controller.tuttiGliArticoli(
+        widget.articoliSelezionati, widget.articoliCancellati);
     super.initState();
   }
 
@@ -62,7 +63,7 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         MyText.titleMedium(
-                          "Catalogo Articoli",
+                          "Articoli",
                           fontSize: 18,
                           fontWeight: 600,
                         ),
@@ -109,7 +110,7 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                   ),
                                   MySpacing.width(8),
                                   MyText.bodyMedium(
-                                    "Top 10",
+                                    "Top 70",
                                     color: contentTheme.onPrimary,
                                   )
                                 ],
@@ -118,7 +119,9 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                             MySpacing.width(8),
                             MyContainer(
                               onTap: () {
-                                controller.tuttiGliArticoli();
+                                controller.tuttiGliArticoli(
+                                    controller.articoliSelezionati,
+                                    controller.articoliCancellati);
                               },
                               paddingAll: 8,
                               color: controller.isAll
@@ -222,7 +225,7 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                               onSort: (columnIndex, ascending) {
                                                 controller.orderByCodArt();
                                               },
-                                              label: ordinamento("Cod. Art",
+                                              label: ordinamento("Codice",
                                                   controller.sortCodArt)),
                                           DataColumn(
                                               onSort: (columnIndex, ascending) {
@@ -234,8 +237,7 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                               onSort: (columnIndex, ascending) {
                                                 controller.orderByCodAlt();
                                               },
-                                              label: ordinamento(
-                                                  "Cod. Alternativo",
+                                              label: ordinamento("Cod. Alt.",
                                                   controller.sortCodAlt)),
                                           /* DataColumn(
                                               label: MyText.bodyMedium(
@@ -245,7 +247,7 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                               onSort: (columnIndex, ascending) {
                                                 controller.orderByConf();
                                               },
-                                              label: ordinamento("Conf.",
+                                              label: ordinamento("Confezione",
                                                   controller.sortConf)),
                                           DataColumn(
                                               numeric: true,
@@ -366,11 +368,11 @@ class MyDataListArtModal extends DataTableSource with UIMixin {
 
   @override
   DataRow getRow(int index) {
-    Articolo articolo = controller.articoliFiltrati[index];
+    Articolo articolo = orderList[index];
     TextEditingController textController = TextEditingController();
-    textController.text = controller.articoliFiltrati[index].conf == null
+    textController.text = orderList[index].conf == null
         ? "0"
-        : Utils.formatStringDecimal(controller.articoliFiltrati[index].conf, 0);
+        : Utils.formatStringDecimal(orderList[index].conf, 0);
 
     var prz1 = articolo.prezzoListini
         ?.where((element) => element.listino == 1)
@@ -390,92 +392,123 @@ class MyDataListArtModal extends DataTableSource with UIMixin {
       color: MaterialStateProperty.resolveWith<Color?>(
           (Set<MaterialState> states) {
         if (articolo.conf != null && articolo.conf! > 0) {
-          if (articolo.conf! > articolo.disponibile!) {
-            return Colors.red.shade200;
-          }
           return contentTheme.success;
         }
+        /* if (articolo.disponibile! <= 0) {
+          return Colors.red.shade200;
+        }*/
         return null; // Use the default value.
       }),
       cells: [
-        DataCell(MyText.bodySmall(articolo.codArt ?? "")),
-        DataCell(MyText.bodySmall("${articolo.descrizione}")),
-        DataCell(MyText.bodySmall("${articolo.codAlt}")),
+        DataCell(MyText.bodySmall(
+          articolo.codArt ?? "",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
+        DataCell(MyText.bodySmall(
+          "${articolo.descrizione}",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
+        DataCell(MyText.bodySmall(
+          "${articolo.codAlt}",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
         //DataCell(MyText.bodySmall("${articolo.um1}")),
         DataCell(Row(
           children: [
-            MyContainer.roundBordered(
-              onTap: () {
-                if ((articolo.conf! - 1 >= 0)) {
-                  articolo.conf = articolo.conf! - 1;
-                  textController.text =
-                      Utils.formatStringDecimal(articolo.conf, 0);
-                  controller.modificaArticolo(articolo);
-                }
-              },
-              paddingAll: 4,
-              borderRadiusAll: 2,
-              child: Icon(
-                LucideIcons.minus,
-                size: 18,
-              ),
-            ),
+            articolo.disponibile! <= 0
+                ? Container()
+                : MyContainer.roundBordered(
+                    onTap: () {
+                      if ((articolo.conf! - 1 >= 0)) {
+                        articolo.conf = articolo.conf! - 1;
+                        textController.text =
+                            Utils.formatStringDecimal(articolo.conf, 0);
+                        controller.modificaArticolo(articolo);
+                      }
+                    },
+                    paddingAll: 4,
+                    borderRadiusAll: 2,
+                    child: Icon(
+                      LucideIcons.minus,
+                      size: 18,
+                    ),
+                  ),
             MySpacing.width(10),
-            Flexible(
-              child: TextField(
-                controller: textController,
-                style: MyTextStyle.titleMedium(
-                  fontWeight: 800,
-                ),
-                textAlign: TextAlign.center,
-                keyboardType: TextInputType.number,
-                decoration: new InputDecoration.collapsed(hintText: ''),
-                onTap: () => textController.selection = TextSelection(
-                    baseOffset: 0,
-                    extentOffset: textController.value.text.length),
-                onChanged: (value) {
-                  if (value != "" && value != " ") {
-                    if (int.parse(value) > articolo.disponibile!) {
-                      articolo.conf = articolo.disponibile!.toDouble();
-                      textController.text =
-                          Utils.formatStringDecimal(articolo.disponibile, 0);
-                      controller.modificaArticolo(articolo);
-                    } else {
-                      articolo.conf = double.parse(value);
-                      controller.modificaArticolo(articolo);
-                    }
-                  }
-                },
-              ),
-            ),
+            articolo.disponibile! <= 0
+                ? Container()
+                : Flexible(
+                    child: TextField(
+                      controller: textController,
+                      style: MyTextStyle.titleMedium(
+                        fontWeight: 800,
+                      ),
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      decoration: new InputDecoration.collapsed(hintText: ''),
+                      onTap: () => textController.selection = TextSelection(
+                          baseOffset: 0,
+                          extentOffset: textController.value.text.length),
+                      onChanged: (value) {
+                        if (value != "" && value != " ") {
+                          if (int.parse(value) > articolo.disponibile!) {
+                            articolo.conf = articolo.disponibile!.toDouble();
+                            textController.text = Utils.formatStringDecimal(
+                                articolo.disponibile, 0);
+                            controller.modificaArticolo(articolo);
+                          } else {
+                            articolo.conf = double.parse(value);
+                            controller.modificaArticolo(articolo);
+                          }
+                        }
+                      },
+                    ),
+                  ),
             MySpacing.width(10),
-            MyContainer.roundBordered(
-              onTap: () {
-                if ((articolo.conf! + 1) <= articolo.disponibile!) {
-                  articolo.conf = articolo.conf! + 1;
-                  textController.text =
-                      Utils.formatStringDecimal(articolo.conf, 0);
-                  controller.modificaArticolo(articolo);
-                }
-              },
-              paddingAll: 4,
-              borderRadiusAll: 2,
-              child: Icon(
-                LucideIcons.plus,
-                size: 18,
-              ),
-            ),
+            articolo.disponibile! <= 0
+                ? Container()
+                : MyContainer.roundBordered(
+                    onTap: () {
+                      if ((articolo.conf! + 1) <= articolo.disponibile!) {
+                        articolo.conf = articolo.conf! + 1;
+                        textController.text =
+                            Utils.formatStringDecimal(articolo.conf, 0);
+                        controller.modificaArticolo(articolo);
+                      }
+                    },
+                    paddingAll: 4,
+                    borderRadiusAll: 2,
+                    child: Icon(
+                      LucideIcons.plus,
+                      size: 18,
+                    ),
+                  ),
           ],
         )),
         DataCell(MyText.bodySmall(
-            "${Utils.formatStringDecimal(articolo.qtaArt, articolo.numDecArt ?? 2)} ${articolo.um1}")),
+          "${Utils.formatStringDecimal(articolo.qtaArt, articolo.numDecArt ?? 2)} ${articolo.um1}",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
         DataCell(MyText.bodySmall(
-            "€ ${Utils.formatStringDecimal(prz1, articolo.numDecArt ?? 2)}")),
+          "€ ${Utils.formatStringDecimal(prz1, 3)}",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
         DataCell(MyText.bodySmall(
-            "€ ${Utils.formatStringDecimal(prz2, articolo.numDecArt ?? 2)}")),
-        DataCell(MyText.bodySmall("${articolo.disponibile}")),
-        DataCell(MyText.bodySmall("${articolo.notaArt}")),
-        DataCell(MyText.bodySmall("${articolo.catStatistica}")),
+          "€ ${Utils.formatStringDecimal(prz2, 3)}",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
+        DataCell(MyText.bodySmall(
+          Utils.formatStringDecimal(
+              articolo.disponibile, articolo.numDecArt ?? 2),
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
+        DataCell(MyText.bodySmall(
+          "${articolo.notaArt}",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
+        DataCell(MyText.bodySmall(
+          "${articolo.catStatistica}",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
       ],
     );
   }

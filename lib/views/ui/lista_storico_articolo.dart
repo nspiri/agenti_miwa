@@ -148,19 +148,19 @@ class _ModalListaStoricoArticoloState extends State<ModalListaStoricoArticolo>
                                                       controller.orderByData(),
                                               label: MyText.bodyMedium('Data',
                                                   fontWeight: 600)),
-                                          DataColumn(
+                                          /* DataColumn(
                                               /*onSort: (columnIndex, ascending) =>
                                           controller.orderByDoc(),*/
                                               label: MyText.bodyMedium('Doc.',
-                                                  fontWeight: 600)),
+                                                  fontWeight: 600)),*/
                                           DataColumn(
                                               label: MyText.bodyMedium('Numero',
                                                   fontWeight: 600)),
-                                          DataColumn(
+                                          /* DataColumn(
                                               /*onSort: (columnIndex, ascending) =>
                                           controller.orderByUm(),*/
                                               label: MyText.bodyMedium('Um',
-                                                  fontWeight: 600)),
+                                                  fontWeight: 600)),*/
                                           DataColumn(
                                               label: MyText.bodyMedium('Q.ta',
                                                   fontWeight: 600)),
@@ -240,20 +240,20 @@ class MyDataListStoricoArtModal extends DataTableSource with UIMixin {
           Utils.getFormattedDate(storico.data!),
           fontWeight: 600,
         )),
-        DataCell(MyText.bodyMedium(
+        /* DataCell(MyText.bodyMedium(
           "${storico.documento}",
           fontWeight: 600,
-        )),
+        )),*/
         DataCell(MyText.bodyMedium(
-          "${storico.serie}/${storico.numero}",
+          "${storico.documento} ${storico.serie}/${storico.numero}",
           fontWeight: 600,
         )),
-        DataCell(MyText.bodyMedium(
+        /*DataCell(MyText.bodyMedium(
           "${storico.um}",
           fontWeight: 600,
-        )),
+        )),*/
         DataCell(MyText.bodyMedium(
-          "${storico.colli}*${storico.qta}",
+          "${storico.colli}*${storico.qta} ${storico.um}",
           fontWeight: 600,
         )),
         DataCell(MyText.bodyMedium(

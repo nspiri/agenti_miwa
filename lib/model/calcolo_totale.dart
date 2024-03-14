@@ -18,6 +18,17 @@ class CalcoloTotale {
       this.totaleIva,
       this.totaleDocumento);
 
+  azzeraRighe() {
+    rigaDettaglio = [];
+    totaleMerceLordo = 0;
+    totaleDaPagare = 0;
+    scontoAbbuono = 0;
+    scontoPagamento = 0;
+    totaleMerceNetto = 0;
+    totaleIva = 0;
+    totaleDocumento = 0;
+  }
+
   CalcoloTotale.fromJson(Map<String, dynamic> json) {
     if (json['riga_dettaglio'] != null) {
       rigaDettaglio = <RigaDettaglio>[];

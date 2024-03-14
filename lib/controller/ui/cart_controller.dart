@@ -4,6 +4,7 @@ import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
+import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/helpers/utils/show_message_dialogs.dart';
 import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
@@ -154,6 +155,10 @@ class CartController extends MyController {
       update();
     }
     carrello = articoli;
+    if (carrello.isEmpty) {
+      allTot.azzeraRighe();
+    }
+    carrelloGlobale = carrello;
     loading = false;
     update();
   }
@@ -175,10 +180,12 @@ class CartController extends MyController {
   }
 
   aggiornaPrezzoArticolo(Articolo art) async {
+    art.loadingPrezzo = true;
+    update();
     for (var element in carrello) {
       if (art.codArt == element.codArt) {
         var tempSconto = element.scontoSelezionato;
-        element.scontoSelezionato = null;
+        //element.scontoSelezionato = null;
         update();
         element.prezzoArticolo = await getPrezzoArticolo(element);
         if (element.prezzoArticolo?.scalaSconti != null && tempSconto != null) {
@@ -197,17 +204,10 @@ class CartController extends MyController {
           element.scontoSelezionato = null;
           element.importo = element.prezzoArticolo?.prezzo ?? 0;
         }
-        getTotali();
+        await getTotali();
       }
     }
-    /*if (art.listinoSelezionato?.listino == 1) {
-      art.prezzoArticolo?.provvigione = art.scontoSelezionato?.provvigione;
-    } */
-    /* if (art.applicaOmaggio) {
-      applicaOmaggio(art);
-    } else {
-      art.importoTotale = art.importo * art.conf!;
-    }*/
+    art.loadingPrezzo = false;
     update();
   }
 
@@ -271,7 +271,7 @@ class CartController extends MyController {
   }
 
   void decrement(Articolo art) {
-    if (art.conf! > 0) {
+    if (art.conf! > 1) {
       art.conf = art.conf! - 1;
       aggiornaPrezzoArticolo(art);
     }
@@ -355,13 +355,19 @@ class CartController extends MyController {
           },
         ).then((value) {
           if (value as bool == true) {
-            articoliCancellati.add(carrello[i]);
             carrello[i].scontoSelezionato = null;
             carrello[i].listinoSelezionato = null;
             carrello[i].applicaOmaggio = false;
             carrello[i].prezzoArticolo = null;
+            carrello[i].importo = 0;
+            carrello[i].importoTotale = 0;
+            articoliCancellati.add(carrello[i]);
             carrello.removeAt(i);
-            getTotali();
+            if (carrello.isEmpty) {
+              allTot.azzeraRighe();
+            } else {
+              getTotali();
+            }
             update();
           }
         });
@@ -399,6 +405,26 @@ class CartController extends MyController {
       applicaPrezzi(tot);
       update();
     }
+  }
+
+  cancellaOrdine() {
+    for (var i = 0; i < carrello.length; i++) {
+      carrello[i].scontoSelezionato = null;
+      carrello[i].listinoSelezionato = null;
+      carrello[i].applicaOmaggio = false;
+      carrello[i].prezzoArticolo = null;
+      carrello[i].importo = 0;
+      carrello[i].importoTotale = 0;
+    }
+    clienteSelezionato = null;
+    articoliCancellati = [];
+    carrello = [];
+    carrelloGlobale = [];
+    fattA = null;
+    destinazione = null;
+    allTot.azzeraRighe();
+    update();
+    Get.toNamed("/admin/customers/list");
   }
 
   inviaOrdine() async {
@@ -535,7 +561,7 @@ class CartController extends MyController {
           ],
         );
       },
-    );
+    ).then((value) => cancellaOrdine());
   }
 
   applicaPrezzi(CalcoloTotale tot) {

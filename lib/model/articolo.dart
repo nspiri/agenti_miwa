@@ -33,7 +33,7 @@ class Articolo extends IdentifierModel {
   double importo = 0;
   double importoTotale = 0;
   bool applicaOmaggio = false;
-  bool loading = true;
+  bool loading = true, loadingPrezzo = false;
   final TextEditingController textControllerListino = TextEditingController();
   final SuggestionsBoxController controllerListino = SuggestionsBoxController();
   final TextEditingController textControllerSconto = TextEditingController();

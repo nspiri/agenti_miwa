@@ -1,16 +1,19 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
+import 'package:foody/helpers/utils/global.dart';
+import 'package:foody/helpers/utils/show_message_dialogs.dart';
 import 'package:foody/model/customer_detail.dart';
+import 'package:foody/model/nazionalita.dart';
 import 'package:foody/model/nota.dart';
 import 'package:foody/model/order_detail.dart';
-import 'package:foody/model/request.dart';
+import 'package:foody/model/request.dart' as r;
 import 'package:foody/model/scadenziario_cliente.dart';
 import 'package:foody/model/storico.dart';
 import 'package:foody/views/my_controller.dart';
 import 'package:foody/views/ui/customer/customer_detail_screen.dart';
+import 'package:get/get.dart';
 
 class CustomerDetailController extends MyController {
   List<OrderDetail> ordersDetail = [];
@@ -19,12 +22,43 @@ class CustomerDetailController extends MyController {
   DataTableSource? data;
   TextEditingController note = TextEditingController();
   bool? ok;
+  BuildContext context;
+  List<Nazionalita> nazionalita = [];
+  List<Paesi> paesi = [];
 
-  CustomerDetailController();
+  CustomerDetailController({required this.context});
 
   @override
   void onInit() {
     super.onInit();
+    Nazionalita.dummyList.then((value) {
+      nazionalita = value;
+      nazionalita.sort((a, b) =>
+          a.descrizione!.toLowerCase().compareTo(b.descrizione!.toLowerCase()));
+      update();
+    });
+    Paesi.dummyList.then((value) {
+      paesi = value;
+      paesi.sort((a, b) =>
+          a.descrizione!.toLowerCase().compareTo(b.descrizione!.toLowerCase()));
+      update();
+    });
+  }
+
+  String? getNazionalita(String? cod) {
+    for (var element in nazionalita) {
+      if (cod == element.codice) {
+        return element.descrizione;
+      }
+    }
+  }
+
+  String? getPaese(String? cod) {
+    for (var element in paesi) {
+      if (cod == element.sigla) {
+        return element.descrizione;
+      }
+    }
   }
 
   @override
@@ -41,7 +75,7 @@ class CustomerDetailController extends MyController {
   }
 
   getDettaglioCliente(String codCliente) async {
-    Response res = await DoRequest.doHttpRequest(
+    r.Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrcli",
         etichettaCollage: "CLIENTE",
         dati: {"cliente": codCliente});
@@ -57,8 +91,41 @@ class CustomerDetailController extends MyController {
     }
   }
 
+  goToOrder(String codCliente) async {
+    if (clienteSelezionato != null && carrelloGlobale.length > 0) {
+      if (clienteSelezionato?.codiceCliente == codCliente) {
+        CustomerDetail destinazione = await getCliente(codCliente);
+        clienteSelezionato = destinazione;
+        Get.toNamed('/cart', arguments: destinazione);
+      } else {
+        showErrorMessage(context, "Attenzione",
+            "Hai gia un ordine in corso su un'altro cliente.");
+      }
+    } else {
+      CustomerDetail destinazione = await getCliente(codCliente);
+      clienteSelezionato = destinazione;
+      Get.toNamed('/cart', arguments: destinazione);
+    }
+  }
+
+  getCliente(String codCliente) async {
+    r.Response res = await DoRequest.doHttpRequest(
+        nomeCollage: "colsrcli",
+        etichettaCollage: "CLIENTE",
+        dati: {"cliente": codCliente});
+
+    if (res.code == 200) {
+      var a = res.result as dynamic;
+      dynamic data = json.decode(jsonEncode(a));
+      return CustomerDetail.listFromJSON(data[0]);
+    } else {
+      //ERRORE
+      return null;
+    }
+  }
+
   getScadenziarioCliente(String codCliente) async {
-    Response res = await DoRequest.doHttpRequest(
+    r.Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrcli",
         etichettaCollage: "GET_SCAD",
         dati: {
@@ -82,7 +149,7 @@ class CustomerDetailController extends MyController {
   }
 
   getNoteCliente(String codCliente) async {
-    Response res = await DoRequest.doHttpRequest(
+    r.Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrcli",
         etichettaCollage: "GET_CLI_NOTE",
         dati: {
@@ -123,7 +190,7 @@ class CustomerDetailController extends MyController {
         i++;
       }
     }
-    Response res = await DoRequest.doHttpRequest(
+    r.Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrcli",
         etichettaCollage: "SET_CLI_NOTE",
         dati: {

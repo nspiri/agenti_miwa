@@ -335,12 +335,12 @@ class AddCustomerController extends MyController {
         validators: [],
         controller: SuggestionsBoxController());
     basicValidator.addField('pec',
-        required: true,
+        required: false,
         label: "",
         validators: [],
         controller: TextEditingController());
     basicValidator.addField('codSDI',
-        required: true,
+        required: false,
         label: "",
         validators: [],
         controller: TextEditingController());
@@ -569,13 +569,28 @@ class AddCustomerController extends MyController {
       valido = false;
     }*/
     if (basicValidator.getController("pec")?.text == "") {
-      basicValidator.addError("pec", "Inserisci la PEC");
-      valido = false;
+      if (basicValidator.getController("codSDI")?.text == "") {
+        basicValidator.addError("codSDI", "Inserisci il codice SDI");
+        basicValidator.addError("pec", "Inserisci la PEC");
+        valido = false;
+      }
+    } else {
+      //basicValidator.addError("codSDI", "");
     }
     if (basicValidator.getController("codSDI")?.text == "") {
+      if (basicValidator.getController("pec")?.text == "") {
+        basicValidator.addError("codSDI", "Inserisci il codice SDI");
+        basicValidator.addError("pec", "Inserisci la PEC");
+        valido = false;
+      }
+    } else {
+      //basicValidator.addError("pec", "");
+    }
+
+    /*if (basicValidator.getController("codSDI")?.text == "") {
       basicValidator.addError("codSDI", "Inserisci il codice SDI");
       valido = false;
-    }
+    }*/
 
     if (destDiversa) {
       if (basicValidator.getController("ragSocDest")?.text == "") {

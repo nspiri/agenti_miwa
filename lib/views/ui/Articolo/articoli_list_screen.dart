@@ -9,6 +9,7 @@ import 'package:foody/helpers/utils/ui_mixins.dart';
 import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
+import 'package:foody/helpers/widgets/my_container.dart';
 import 'package:foody/helpers/widgets/my_flex.dart';
 import 'package:foody/helpers/widgets/my_flex_item.dart';
 import 'package:foody/helpers/widgets/my_spacing.dart';
@@ -51,14 +52,13 @@ class _FoodListScreenState extends State<FoodListScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MyText.titleMedium(
-                      "Lista Articoli",
+                      "Articoli",
                       fontSize: 18,
                       fontWeight: 600,
                     ),
                     MyBreadcrumb(
                       children: [
-                        MyBreadcrumbItem(name: 'Articoli'),
-                        MyBreadcrumbItem(name: 'Lista Articoli', active: true),
+                        MyBreadcrumbItem(name: 'Articoli', active: true),
                       ],
                     ),
                   ],
@@ -107,64 +107,134 @@ class _FoodListScreenState extends State<FoodListScreen>
                                             ),
                                           ),
                                         ),
+                                        Row(
+                                          children: [
+                                            MyContainer(
+                                              onTap: () {
+                                                controller.promo();
+                                              },
+                                              paddingAll: 8,
+                                              color: controller.isPromo
+                                                  ? contentTheme.success
+                                                  : contentTheme.primary,
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    LucideIcons.euro,
+                                                    size: 20,
+                                                    color:
+                                                        contentTheme.onPrimary,
+                                                  ),
+                                                  MySpacing.width(8),
+                                                  MyText.bodyMedium(
+                                                    "Promo",
+                                                    color:
+                                                        contentTheme.onPrimary,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            MySpacing.width(8),
+                                            MyContainer(
+                                              onTap: () {
+                                                controller.tuttiGliArticoli();
+                                              },
+                                              paddingAll: 8,
+                                              color: !controller.isPromo
+                                                  ? contentTheme.success
+                                                  : contentTheme.primary,
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    LucideIcons.listPlus,
+                                                    size: 20,
+                                                    color:
+                                                        contentTheme.onPrimary,
+                                                  ),
+                                                  MySpacing.width(8),
+                                                  MyText.bodyMedium(
+                                                    "Tutti gli Articoli",
+                                                    color:
+                                                        contentTheme.onPrimary,
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        )
                                       ],
                                     ),
                                     showCheckboxColumn: false,
                                     columns: [
                                       DataColumn(
-                                          label: MyText.bodyMedium(
-                                        'Cod. Art',
-                                      )),
+                                          onSort: (columnIndex, ascending) {
+                                            controller.orderByCodArt();
+                                          },
+                                          label: ordinamento(
+                                              "Codice", controller.sortCodArt)),
                                       DataColumn(
                                           onSort: (columnIndex, ascending) {
                                             controller.orderByDesc();
                                           },
-                                          label: MyText.bodyMedium(
-                                            'Descrizione',
-                                          )),
+                                          label: ordinamento("Descrizione",
+                                              controller.sortDesc)),
                                       DataColumn(
                                           onSort: (columnIndex, ascending) {
                                             controller.orderByCodAlt();
                                           },
-                                          label: MyText.bodyMedium(
-                                            'Cod. Alternativo',
-                                          )),
-                                      DataColumn(
-                                          label: MyText.bodyMedium(
-                                        'Um',
-                                      )),
+                                          label: ordinamento("Cod. Alt.",
+                                              controller.sortCodAlt)),
                                       DataColumn(
                                           numeric: true,
-                                          label: MyText.bodyMedium(
-                                            'Q.tà',
-                                          )),
+                                          label: MyText.bodyMedium('Q.tà',
+                                              fontWeight: 600)),
                                       DataColumn(
                                           numeric: true,
                                           onSort: (columnIndex, ascending) {
-                                            controller.orderByPrezzo();
+                                            controller.orderByPrezzo1();
                                           },
-                                          label: MyText.bodyMedium(
-                                            'Prezzo Listino',
-                                          )),
+                                          label: ordinamento(
+                                              controller.listini?[0]
+                                                      .descrizione ??
+                                                  "",
+                                              //"Prz. Listino 1",
+                                              controller.sortPrezzo1)),
+                                      DataColumn(
+                                          numeric: true,
+                                          onSort: (columnIndex, ascending) {
+                                            controller.isPromo
+                                                ? controller.orderByPrezzo2()
+                                                : controller.orderByPrezzo3();
+                                          },
+                                          label: ordinamento(
+                                              controller.isPromo
+                                                  ? (controller.listini?[1]
+                                                          .descrizione ??
+                                                      "")
+                                                  : controller.listini?[2]
+                                                          .descrizione ??
+                                                      "",
+                                              controller.isPromo
+                                                  ? controller.sortPrezzo2
+                                                  : controller.sortPrezzo3)),
                                       DataColumn(
                                           numeric: true,
                                           onSort: (columnIndex, ascending) {
                                             controller.orderByDispo();
                                           },
-                                          label: MyText.bodyMedium(
-                                            'Disp',
-                                          )),
+                                          label: ordinamento(
+                                              'Disp', controller.sortDisp)),
                                       DataColumn(
                                           label: MyText.bodyMedium(
-                                        'Nota Magazzino',
-                                      )),
+                                              'Nota Magazzino',
+                                              fontWeight: 600)),
                                       DataColumn(
                                           onSort: (columnIndex, ascending) {
                                             controller.orderByCatArt();
                                           },
-                                          label: MyText.bodyMedium(
-                                            'Categoria Articolo',
-                                          )),
+                                          label: ordinamento(
+                                              "Categoria Articolo",
+                                              controller.sortCat)),
                                     ],
                                     source: controller.data!,
                                     horizontalMargin: 20,
@@ -191,13 +261,27 @@ class _FoodListScreenState extends State<FoodListScreen>
       ),
     );
   }
+
+  Widget ordinamento(String titolo, bool? valore) {
+    return Row(
+      children: [
+        MyText.bodyMedium(titolo, fontWeight: 600),
+        valore == null
+            ? Text("")
+            : valore
+                ? Icon(Icons.arrow_drop_down_outlined)
+                : Icon(Icons.arrow_drop_up_outlined)
+      ],
+    );
+  }
 }
 
 class MyData extends DataTableSource with UIMixin {
   List<Articolo> orderList = [];
   BuildContext context;
+  FoodController controller;
 
-  MyData(this.orderList, this.context);
+  MyData(this.orderList, this.context, this.controller);
 
   @override
   bool get isRowCountApproximate => false;
@@ -210,20 +294,66 @@ class MyData extends DataTableSource with UIMixin {
 
   @override
   DataRow getRow(int index) {
-    Articolo articolo = orderList[index];
+    Articolo articolo = controller.articoliFiltrati[index];
+    TextEditingController textController = TextEditingController();
+    textController.text = controller.articoliFiltrati[index].conf == null
+        ? "0"
+        : Utils.formatStringDecimal(controller.articoliFiltrati[index].conf, 0);
+
+    var prz1 = articolo.prezzoListini
+        ?.where((element) => element.listino == 1)
+        .first
+        .valore;
+    var prz2 = controller.isPromo
+        ? articolo.prezzoListini
+            ?.where((element) => element.listino == 2)
+            .first
+            .valore
+        : articolo.prezzoListini
+            ?.where((element) => element.listino == 3)
+            .first
+            .valore;
 
     return DataRow(
       cells: [
-        DataCell(MyText.bodySmall(articolo.codArt ?? "")),
-        DataCell(MyText.bodySmall("${articolo.descrizione}")),
-        DataCell(MyText.bodySmall("${articolo.codAlt}")),
-        DataCell(MyText.bodySmall("${articolo.um1}")),
-        DataCell(MyText.bodySmall("${articolo.qtaArt}")),
         DataCell(MyText.bodySmall(
-            "€ ${Utils.formatStringDecimal(articolo.prezzoListini?[0].valore, 2)}")),
-        DataCell(MyText.bodySmall("${articolo.disponibile}")),
-        DataCell(MyText.bodySmall("${articolo.notaArt}")),
-        DataCell(MyText.bodySmall("${articolo.catStatistica}")),
+          articolo.codArt ?? "",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
+        DataCell(MyText.bodySmall(
+          "${articolo.descrizione}",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
+        DataCell(MyText.bodySmall(
+          "${articolo.codAlt}",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
+        //DataCell(MyText.bodySmall("${articolo.um1}")),
+        DataCell(MyText.bodySmall(
+          "${Utils.formatStringDecimal(articolo.qtaArt, articolo.numDecArt ?? 2)} ${articolo.um1}",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
+        DataCell(MyText.bodySmall(
+          "€ ${Utils.formatStringDecimal(prz1, 3)}",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
+        DataCell(MyText.bodySmall(
+          "€ ${Utils.formatStringDecimal(prz2, 3)}",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
+        DataCell(MyText.bodySmall(
+          Utils.formatStringDecimal(
+              articolo.disponibile, articolo.numDecArt ?? 2),
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
+        DataCell(MyText.bodySmall(
+          "${articolo.notaArt}",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
+        DataCell(MyText.bodySmall(
+          "${articolo.catStatistica}",
+          color: articolo.disponibile! <= 0 ? Colors.red : null,
+        )),
       ],
       onSelectChanged: (value) async {
         String img = "";

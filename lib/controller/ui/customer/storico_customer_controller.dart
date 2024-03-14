@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:foody/helpers/storage/local_storage.dart';
@@ -15,7 +16,7 @@ class EditCustomerController extends MyController {
   DataTableSource? data;
   String codCliente;
 
-  bool dataAsc = false;
+  bool? dataAsc = false, doc, desc, prezzo, importo;
 
   EditCustomerController({required this.codCliente});
 
@@ -50,7 +51,7 @@ class EditCustomerController extends MyController {
       if (dati != []) {
         storico = dati.map((e) => Storico.fromJson(e)).toList();
         storico
-            .sort((a, b) => int.parse(b.data!).compareTo(int.parse(a.data!)));
+            .sort((a, b) => int.parse(a.data!).compareTo(int.parse(b.data!)));
         data = MyDataDetailStorico(storico);
       }
       update();
@@ -82,49 +83,84 @@ class EditCustomerController extends MyController {
   }
 
   void orderByData() {
-    if (dataAsc) {
+    desc = null;
+    doc = null;
+    prezzo = null;
+    importo = null;
+    dataAsc ??= false;
+    if (dataAsc!) {
       storico.sort((a, b) => int.parse(a.data!).compareTo(int.parse(b.data!)));
       data = MyDataDetailStorico(storico);
     } else {
       storico.sort((a, b) => int.parse(b.data!).compareTo(int.parse(a.data!)));
       data = MyDataDetailStorico(storico);
     }
-    dataAsc = !dataAsc;
+    dataAsc = !dataAsc!;
     update();
   }
 
   void orderByDoc() {
-    storico.sort((a, b) => a.documento!.compareTo(b.documento!));
-    data = MyDataDetailStorico(storico);
-    update();
-  }
-
-  void orderByCodArt() {
-    storico.sort((a, b) => a.codArt!.compareTo(b.codArt!));
+    desc = null;
+    prezzo = null;
+    importo = null;
+    dataAsc = null;
+    doc ??= true;
+    if (doc!) {
+      storico.sort((a, b) => ("${a.documento}${a.serie}${a.numero}")
+          .compareTo("${b.documento}${b.serie}${b.numero}"));
+    } else {
+      storico.sort((a, b) => ("${b.documento}${b.serie}${b.numero}")
+          .compareTo("${a.documento}${a.serie}${a.numero}"));
+    }
+    doc = !doc!;
     data = MyDataDetailStorico(storico);
     update();
   }
 
   void orderByDesc() {
-    storico.sort((a, b) => a.desc!.compareTo(b.desc!));
-    data = MyDataDetailStorico(storico);
-    update();
-  }
-
-  void orderByUm() {
-    storico.sort((a, b) => a.um!.compareTo(b.um!));
+    prezzo = null;
+    importo = null;
+    dataAsc = null;
+    doc = null;
+    desc ??= true;
+    if (desc!) {
+      storico.sort((a, b) => a.desc!.compareTo(b.desc!));
+    } else {
+      storico.sort((a, b) => b.desc!.compareTo(a.desc!));
+    }
+    desc = !desc!;
     data = MyDataDetailStorico(storico);
     update();
   }
 
   void orderByPrezzo() {
-    storico.sort((a, b) => a.prezzo!.compareTo(b.prezzo!));
+    importo = null;
+    dataAsc = null;
+    doc = null;
+    desc = null;
+    prezzo ??= true;
+    if (prezzo!) {
+      storico.sort((a, b) => a.prezzo!.compareTo(b.prezzo!));
+    } else {
+      storico.sort((a, b) => b.prezzo!.compareTo(a.prezzo!));
+    }
+    prezzo = !prezzo!;
     data = MyDataDetailStorico(storico);
     update();
   }
 
   void orderByImporto() {
-    storico.sort((a, b) => a.importo!.compareTo(b.importo!));
+    dataAsc = null;
+    doc = null;
+    desc = null;
+    prezzo = null;
+    importo ??= true;
+    if (importo!) {
+      storico.sort((a, b) => a.importo!.compareTo(b.importo!));
+    } else {
+      storico.sort((a, b) => b.importo!.compareTo(a.importo!));
+    }
+    importo = !importo!;
     data = MyDataDetailStorico(storico);
     update();
   }

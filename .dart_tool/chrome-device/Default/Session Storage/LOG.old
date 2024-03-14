@@ -1,7 +1,35 @@
-2024/02/29-13:16:49.541 10fc Reusing MANIFEST C:\Users\Utente\AppData\Local\Temp\flutter_tools.a8806794\flutter_tools_chrome_device.1d259717\Default\Session Storage/MANIFEST-000001
-2024/02/29-13:16:49.542 10fc Recovering log #13
-2024/02/29-13:16:49.544 10fc Reusing old log C:\Users\Utente\AppData\Local\Temp\flutter_tools.a8806794\flutter_tools_chrome_device.1d259717\Default\Session Storage/000013.log 
-2024/02/29-13:16:49.545 10fc Delete type=0 #3
-2024/02/29-13:16:49.545 10fc Delete type=0 #4
-2024/02/29-13:16:49.545 10fc Delete type=0 #8
-2024/02/29-13:16:49.545 10fc Delete type=0 #11
+2024/03/11-09:03:51.144 2524 Reusing MANIFEST C:\Users\Utente\AppData\Local\Temp\flutter_tools.92de4491\flutter_tools_chrome_device.92f02bd3\Default\Session Storage/MANIFEST-000001
+2024/03/11-09:03:51.145 2524 Recovering log #16
+2024/03/11-09:03:51.147 2524 Reusing old log C:\Users\Utente\AppData\Local\Temp\flutter_tools.92de4491\flutter_tools_chrome_device.92f02bd3\Default\Session Storage/000016.log 
+2024/03/11-09:03:51.148 2524 Delete type=0 #3
+2024/03/11-09:03:51.148 2524 Delete type=0 #4
+2024/03/11-09:03:51.148 2524 Delete type=2 #7
+2024/03/11-09:03:51.148 2524 Delete type=0 #8
+2024/03/11-09:03:51.148 2524 Delete type=2 #10
+2024/03/11-09:03:51.148 2524 Delete type=0 #11
+2024/03/11-09:03:51.148 2524 Delete type=0 #13
+2024/03/11-09:03:51.148 2524 Delete type=2 #14
+2024/03/11-09:25:41.299 608c Level-0 table #21: started
+2024/03/11-09:25:41.303 608c Level-0 table #21: 21793 bytes OK
+2024/03/11-09:25:41.305 608c Delete type=0 #16
+2024/03/11-09:26:41.295 608c Level-0 table #23: started
+2024/03/11-09:26:41.300 608c Level-0 table #23: 24539 bytes OK
+2024/03/11-09:26:41.302 608c Delete type=0 #20
+2024/03/11-09:27:41.302 608c Level-0 table #25: started
+2024/03/11-09:27:41.308 608c Level-0 table #25: 25438 bytes OK
+2024/03/11-09:27:41.309 608c Delete type=0 #22
+2024/03/11-09:28:41.292 608c Level-0 table #27: started
+2024/03/11-09:28:41.302 608c Level-0 table #27: 25552 bytes OK
+2024/03/11-09:28:41.303 608c Delete type=0 #24
+2024/03/11-09:28:41.304 608c Compacting 4@0 + 1@1 files
+2024/03/11-09:28:41.309 608c Generated table #28@0: 461 keys, 43644 bytes
+2024/03/11-09:28:41.309 608c Compacted 4@0 + 1@1 files => 43644 bytes
+2024/03/11-09:28:41.310 608c compacted to: files[ 0 1 1 0 0 0 0 ]
+2024/03/11-09:28:41.310 608c Delete type=2 #18
+2024/03/11-09:28:41.310 608c Delete type=2 #21
+2024/03/11-09:28:41.310 608c Delete type=2 #23
+2024/03/11-09:28:41.310 608c Delete type=2 #25
+2024/03/11-09:28:41.310 608c Delete type=2 #27
+2024/03/11-09:29:41.297 608c Level-0 table #30: started
+2024/03/11-09:29:41.301 608c Level-0 table #30: 19084 bytes OK
+2024/03/11-09:29:41.302 608c Delete type=0 #26

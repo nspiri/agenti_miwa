@@ -102,10 +102,16 @@ class Utils {
   }
 
   static String formatStringDecimal(double? value, int decimali) {
-    return value
-            ?.toStringAsFixed(value.truncateToDouble() == value ? 0 : decimali)
-            .replaceAll(".", ",") ??
-        "";
+    var pattern = "#,##0";
+    for (var c = 0; c < decimali; c++) {
+      if (c == 0) {
+        pattern = "$pattern.";
+      }
+      pattern = "${pattern}0";
+    }
+    var f = NumberFormat(pattern, "it_IT");
+    return f.format(value);
+    //return value?.toStringAsFixed(decimali).replaceAll(".", ",") ?? "";
   }
 
   static Future<List<Listino>> getNomeListini() async {

@@ -81,11 +81,11 @@ class _LeftBarState extends State<LeftBar>
                         Get.toNamed('/home');
                       },
                       child: Image.asset(
-                        Images.logoIcon,
-                        height: widget.isCondensed ? 24 : 32,
+                        Images.logoMiwa,
+                        height: widget.isCondensed ? 96 : 128,
                         // color: contentTheme.primary,
                       )),
-                  if (!widget.isCondensed)
+                  /* if (!widget.isCondensed)
                     Flexible(
                       fit: FlexFit.loose,
                       child: MySpacing.width(16),
@@ -103,7 +103,7 @@ class _LeftBarState extends State<LeftBar>
                         ),
                         maxLines: 1,
                       ),
-                    )
+                    )*/
                 ],
               ),
             ),
@@ -174,6 +174,12 @@ class _LeftBarState extends State<LeftBar>
                       ),
                     ],
                   ),*/
+                  NavigationItem(
+                    iconData: LucideIcons.dessert,
+                    title: "Articoli",
+                    isCondensed: isCondensed,
+                    route: '/admin/food',
+                  ),
                   MenuWidget(
                     iconData: LucideIcons.users,
                     isCondensed: isCondensed,
@@ -190,28 +196,60 @@ class _LeftBarState extends State<LeftBar>
                         route: '/admin/customers/detail',
                       ),
                       MenuItem(
-                        title: "Storico",
+                        title: "Ordini in corso",
                         isCondensed: isCondensed,
-                        route: '/admin/customers/edit',
+                        route: '/admin/customers/orders',
                       ),
                       MenuItem(
-                        title: "Aggiungi",
+                        title: "Scadenziario",
+                        isCondensed: isCondensed,
+                        route: '/admin/customers/timetable',
+                      ),
+                      MenuItem(
+                        title: "Storico",
+                        isCondensed: isCondensed,
+                        route: '/admin/customers/historical',
+                      ),
+                      MenuItem(
+                        title: "Attrezzature",
+                        isCondensed: isCondensed,
+                        route: '/admin/customers/equipment',
+                      ),
+                      MenuItem(
+                        title: "Nuovo Cliente",
                         isCondensed: isCondensed,
                         route: '/admin/customers/create',
                       ),
                     ],
                   ),
                   NavigationItem(
-                    iconData: LucideIcons.dessert,
-                    title: "Articoli",
+                    iconData: LucideIcons.listOrdered,
+                    title: "Ordini in corso",
                     isCondensed: isCondensed,
-                    route: '/admin/food',
+                    route: '/admin/orders',
                   ),
+                  /* MenuWidget(
+                    iconData: LucideIcons.users,
+                    isCondensed: isCondensed,
+                    title: "Ordini in corso",
+                    children: [
+                      MenuItem(
+                        title: "Lista",
+                        isCondensed: isCondensed,
+                        route: '/admin/orders',
+                      ),
+                      MenuItem(
+                        title: "Dettaglio",
+                        isCondensed: isCondensed,
+                        route: '/admin/customers/detail',
+                      ),
+                    ],
+                  ),*/
                   NavigationItem(
-                    iconData: LucideIcons.shoppingCart,
+                    iconData: LucideIcons.euro,
                     title: "Scadenziario",
                     isCondensed: isCondensed,
-                    route: '/admin/restaurants',
+                    route: '/admin/timetable',
                   ),
                   /*MenuWidget(
                     iconData: LucideIcons.users,
@@ -645,12 +683,16 @@ class _MenuItemState extends State<MenuItem> with UIMixin {
 
   @override
   Widget build(BuildContext context) {
-    bool isActive = UrlService.getCurrentUrl() == widget.route;
+    //bool isActive = UrlService.getCurrentUrl() == widget.route;
     return GestureDetector(
       onTap: () {
         if (widget.route != null) {
           if (widget.route == "/admin/customers/detail" ||
-              widget.route == "/admin/customers/edit") {
+              widget.route == "/admin/customers/edit" ||
+              widget.route == "/admin/customers/timetable" ||
+              widget.route == "/admin/customers/equipment" ||
+              widget.route == "/admin/customers/historical" ||
+              widget.route == "/admin/customers/orders") {
             if (clienteSelezionato != null) {
               Get.toNamed(widget.route!);
             } else {
@@ -675,9 +717,8 @@ class _MenuItemState extends State<MenuItem> with UIMixin {
         },
         child: MyContainer.transparent(
           margin: MySpacing.fromLTRB(4, 0, 8, 4),
-          color: isActive || isHover
-              ? leftBarTheme.activeItemBackground
-              : Colors.transparent,
+          color: /* isActive ||*/
+              isHover ? leftBarTheme.activeItemBackground : Colors.transparent,
           width: MediaQuery.of(context).size.width,
           padding: MySpacing.xy(18, 7),
           child: MyText.bodySmall(
@@ -686,10 +727,10 @@ class _MenuItemState extends State<MenuItem> with UIMixin {
             maxLines: 1,
             textAlign: TextAlign.left,
             fontSize: 12.5,
-            color: isActive || isHover
+            color: /*isActive ||*/ isHover
                 ? leftBarTheme.activeItemColor
                 : leftBarTheme.onBackground,
-            fontWeight: isActive || isHover ? 600 : 500,
+            fontWeight: /* isActive ||*/ isHover ? 600 : 500,
           ),
         ),
       ),
@@ -720,12 +761,22 @@ class _NavigationItemState extends State<NavigationItem> with UIMixin {
 
   @override
   Widget build(BuildContext context) {
-    bool isActive = UrlService.getCurrentUrl() == widget.route;
+    bool isActive = false;
+    //bool isActive = UrlService.getCurrentUrl() == widget.route;
     return GestureDetector(
       onTap: () {
         if (widget.route != null) {
-          Get.toNamed(widget.route!);
-
+          if (widget.route == "/cart") {
+            if (clienteSelezionato != null) {
+              //isActive = UrlService.getCurrentUrl() == widget.route;
+              Get.toNamed(widget.route!);
+            } else {
+              Get.toNamed("/admin/customers/list");
+            }
+          } else {
+            //isActive = UrlService.getCurrentUrl() == widget.route;
+            Get.toNamed(widget.route!);
+          }
           //MyRouter.pushReplacementNamed(context, widget.route!, arguments: 1);
         }
       },
@@ -743,9 +794,8 @@ class _NavigationItemState extends State<NavigationItem> with UIMixin {
         },
         child: MyContainer(
           margin: MySpacing.fromLTRB(16, 0, 16, 8),
-          color: isActive || isHover
-              ? leftBarTheme.activeItemBackground
-              : Colors.transparent,
+          color: /*isActive ||*/
+              isHover ? leftBarTheme.activeItemBackground : Colors.transparent,
           padding: MySpacing.xy(8, 8),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -754,7 +804,7 @@ class _NavigationItemState extends State<NavigationItem> with UIMixin {
                 Center(
                   child: Icon(
                     widget.iconData,
-                    color: (isHover || isActive)
+                    color: (isHover /*|| isActive*/)
                         ? leftBarTheme.activeItemColor
                         : leftBarTheme.onBackground,
                     size: 20,
@@ -772,7 +822,7 @@ class _NavigationItemState extends State<NavigationItem> with UIMixin {
                     widget.title,
                     overflow: TextOverflow.clip,
                     maxLines: 1,
-                    color: isActive || isHover
+                    color: /* isActive || */ isHover
                         ? leftBarTheme.activeItemColor
                         : leftBarTheme.onBackground,
                   ),

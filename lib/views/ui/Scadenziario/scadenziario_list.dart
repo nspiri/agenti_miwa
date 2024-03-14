@@ -16,20 +16,20 @@ import 'package:foody/views/layout/layout.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-class RestaurantsListScreen extends StatefulWidget {
-  const RestaurantsListScreen({super.key});
+class ScadenziarioListScreen extends StatefulWidget {
+  const ScadenziarioListScreen({super.key});
 
   @override
-  State<RestaurantsListScreen> createState() => _RestaurantsListScreenState();
+  State<ScadenziarioListScreen> createState() => _ScadenziarioListScreenState();
 }
 
-class _RestaurantsListScreenState extends State<RestaurantsListScreen>
+class _ScadenziarioListScreenState extends State<ScadenziarioListScreen>
     with SingleTickerProviderStateMixin, UIMixin {
-  late RestaurantsListController controller;
+  late ScadenziarioListController controller;
 
   @override
   void initState() {
-    controller = Get.put(RestaurantsListController());
+    controller = Get.put(ScadenziarioListController());
     super.initState();
   }
 
@@ -53,9 +53,8 @@ class _RestaurantsListScreenState extends State<RestaurantsListScreen>
                     ),
                     MyBreadcrumb(
                       children: [
-                        MyBreadcrumbItem(name: 'Admin'),
                         MyBreadcrumbItem(
-                          name: 'Restaurants List',
+                          name: 'Scadenziario',
                           active: true,
                         ),
                       ],
@@ -102,6 +101,14 @@ class _RestaurantsListScreenState extends State<RestaurantsListScreen>
                                       ),
                                     ),
                                   ),
+                                  Padding(
+                                    padding: MySpacing.top(24),
+                                    child: SizedBox(
+                                        child: MyText.bodyLarge(
+                                      "Totale: € ${controller.totale}",
+                                      fontWeight: 600,
+                                    )),
+                                  ),
                                 ],
                               ),
                               sortAscending: true,
@@ -111,42 +118,38 @@ class _RestaurantsListScreenState extends State<RestaurantsListScreen>
                               showFirstLastButtons: true,
                               showCheckboxColumn: true,
                               columns: [
+                                /* DataColumn(
+                                    label: MyText.labelLarge('Cod. Cliente',
+                                        fontWeight: 600)),*/
                                 DataColumn(
-                                    label: MyText.labelLarge(
-                                  'Cod. Cliente',
-                                )),
+                                    onSort: (columnIndex, ascending) =>
+                                        controller.orderByRagSoc(),
+                                    label: ordinamento(
+                                        "Rag. Sociale", controller.ragSoc)),
                                 DataColumn(
-                                    label: MyText.labelLarge(
-                                  'Rag. Sociale',
-                                )),
-                                DataColumn(
-                                    label: MyText.labelLarge(
-                                  'Doc.',
-                                )),
-                                DataColumn(
-                                    numeric: true,
-                                    label: MyText.labelLarge(
-                                      'Numero',
-                                    )),
+                                    onSort: (columnIndex, ascending) =>
+                                        controller.orderByDoc(),
+                                    label: ordinamento(
+                                        "Documento", controller.doc)),
                                 DataColumn(
                                     onSort: (columnIndex, ascending) =>
                                         controller.orderByData(),
-                                    label: MyText.labelLarge(
-                                      'Data',
-                                    )),
+                                    label: ordinamento(
+                                        "Data", controller.dataAsc)),
                                 DataColumn(
-                                    label: MyText.labelLarge(
-                                  'Tipo Pagamento',
-                                )),
+                                    label: MyText.labelLarge('Tipo Pagamento',
+                                        fontWeight: 600)),
                                 DataColumn(
-                                    label: MyText.labelLarge(
-                                  'Scadenza',
-                                )),
+                                    onSort: (columnIndex, ascending) =>
+                                        controller.orderByDataScad(),
+                                    label: ordinamento(
+                                        "Scadenza", controller.dataScad)),
                                 DataColumn(
+                                    onSort: (columnIndex, ascending) =>
+                                        controller.orderByImporto(),
                                     numeric: true,
-                                    label: MyText.labelLarge(
-                                      'Importo',
-                                    )),
+                                    label: ordinamento(
+                                        "Importo", controller.importo)),
                               ],
                               source: controller.data!,
                               rowsPerPage: controller.data!.rowCount > 20
@@ -165,6 +168,19 @@ class _RestaurantsListScreenState extends State<RestaurantsListScreen>
           );
         },
       ),
+    );
+  }
+
+  Widget ordinamento(String titolo, bool? valore) {
+    return Row(
+      children: [
+        MyText.bodyMedium(titolo, fontWeight: 600),
+        valore == null
+            ? Text("")
+            : valore
+                ? Icon(Icons.arrow_drop_down_outlined)
+                : Icon(Icons.arrow_drop_up_outlined)
+      ],
     );
   }
 }
@@ -189,37 +205,31 @@ class MyDataDetailScadenziario extends DataTableSource with UIMixin {
 
     return DataRow(
       cells: [
-        DataCell(MyText.bodyMedium(
+        /*   DataCell(MyText.bodyMedium(
           "${scadenza.codCliente}",
           fontWeight: 600,
-        )),
-        DataCell(MyText.bodyMedium(
+        )),*/
+        DataCell(MyText.bodySmall(
           "${scadenza.ragioneSociale}",
-          fontWeight: 600,
         )),
-        DataCell(MyText.bodyMedium(
+        /*DataCell(MyText.bodyMedium(
           "${scadenza.documento}",
           fontWeight: 600,
+        )),*/
+        DataCell(MyText.bodySmall(
+          "${scadenza.documento} ${scadenza.serie}/${scadenza.numero}",
         )),
-        DataCell(MyText.bodyMedium(
-          "${scadenza.serie}/${scadenza.numero}",
-          fontWeight: 600,
-        )),
-        DataCell(MyText.bodyMedium(
+        DataCell(MyText.bodySmall(
           Utils.getFormattedDate(scadenza.data!),
-          fontWeight: 600,
         )),
-        DataCell(MyText.bodyMedium(
+        DataCell(MyText.bodySmall(
           "${scadenza.tipoPagamento}",
-          fontWeight: 600,
         )),
-        DataCell(MyText.bodyMedium(
+        DataCell(MyText.bodySmall(
           Utils.getFormattedDate(scadenza.dataScadenza!),
-          fontWeight: 600,
         )),
-        DataCell(MyText.bodyMedium(
+        DataCell(MyText.bodySmall(
           "€ ${Utils.formatStringDecimal(scadenza.importo, 2)}",
-          fontWeight: 600,
         )),
       ],
     );

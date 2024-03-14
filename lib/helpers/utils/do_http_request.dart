@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:foody/model/request.dart' as r;
 import 'package:http/http.dart' as http;
 import 'package:foody/helpers/utils/env.dart' as env;
@@ -44,6 +45,7 @@ class DoRequest {
       return e.toString();
     }
   }*/
+
   static Future<dynamic> doHttpRequest(
       {required String nomeCollage,
       required String etichettaCollage,
@@ -57,34 +59,52 @@ class DoRequest {
           etichettaCollage: etichettaCollage,
           dati: dati);
 
-      /*final response = await http
-          .post(Uri.https("mxl1.hostcsi.com:9008", "/webapi/servizi"),
-              headers: env.passHeaders, body: jsonEncode(request))
-          .timeout(Duration(seconds: 120));*/
-
-      final response = await dio.post(env.base_url,
-          data: jsonEncode(request),
-          options: Options(
-            headers: env.passHeaders,
-          ));
-
-      //var jsonDecoded = jsonDecode(response.data);
-      Map<String, dynamic> res = response.data;
-      String errore = "";
-      if (response.statusCode == 200) {
-        if ((res["error"] as List).isNotEmpty) {
-          errore = res["error"][0]["response-message"];
+      var a = request.toJson();
+      if (kIsWeb) {
+        final response = await dio.post(env.base_url,
+            data: jsonEncode(a),
+            options: Options(
+              headers: env.headers,
+            ));
+        Map<String, dynamic> res = response.data;
+        String errore = "";
+        if (response.statusCode == 200) {
+          if ((res["error"] as List).isNotEmpty) {
+            errore = res["error"][0]["response-message"];
+          }
+        } else {
+          if (res["error"].isNotEmpty) {
+            errore = res["error"]["response-message"];
+          }
         }
+        r.Response resp = r.Response(
+            code: response.statusCode ?? 400,
+            result: res["result"],
+            error: errore);
+        return resp;
       } else {
-        if (res["error"].isNotEmpty) {
-          errore = res["error"]["response-message"];
+        var a = request.getMxalBody();
+        final response = await http
+            .post(Uri.https("mxl1.hostcsi.com:9008", "/webapi/servizi"),
+                headers: env.passHeaders, body: jsonEncode(a))
+            .timeout(Duration(seconds: 120));
+
+        var jsonDecoded = jsonDecode(response.body);
+        Map<String, dynamic> res = jsonDecoded;
+        String errore = "";
+        if (response.statusCode == 200) {
+          if ((res["error"] as List).isNotEmpty) {
+            errore = res["error"][0]["response-message"];
+          }
+        } else {
+          if (res["error"].isNotEmpty) {
+            errore = res["error"]["response-message"];
+          }
         }
+        r.Response resp = r.Response(
+            code: response.statusCode, result: res["result"], error: errore);
+        return resp;
       }
-      r.Response resp = r.Response(
-          code: response.statusCode ?? 400,
-          result: res["result"],
-          error: errore);
-      return resp;
     } on TimeoutException {
       return "404";
     } catch (e) {

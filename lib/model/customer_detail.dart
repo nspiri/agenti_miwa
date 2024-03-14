@@ -29,7 +29,8 @@ class CustomerDetail extends IdentifierModel {
   String? rischio;
   String? codMessFuoriFido;
   String? descMessFuoriFido;
-  String? codCatStat;
+  int? codCatStat;
+  String descCatStat;
   String? codZona;
   String? descZona;
   String? codCliFattA;
@@ -45,6 +46,8 @@ class CustomerDetail extends IdentifierModel {
   List<TipoAttivita>? tipoAttivita;
   String? tipoSconto;
   double? sconto;
+  List<Attrezzatura>? attrezzature;
+  List<GiorniConsegne>? giorniConsegne;
 
   CustomerDetail(
       super.id,
@@ -76,6 +79,7 @@ class CustomerDetail extends IdentifierModel {
       this.codMessFuoriFido,
       this.descMessFuoriFido,
       this.codCatStat,
+      this.descCatStat,
       this.codZona,
       this.descZona,
       this.codCliFattA,
@@ -90,7 +94,9 @@ class CustomerDetail extends IdentifierModel {
       this.scontoIncondizionato,
       this.tipoAttivita,
       this.tipoSconto,
-      this.sconto);
+      this.sconto,
+      this.attrezzature,
+      this.giorniConsegne);
 
   static CustomerDetail fromJSON(Map<String, dynamic> json) {
     JSONDecoder decoder = JSONDecoder(json);
@@ -122,7 +128,8 @@ class CustomerDetail extends IdentifierModel {
     String? rischio = decoder.getString('rischio');
     String? codMessFuoriFido = decoder.getString('pcfms');
     String? descMessFuoriFido = decoder.getString('pcfms_desc');
-    String? codCatStat = decoder.getString('pccst');
+    int? codCatStat = decoder.getInt('pccst');
+    String? descCatStat = decoder.getString('pccst_desc');
     String? codZona = decoder.getString('pcona');
     String? descZona = decoder.getString('pcona_desc');
     String? codCliFattA = decoder.getString('pcfta');
@@ -142,6 +149,21 @@ class CustomerDetail extends IdentifierModel {
       tipoAttivita = <TipoAttivita>[];
       json['tipo_attivita'].forEach((v) {
         tipoAttivita?.add(new TipoAttivita.fromJson(v));
+      });
+    }
+    List<Attrezzatura>? attrezzature;
+    if (json['attrezzature'] != null) {
+      attrezzature = <Attrezzatura>[];
+      json['attrezzature'].forEach((v) {
+        attrezzature?.add(new Attrezzatura.fromJson(v));
+      });
+    }
+
+    List<GiorniConsegne>? giorniConsegne;
+    if (json['giorni_consegne'] != null) {
+      giorniConsegne = <GiorniConsegne>[];
+      json['giorni_consegne'].forEach((v) {
+        giorniConsegne?.add(new GiorniConsegne.fromJson(v));
       });
     }
 
@@ -175,6 +197,7 @@ class CustomerDetail extends IdentifierModel {
         codMessFuoriFido,
         descMessFuoriFido,
         codCatStat,
+        descCatStat,
         codZona,
         descZona,
         codCliFattA,
@@ -189,7 +212,9 @@ class CustomerDetail extends IdentifierModel {
         scontoIncondizionato,
         tipoAttivita,
         tipoSconto,
-        sconto);
+        sconto,
+        attrezzature,
+        giorniConsegne);
   }
 
   Map<String, dynamic> toJson() {
@@ -217,6 +242,80 @@ class TipoAttivita {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['num'] = num;
     data['des'] = des;
+    return data;
+  }
+}
+
+class Attrezzatura {
+  String? dataInizio;
+  String? attrezzatura;
+  String? natura;
+  double? quantitaMin;
+  double? valPeriodo;
+  double? qtaPeriodo;
+  int? tempoGg;
+
+  Attrezzatura(
+      {this.dataInizio,
+      this.attrezzatura,
+      this.natura,
+      this.quantitaMin,
+      this.tempoGg,
+      this.valPeriodo,
+      this.qtaPeriodo});
+
+  Attrezzatura.fromJson(Map<String, dynamic> json) {
+    dataInizio = json['data_inizio'];
+    attrezzatura = json['attrezzatura'];
+    natura = json['natura'];
+    quantitaMin = json['quantita_min'];
+    tempoGg = json['tempo_gg'];
+    valPeriodo = json['val_periodo'];
+    qtaPeriodo = json['qta_periodo'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['data_inizio'] = dataInizio;
+    data['attrezzatura'] = attrezzatura;
+    data['natura'] = natura;
+    data['quantita_min'] = quantitaMin;
+    data['tempo_gg'] = tempoGg;
+    data['val_periodo'] = valPeriodo;
+    data['qta_periodo'] = qtaPeriodo;
+    return data;
+  }
+}
+
+class GiorniConsegne {
+  int? codiceGiorno;
+  int? codiceGiro;
+  String? giorno;
+  String? giro;
+  String? chiusuraOrdini;
+
+  GiorniConsegne(
+      {this.codiceGiorno,
+      this.codiceGiro,
+      this.giorno,
+      this.giro,
+      this.chiusuraOrdini});
+
+  GiorniConsegne.fromJson(Map<String, dynamic> json) {
+    codiceGiorno = json['CodiceGiorno'];
+    codiceGiro = json['CodiceGiro'];
+    giorno = json['Giorno'];
+    giro = json['Giro'];
+    chiusuraOrdini = json['ChiusuraOrdini'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['CodiceGiorno'] = this.codiceGiorno;
+    data['CodiceGiro'] = this.codiceGiro;
+    data['Giorno'] = this.giorno;
+    data['Giro'] = this.giro;
+    data['ChiusuraOrdini'] = this.chiusuraOrdini;
     return data;
   }
 }

@@ -1,7 +1,16 @@
-2024/02/29-14:49:10.715 11920 Reusing MANIFEST C:\Users\Utente\AppData\Local\Temp\flutter_tools.b9b71d4e\flutter_tools_chrome_device.2a5cee40\Default\Session Storage/MANIFEST-000001
-2024/02/29-14:49:10.717 11920 Recovering log #13
-2024/02/29-14:49:10.722 11920 Reusing old log C:\Users\Utente\AppData\Local\Temp\flutter_tools.b9b71d4e\flutter_tools_chrome_device.2a5cee40\Default\Session Storage/000013.log 
-2024/02/29-14:49:10.722 11920 Delete type=0 #3
-2024/02/29-14:49:10.722 11920 Delete type=0 #4
-2024/02/29-14:49:10.723 11920 Delete type=0 #8
-2024/02/29-14:49:10.723 11920 Delete type=0 #11
+2024/03/11-11:08:15.190 622c Reusing MANIFEST C:\Users\Utente\AppData\Local\Temp\flutter_tools.894598e1\flutter_tools_chrome_device.7b37007c\Default\Session Storage/MANIFEST-000001
+2024/03/11-11:08:15.197 622c Recovering log #29
+2024/03/11-11:08:15.202 622c Reusing old log C:\Users\Utente\AppData\Local\Temp\flutter_tools.894598e1\flutter_tools_chrome_device.7b37007c\Default\Session Storage/000029.log 
+2024/03/11-11:08:15.206 622c Delete type=0 #3
+2024/03/11-11:08:15.206 622c Delete type=0 #4
+2024/03/11-11:08:15.207 622c Delete type=2 #7
+2024/03/11-11:08:15.207 622c Delete type=0 #8
+2024/03/11-11:08:15.207 622c Delete type=2 #10
+2024/03/11-11:08:15.207 622c Delete type=0 #11
+2024/03/11-11:08:15.207 622c Delete type=0 #13
+2024/03/11-11:08:15.207 622c Delete type=2 #14
+2024/03/11-11:08:15.215 622c Delete type=0 #16
+2024/03/11-11:08:15.215 622c Delete type=2 #18
+2024/03/11-12:04:05.492 622c Level-0 table #33: started
+2024/03/11-12:04:05.503 622c Level-0 table #33: 87912 bytes OK
+2024/03/11-12:04:05.505 622c Delete type=0 #29

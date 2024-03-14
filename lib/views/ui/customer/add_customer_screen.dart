@@ -58,15 +58,13 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MyText.titleMedium(
-                      "Aggiungi Cliente",
+                      "Nuovo Cliente",
                       fontSize: 18,
                       fontWeight: 600,
                     ),
                     MyBreadcrumb(
                       children: [
-                        MyBreadcrumbItem(name: 'Admin'),
-                        MyBreadcrumbItem(
-                            name: 'Aggiungi Cliente', active: true),
+                        MyBreadcrumbItem(name: 'Nuovo Cliente', active: true),
                       ],
                     ),
                   ],
@@ -102,7 +100,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         TextInputType.text),
                                   ),
                                   MyFlexItem(
-                                    sizes: "md-6 sm-12",
+                                    sizes: "md-6 sm-6",
                                     child: Padding(
                                       padding: const EdgeInsets.only(top: 12),
                                       child: CheckboxListTile(
@@ -121,7 +119,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                     ),
                                   ),
                                   MyFlexItem(
-                                    sizes: "md-6 sm-12",
+                                    sizes: "md-6 sm-6",
                                     child: buildDropDownField<TipoSocieta>(
                                         controller.tipoSocieta
                                             .map(
@@ -140,7 +138,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         controller.tiposocietaSelezionata),
                                   ),
                                   MyFlexItem(
-                                    sizes: "md-6 sm-12",
+                                    sizes: "md-6 sm-6",
                                     child: buildTextField(
                                         'Cod. Fiscale',
                                         "",
@@ -153,7 +151,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         TextInputType.text),
                                   ),
                                   MyFlexItem(
-                                    sizes: "md-6 sm-12",
+                                    sizes: "md-6 sm-6",
                                     child: buildTextField(
                                         'Partita Iva',
                                         "",
@@ -166,7 +164,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         TextInputType.text),
                                   ),
                                   MyFlexItem(
-                                    sizes: "md-6 sm-12",
+                                    sizes: "md-6 sm-6",
                                     child: buildDropDownField<Nazionalita>(
                                         controller.nazionalita
                                             .map(
@@ -185,7 +183,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         controller.nazionalitaSelezionata),
                                   ),
                                   MyFlexItem(
-                                      sizes: "md-6 sm-12",
+                                      sizes: "md-6 sm-6",
                                       child: searchChoise(
                                           "Paese",
                                           controller.basicValidator
@@ -207,7 +205,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         TextInputType.text),
                                   ),
                                   MyFlexItem(
-                                    sizes: "md-3 sm-12",
+                                    sizes: "md-3 sm-3",
                                     child: buildTextField(
                                         'Cap',
                                         "",
@@ -220,7 +218,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         TextInputType.number),
                                   ),
                                   MyFlexItem(
-                                      sizes: "md-7 sm-12",
+                                      sizes: "md-7 sm-7",
                                       child: searchChoise(
                                           "Località",
                                           controller.basicValidator
@@ -229,7 +227,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                           controller.basicValidator
                                               .getValidation("localita"))),
                                   MyFlexItem(
-                                    sizes: "md-2 sm-12",
+                                    sizes: "md-2 sm-2",
                                     child: buildTextField(
                                         'Prov.',
                                         "",
@@ -242,7 +240,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         TextInputType.text),
                                   ),
                                   MyFlexItem(
-                                    sizes: "md-6 sm-12",
+                                    sizes: "md-6 sm-6",
                                     child: buildTextField(
                                         'Telefono',
                                         "",
@@ -255,7 +253,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         TextInputType.number),
                                   ),
                                   MyFlexItem(
-                                    sizes: "md-6 sm-12",
+                                    sizes: "md-6 sm-6",
                                     child: buildTextField(
                                         'Cellulare',
                                         "",
@@ -281,7 +279,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         TextInputType.emailAddress),
                                   ),
                                   MyFlexItem(
-                                    sizes: "md-8 sm-12",
+                                    sizes: "md-8 sm-8",
                                     child: buildTextField(
                                         'Pec',
                                         "",
@@ -294,7 +292,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         TextInputType.emailAddress),
                                   ),
                                   MyFlexItem(
-                                    sizes: "md-4 sm-12",
+                                    sizes: "md-4 sm-4",
                                     child: buildTextField(
                                         'Codice SDI',
                                         "",
@@ -580,7 +578,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                             TextInputType.text),
                                       ),
                                       MyFlexItem(
-                                        sizes: "md-6 sm-12",
+                                        sizes: "md-6 sm-6",
                                         child: Padding(
                                           padding:
                                               const EdgeInsets.only(top: 12),
@@ -600,7 +598,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         ),
                                       ),
                                       MyFlexItem(
-                                        sizes: "md-6 sm-12",
+                                        sizes: "md-6 sm-6",
                                         child: buildDropDownField<TipoSocieta>(
                                             controller.tipoSocieta
                                                 .map(
@@ -624,7 +622,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                                 .tiposocietaSelezionataDest),
                                       ),
                                       MyFlexItem(
-                                        sizes: "md-6 sm-12",
+                                        sizes: "md-6 sm-6",
                                         child: buildTextField(
                                             'Cod. Fiscale',
                                             "",
@@ -637,7 +635,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                             TextInputType.text),
                                       ),
                                       MyFlexItem(
-                                        sizes: "md-6 sm-12",
+                                        sizes: "md-6 sm-6",
                                         child: buildTextField(
                                             'Partita Iva',
                                             "",
@@ -660,7 +658,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                     runSpacing: 8,
                                     children: [
                                       MyFlexItem(
-                                        sizes: "md-6 sm-12",
+                                        sizes: "md-6 sm-6",
                                         child: buildDropDownField<Nazionalita>(
                                             controller.nazionalita
                                                 .map(
@@ -684,7 +682,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                                 .nazionalitaSelezionataDest),
                                       ),
                                       MyFlexItem(
-                                          sizes: "md-6 sm-12",
+                                          sizes: "md-6 sm-6",
                                           child: searchChoise(
                                               "Paese",
                                               controller.basicValidator
@@ -706,7 +704,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                             TextInputType.text),
                                       ),
                                       MyFlexItem(
-                                        sizes: "md-3 sm-12",
+                                        sizes: "md-3 sm-3",
                                         child: buildTextField(
                                             'Cap',
                                             "",
@@ -719,7 +717,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                             TextInputType.number),
                                       ),
                                       MyFlexItem(
-                                          sizes: "md-7 sm-12",
+                                          sizes: "md-7 sm-7",
                                           child: searchChoise(
                                               "Località",
                                               controller.basicValidator
@@ -823,7 +821,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                           )*/
                                           ),
                                       MyFlexItem(
-                                        sizes: "md-2 sm-12",
+                                        sizes: "md-2 sm-2",
                                         child: buildTextField(
                                             'Prov.',
                                             "",

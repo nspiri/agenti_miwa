@@ -2,35 +2,34 @@
 
 import 'dart:convert';
 
-String base_url = "https://mxl1.hostcsi.com:9008/webapi/servizi";
+String base_url = "https://mexalproxy.datasistemi.cloud/api/mexal/proxy";
+String user = "Mexal";
+String pass = "GkU2CIoAZwDEWDE";
 
-String user = "SPXAPI";
-String pass = "CSICSICSI";
+String mexal_url = "https://mxl1.hostcsi.com:9008/webapi/servizi";
+String mxl_user = "SPXAPI";
+String mxl_pass = "CSICSICSI";
 String sigla = "MIW";
 
-String passAuth = "Passepartout ${base64Encode(utf8.encode('$user:$pass'))}";
+String passAuth =
+    "Passepartout ${base64Encode(utf8.encode('$mxl_user:$mxl_pass'))}";
 String currentYear = DateTime.now().year.toString();
 
 Map<String, String>? passHeaders = <String, String>{
-  "Accept": "*/*",
-  //"Accept-Encoding": "gzip, deflate, br, zstd",
-  "Accept-Language": "it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7",
-  "Access-Control-Allow-Credentials": "true",
-  "Access-Control-Allow-Methods": "*",
-  'Access-Control-Allow-Origin': "https://miwa.datasistemi.cloud",
   "Authorization": passAuth,
-  //"Connection": "keep-alive",
   "Content-Security-Policy": "default-src 'none';",
   'Content-Type': 'application/json; charset=UTF-8',
   "Coordinate-Gestionale": "Azienda=$sigla Anno=$currentYear",
-  // "Host": "mxl1.hostcsi.com:9008",
-  //"Origin": "https://miwa.datasistemi.cloud",
-  //"Referer": "https://miwa.datasistemi.cloud/",
-  // "Sec-Fetch-Dest": "empty",
-  //"Sec-Fetch-Mode": "cors",
-  //"Sec-Fetch-Site": "cross-site",
-  //"User-Agent":
-  //    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15"
+};
+
+String basicAuth = 'Basic ${base64.encode(utf8.encode('$user:$pass'))}';
+
+Map<String, String>? headers = <String, String>{
+  "Access-Control-Allow-Credentials": "true",
+  "Access-Control-Allow-Methods": "*",
+  'Access-Control-Allow-Origin': "https://miwa.datasistemi.cloud",
+  "Authorization": basicAuth,
+  'Content-Type': 'application/json; charset=UTF-8',
 };
 
 setIp() async {}

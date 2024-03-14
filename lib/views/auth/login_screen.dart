@@ -71,6 +71,13 @@ class _LoginScreenState extends State<LoginScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        Center(
+                          child: Image.asset(
+                            height: 200,
+                            Images.logoMiwa,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                         MyText.displaySmall(
                           "LogIn",
                           fontWeight: 600,

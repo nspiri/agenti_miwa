@@ -46,9 +46,11 @@ class _CartScreenState extends State<CartScreen>
   @override
   void initState() {
     cliente = Get.arguments;
-    cliente ??= clienteSelezionato; //TODO rimuovere codice
+    cliente ??= clienteSelezionato;
     controller = Get.put(CartController(context: context));
-    mostraNote();
+    if (Get.arguments != null) {
+      mostraNote();
+    }
     controller.getData(cliente!);
     super.initState();
   }
@@ -88,6 +90,7 @@ class _CartScreenState extends State<CartScreen>
         );
       },
     ).then((value) {
+      controller.articoliCancellati = [];
       List<Articolo> articoli = value as List<Articolo>;
       controller.aggiungiArticoli(articoli);
     });
@@ -166,7 +169,7 @@ class _CartScreenState extends State<CartScreen>
                       padding: MySpacing.xy(20, 16),
                       backgroundColor: contentTheme.primary,
                       child: MyText.bodyMedium(
-                        'Lista Articoli',
+                        'Articoli',
                         color: contentTheme.onPrimary,
                       ),
                     )
@@ -283,7 +286,7 @@ class _CartScreenState extends State<CartScreen>
             children: [
               Row(
                 children: [
-                  InkWell(
+                  /*InkWell(
                     onTap: () {
                       _displayStoricoArticolo(context, data);
                     },
@@ -293,7 +296,7 @@ class _CartScreenState extends State<CartScreen>
                       color: contentTheme.primary,
                     ),
                   ),
-                  MySpacing.width(8),
+                  MySpacing.width(8),*/
                   MyText.bodyMedium(
                     "${data.descrizione} (${Utils.formatStringDecimal((data.qtaArt), data.numDecArt ?? 2)} ${data.um1})",
                     fontWeight: 600,
@@ -331,52 +334,72 @@ class _CartScreenState extends State<CartScreen>
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: InkWell(
+                        onTap: () {
+                          _displayStoricoArticolo(context, data);
+                        },
+                        child: Icon(
+                          LucideIcons.history,
+                          size: 34,
+                          color: contentTheme.primary,
+                        ),
+                      ),
+                    ),
+                    MySpacing.width(8),
                     Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(right: 4),
-                          child: dropdown<Arprz>(
-                            data.prezzoListini!
-                                .where((element) => element.valore != 0)
-                                .map(
-                                  (societa) => DropdownMenuItem<Arprz>(
-                                    value: societa,
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          MyText.labelMedium(
-                                            societa.descrizione,
-                                          ),
-                                          MyText.labelMedium(
-                                            "€ ${Utils.formatStringDecimal(societa.valore, data.numDecArt ?? 2)}",
-                                          ),
-                                        ]),
-                                  ),
-                                )
-                                .toList(),
-                            (value) {
-                              data.listinoSelezionato = value;
-                              controller.aggiornaPrezzoArticolo(data);
-                              data.textControllerListino.text =
-                                  "€ ${Utils.formatStringDecimal(value?.valore, data.numDecArt ?? 2)}";
-                            },
-                            "Prezzo",
-                            data.listinoSelezionato,
-                            (BuildContext context) {
-                              return data.prezzoListini!.map<Widget>((item) {
-                                return Container(
-                                  alignment: Alignment.centerRight,
-                                  child: MyText.labelLarge(
-                                    textAlign: TextAlign.right,
-                                    "€ ${Utils.formatStringDecimal(item.valore, data.numDecArt ?? 2)}",
-                                  ),
-                                );
-                              }).toList();
-                            },
-                          )
-                          //dropDownListini(data),
-                          ),
+                      child: Visibility(
+                        visible: !data.applicaOmaggio,
+                        child: Padding(
+                            padding: const EdgeInsets.only(right: 4),
+                            child: dropdown<Arprz>(
+                              data.prezzoListini!
+                                  .where((element) => element.valore != 0)
+                                  .map(
+                                    (listino) => DropdownMenuItem<Arprz>(
+                                      value: listino,
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            MyText.labelMedium(
+                                              listino.descrizione,
+                                            ),
+                                            MyText.labelMedium(
+                                              "€ ${Utils.formatStringDecimal(listino.valore, 3)}",
+                                            ),
+                                          ]),
+                                    ),
+                                  )
+                                  .toList(),
+                              (value) {
+                                data.listinoSelezionato = value;
+                                data.textControllerListino.text =
+                                    "€ ${Utils.formatStringDecimal(value?.valore, 3)}";
+                                controller.aggiornaPrezzoArticolo(data);
+                              },
+                              "Prezzo",
+                              data.listinoSelezionato,
+                              (BuildContext context) {
+                                return data.prezzoListini!
+                                    .where((element) => element.valore != 0)
+                                    .map<Widget>((item) {
+                                  return Container(
+                                    alignment: Alignment.centerRight,
+                                    child: MyText.labelLarge(
+                                      textAlign: TextAlign.right,
+                                      "€ ${Utils.formatStringDecimal(item.valore, 3)}",
+                                    ),
+                                  );
+                                }).toList();
+                              },
+                            )
+                            //dropDownListini(data),
+                            ),
+                      ),
                     ),
                     Expanded(
                       child: Padding(
@@ -397,14 +420,30 @@ class _CartScreenState extends State<CartScreen>
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
-                                                      MyText.labelMedium(
-                                                        sconto.sconto == ""
-                                                            ? "Nessuno sconto"
-                                                            : sconto.sconto ??
-                                                                "",
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          MyText.labelMedium(
+                                                            sconto.sconto == ""
+                                                                ? "Nessuno sconto"
+                                                                : "${sconto.sconto}%",
+                                                          ),
+                                                        ],
                                                       ),
-                                                      MyText.labelMedium(
-                                                        "€ ${Utils.formatStringDecimal(sconto.prezzo, data.numDecArt ?? 2)}",
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          MyText.labelMedium(
+                                                            "€ ${Utils.formatStringDecimal(sconto.prezzo, 3)}",
+                                                          ),
+                                                          MyText.labelMedium(
+                                                            "Prov: ${sconto.provvigione}%",
+                                                          ),
+                                                        ],
                                                       ),
                                                     ]),
                                               ),
@@ -412,6 +451,7 @@ class _CartScreenState extends State<CartScreen>
                                             .toList(),
                                         (value) {
                                           data.scontoSelezionato = value;
+                                          controller.update();
                                           data.importo =
                                               data.scontoSelezionato?.prezzo ??
                                                   0;
@@ -513,9 +553,20 @@ class _CartScreenState extends State<CartScreen>
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            MyText.bodyLarge(
-                "€ ${Utils.formatStringDecimal((data.importoTotale), 2)}",
-                fontWeight: 800),
+            data.loadingPrezzo
+                ? SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: contentTheme.primary,
+                        strokeWidth: 3,
+                      ),
+                    ),
+                  )
+                : MyText.bodyLarge(
+                    "€ ${Utils.formatStringDecimal((data.importoTotale), 2)}",
+                    fontWeight: 800),
             MySpacing.height(4),
             MyText.bodySmall(
               " Iva ${data.iva?.trim()}%",
@@ -523,7 +574,7 @@ class _CartScreenState extends State<CartScreen>
           ],
         ),
         MySpacing.height(4),
-        Row(
+        /* Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Center(
@@ -537,7 +588,7 @@ class _CartScreenState extends State<CartScreen>
               //fontWeight: 600,
             ),
           ],
-        ),
+        ),*/
       ],
     );
   }
@@ -633,14 +684,6 @@ class _CartScreenState extends State<CartScreen>
                       muted: true,
                     ),
                     MySpacing.height(12),
-                    MyText.bodyMedium(
-                      controller.fattA != null
-                          ? "Pagamento: ${controller.fattA?.descPagamento}"
-                          : "Pagamento: ${controller.destinazione?.descPagamento}",
-                      fontWeight: 600,
-                      muted: true,
-                    ),
-                    MySpacing.height(12),
                     Divider(),
                     if (controller.fattA != null)
                       MyText.bodyLarge(
@@ -669,6 +712,21 @@ class _CartScreenState extends State<CartScreen>
                         muted: true,
                       ),
                     if (controller.fattA != null) MySpacing.height(12),
+                    if (controller.fattA != null) Divider(),
+                    MySpacing.height(8),
+                    MyText.bodyLarge(
+                      'Pagamento',
+                      fontWeight: 600,
+                    ),
+                    MyText.bodyMedium(
+                      controller.fattA != null
+                          ? "${controller.fattA?.descPagamento}"
+                          : "${controller.destinazione?.descPagamento}",
+                      fontWeight: 600,
+                      muted: true,
+                    ),
+                    MySpacing.height(8),
+                    Divider(),
                   ],
                 ),
               ),
@@ -701,6 +759,20 @@ class _CartScreenState extends State<CartScreen>
         MySpacing.height(12),
         Divider(),
         MySpacing.height(12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            MyText.bodyLarge(
+              "Totale da pagare",
+              fontWeight: 600,
+            ),
+            MyText.bodyLarge(
+              '€ ${Utils.formatStringDecimal(controller.allTot.totaleDaPagare, 2)}',
+              fontWeight: 600,
+            )
+          ],
+        ),
+        MySpacing.height(12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -709,6 +781,7 @@ class _CartScreenState extends State<CartScreen>
             ),
             MySpacing.height(4),
             TextFormField(
+              maxLength: 50,
               controller: controller.notaIncasso,
               decoration: InputDecoration(
                 hintStyle: MyTextStyle.bodySmall(xMuted: true),
@@ -729,6 +802,7 @@ class _CartScreenState extends State<CartScreen>
             ),
             MySpacing.height(4),
             TextFormField(
+              maxLength: 50,
               controller: controller.notaConsegna,
               decoration: InputDecoration(
                 hintStyle: MyTextStyle.bodySmall(xMuted: true),
@@ -742,48 +816,73 @@ class _CartScreenState extends State<CartScreen>
         ),
         MySpacing.height(12),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            MyText.bodyLarge(
-              "Totale da pagare",
-              fontWeight: 600,
-            ),
-            MyText.bodyLarge(
-              '€ ${Utils.formatStringDecimal(controller.allTot.totaleDaPagare, 2)}',
-              fontWeight: 600,
-            )
-          ],
-        ),
-        MySpacing.height(12),
-        MyContainer(
-          onTap: () {
-            controller.inviaOrdine();
-          },
-          width: double.infinity,
-          borderRadiusAll: 30,
-          paddingAll: 12,
-          color: contentTheme.primary,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              controller.inviaLoading
-                  ? SizedBox(
-                      height: 14,
-                      width: 14,
-                      child: CircularProgressIndicator(
-                        color: theme.colorScheme.onPrimary,
-                        strokeWidth: 1.2,
-                      ),
-                    )
-                  : Container(),
-              if (controller.inviaLoading) MySpacing.width(16),
-              MyText.bodySmall(
-                'Invia Ordine',
-                color: contentTheme.onPrimary,
+            Flexible(
+              child: MyContainer.bordered(
+                onTap: () {
+                  controller.cancellaOrdine();
+                },
+                width: double.infinity,
+                borderRadiusAll: 30,
+                paddingAll: 12,
+                // color: contentTheme.,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    controller.inviaLoading
+                        ? SizedBox(
+                            height: 14,
+                            width: 14,
+                            child: CircularProgressIndicator(
+                              color: theme.colorScheme.onPrimary,
+                              strokeWidth: 1.2,
+                            ),
+                          )
+                        : Container(),
+                    if (controller.inviaLoading) MySpacing.width(16),
+                    MyText.bodySmall(
+                      'Annulla Ordine',
+                      color: contentTheme.dark,
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+            MySpacing.width(12),
+            Flexible(
+              child: MyContainer(
+                onTap: () {
+                  controller.inviaOrdine();
+                },
+                width: double.infinity,
+                borderRadiusAll: 30,
+                paddingAll: 12,
+                color: contentTheme.primary,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    controller.inviaLoading
+                        ? SizedBox(
+                            height: 14,
+                            width: 14,
+                            child: CircularProgressIndicator(
+                              color: theme.colorScheme.onPrimary,
+                              strokeWidth: 1.2,
+                            ),
+                          )
+                        : Container(),
+                    if (controller.inviaLoading) MySpacing.width(16),
+                    MyText.bodySmall(
+                      'Invia Ordine',
+                      color: contentTheme.onPrimary,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );

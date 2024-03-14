@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ),
               MySpacing.height(flexSpacing),
-              Padding(
+              /* Padding(
                 padding: MySpacing.x(flexSpacing / 2),
                 child: MyFlex(
                   children: [
@@ -258,7 +258,7 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   ],
                 ),
-              ),
+              ),*/
             ],
           );
         },

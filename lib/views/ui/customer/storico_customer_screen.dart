@@ -60,7 +60,6 @@ class _EditCustomerScreenState extends State<EditCustomerScreen>
                     ),
                     MyBreadcrumb(
                       children: [
-                        MyBreadcrumbItem(name: 'Clienti'),
                         MyBreadcrumbItem(name: 'Storico', active: true),
                       ],
                     ),
@@ -115,47 +114,49 @@ class _EditCustomerScreenState extends State<EditCustomerScreen>
                                   DataColumn(
                                       onSort: (columnIndex, ascending) =>
                                           controller.orderByData(),
-                                      label: MyText.bodyMedium('Data',
-                                          fontWeight: 600)),
-                                  DataColumn(
+                                      label: ordinamento(
+                                          "Data", controller.dataAsc)),
+                                  /* DataColumn(
                                       onSort: (columnIndex, ascending) =>
                                           controller.orderByDoc(),
                                       label: MyText.bodyMedium('Doc.',
-                                          fontWeight: 600)),
+                                          fontWeight: 600)),*/
                                   DataColumn(
-                                      label: MyText.bodyMedium('Numero',
-                                          fontWeight: 600)),
-                                  DataColumn(
+                                      onSort: (columnIndex, ascending) =>
+                                          controller.orderByDoc(),
+                                      label: ordinamento(
+                                          "Documento", controller.doc)),
+                                  /* DataColumn(
                                       onSort: (columnIndex, ascending) =>
                                           controller.orderByCodArt(),
                                       label: MyText.bodyMedium('Codice Art.',
-                                          fontWeight: 600)),
+                                          fontWeight: 600)),*/
                                   DataColumn(
                                       onSort: (columnIndex, ascending) =>
                                           controller.orderByDesc(),
-                                      label: MyText.bodyMedium('Descrizione',
-                                          fontWeight: 600)),
-                                  DataColumn(
+                                      label: ordinamento(
+                                          "Descrizione", controller.desc)),
+                                  /* DataColumn(
                                       onSort: (columnIndex, ascending) =>
                                           controller.orderByUm(),
                                       label: MyText.bodyMedium('Um',
-                                          fontWeight: 600)),
+                                          fontWeight: 600)),*/
                                   DataColumn(
                                       label: MyText.bodyMedium('Q.ta',
                                           fontWeight: 600)),
                                   DataColumn(
                                       onSort: (columnIndex, ascending) =>
                                           controller.orderByPrezzo(),
-                                      label: MyText.bodyMedium('Prezzo',
-                                          fontWeight: 600)),
+                                      label: ordinamento(
+                                          "Prezzo", controller.prezzo)),
                                   DataColumn(
                                       label: MyText.bodyMedium('Sconti',
                                           fontWeight: 600)),
                                   DataColumn(
                                       onSort: (columnIndex, ascending) =>
                                           controller.orderByImporto(),
-                                      label: MyText.bodyMedium('Importo',
-                                          fontWeight: 600)),
+                                      label: ordinamento(
+                                          "Importo", controller.importo)),
                                   DataColumn(
                                       onSort: (columnIndex, ascending) =>
                                           controller.orderByIva(),
@@ -182,6 +183,19 @@ class _EditCustomerScreenState extends State<EditCustomerScreen>
           );
         },
       ),
+    );
+  }
+
+  Widget ordinamento(String titolo, bool? valore) {
+    return Row(
+      children: [
+        MyText.bodyMedium(titolo, fontWeight: 600),
+        valore == null
+            ? Text("")
+            : valore
+                ? Icon(Icons.arrow_drop_down_outlined)
+                : Icon(Icons.arrow_drop_up_outlined)
+      ],
     );
   }
 
@@ -230,49 +244,40 @@ class MyDataDetailStorico extends DataTableSource with UIMixin {
 
     return DataRow(
       cells: [
-        DataCell(MyText.bodyMedium(
+        DataCell(MyText.bodySmall(
           Utils.getFormattedDate(storico.data!),
-          fontWeight: 600,
         )),
-        DataCell(MyText.bodyMedium(
+        /* DataCell(MyText.bodyMedium(
           "${storico.documento}",
           fontWeight: 600,
+        )),*/
+        DataCell(MyText.bodySmall(
+          "${storico.documento} ${storico.serie}/${storico.numero}",
         )),
-        DataCell(MyText.bodyMedium(
-          "${storico.serie}/${storico.numero}",
-          fontWeight: 600,
-        )),
-        DataCell(MyText.bodyMedium(
+        /* DataCell(MyText.bodySmall(
           "${storico.codArt}",
-          fontWeight: 600,
-        )),
-        DataCell(MyText.bodyMedium(
+        )),*/
+        DataCell(MyText.bodySmall(
           "${storico.desc}",
-          fontWeight: 600,
         )),
-        DataCell(MyText.bodyMedium(
+        /* DataCell(MyText.bodyMedium(
           "${storico.um}",
           fontWeight: 600,
+        )),*/
+        DataCell(MyText.bodySmall(
+          "${storico.colli}*${storico.qta} ${storico.um}",
         )),
-        DataCell(MyText.bodyMedium(
-          "${storico.colli}*${storico.qta}",
-          fontWeight: 600,
-        )),
-        DataCell(MyText.bodyMedium(
+        DataCell(MyText.bodySmall(
           "€ ${Utils.formatStringDecimal(storico.prezzo, 2)}",
-          fontWeight: 600,
         )),
-        DataCell(MyText.bodyMedium(
+        DataCell(MyText.bodySmall(
           "${storico.sconto}",
-          fontWeight: 600,
         )),
-        DataCell(MyText.bodyMedium(
+        DataCell(MyText.bodySmall(
           "€ ${Utils.formatStringDecimal(storico.importo, 2)}",
-          fontWeight: 600,
         )),
-        DataCell(MyText.bodyMedium(
+        DataCell(MyText.bodySmall(
           "${storico.iva}",
-          fontWeight: 600,
         )),
       ],
     );

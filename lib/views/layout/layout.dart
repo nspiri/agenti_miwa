@@ -4,6 +4,7 @@ import 'package:foody/helpers/theme/admin_theme.dart';
 import 'package:foody/helpers/theme/app_style.dart';
 import 'package:foody/helpers/theme/app_themes.dart';
 import 'package:foody/helpers/theme/theme_customizer.dart';
+import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/helpers/widgets/my_button.dart';
 import 'package:foody/helpers/widgets/my_container.dart';
 import 'package:foody/helpers/widgets/my_dashed_divider.dart';
@@ -46,7 +47,14 @@ class Layout extends StatelessWidget {
         centerTitle: true,
         title: Row(
           children: [
-            Row(
+            Flexible(
+              child: MyText.labelSmall(
+                clienteSelezionato?.ragioneSociale ?? "",
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            /*  Row(
               children: [
                 buildTopBar(LucideIcons.mapPin, contentTheme.success),
                 MySpacing.width(12),
@@ -54,16 +62,16 @@ class Layout extends StatelessWidget {
                 MySpacing.width(12),
                 buildTopBar(LucideIcons.badgePercent, contentTheme.danger),
               ],
-            ),
+            ),*/
           ],
         ),
         actions: [
           Row(
             children: [
-              MyContainer.roundBordered(
+              /* MyContainer.roundBordered(
                 paddingAll: 8,
                 child: Icon(LucideIcons.shoppingCart, size: 20),
-              ),
+              ),*/
               CustomPopupMenu(
                 backdrop: true,
                 onChange: (_) {},
@@ -227,7 +235,7 @@ class Layout extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
+          /*Padding(
             padding: MySpacing.xy(8, 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,7 +291,7 @@ class Layout extends StatelessWidget {
           Divider(
             height: 1,
             thickness: 1,
-          ),
+          ),*/
           Padding(
             padding: MySpacing.xy(8, 8),
             child: MyButton(

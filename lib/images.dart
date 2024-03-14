@@ -3,6 +3,7 @@ import 'dart:math';
 class Images {
   /// WebApps Logo ///
   static String logoIcon = 'assets/logo/foodLogo.png';
+  static String logoMiwa = 'assets/logo/logo.png';
 
   /// Background ///
   static String background = 'assets/images/dummy/background.jpg';
