@@ -198,7 +198,7 @@ class _LeftBarState extends State<LeftBar>
                         route: '/admin/customers/orders',
                       ),
                       MenuItem(
-                        title: "Scadenziario",
+                        title: "Scadenzario",
                         isCondensed: isCondensed,
                         route: '/admin/customers/timetable',
                       ),
@@ -244,7 +244,7 @@ class _LeftBarState extends State<LeftBar>
                   ),*/
                   NavigationItem(
                     iconData: LucideIcons.euro,
-                    title: "Scadenziario",
+                    title: "Scadenzario",
                     isCondensed: isCondensed,
                     route: '/admin/timetable',
                   ),

@@ -47,14 +47,14 @@ class _ScadenziarioScreenState extends State<ScadenziarioScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MyText.titleMedium(
-                      "Scadenziario: ${clienteSelezionato?.ragioneSociale}",
+                      "Scadenzario: ${clienteSelezionato?.ragioneSociale}",
                       fontSize: 18,
                       fontWeight: 600,
                     ),
                     MyBreadcrumb(
                       children: [
                         MyBreadcrumbItem(
-                          name: 'Scadenziario',
+                          name: 'Scadenzario',
                           active: true,
                         ),
                       ],

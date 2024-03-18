@@ -843,6 +843,23 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                               MyContainer.bordered(
                                 paddingAll: 8,
                                 onTap: () {
+                                  controller.apriFirma();
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(LucideIcons.x, size: 20),
+                                    MySpacing.width(8),
+                                    MyText.bodyMedium(
+                                      "Firma",
+                                      fontWeight: 600,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              MySpacing.width(12),
+                              MyContainer.bordered(
+                                paddingAll: 8,
+                                onTap: () {
                                   controller.pulisciCampi();
                                 },
                                 child: Row(

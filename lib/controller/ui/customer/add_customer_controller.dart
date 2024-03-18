@@ -15,6 +15,8 @@ import 'package:foody/model/zone_clienti.dart';
 import 'package:foody/views/my_controller.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:time_range/time_range.dart';
+import 'package:signature/signature.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class AddCustomerController extends MyController {
   BuildContext context;
@@ -33,8 +35,6 @@ class AddCustomerController extends MyController {
   List<ZoneClienti> zoneClienti = [];
   ZoneClienti? zonaClienteSelezionata;
   List<CustomersFA> clientiFA = [];
-  /*List<Pagamenti> pagamenti = [];
-  Pagamenti? pagamentoSelezionato;*/
   List<TipoSocieta> tipoSocieta = [];
   TipoSocieta? tiposocietaSelezionata;
 
@@ -43,11 +43,8 @@ class AddCustomerController extends MyController {
   Nazionalita? nazionalitaSelezionataDest;
   Paesi? paeseSelezionatoDest;
   Comuni? comuneSelezionatoDest;
-
   String orarioChiusura = "";
-
   List<ValueItem<TipoAttivita>> tipoAttivita = [];
-
   MyFormValidator basicValidator = MyFormValidator();
   final MultiSelectController<TipoAttivita> controllerTipoAttivita =
       MultiSelectController();
@@ -97,8 +94,16 @@ class AddCustomerController extends MyController {
       {"title": "Domenica pomeriggio", "id": "Dom/P"}
     ]),
   ];
-
   List giorniSelezionati = [];
+
+  final SignatureController _controller = SignatureController(
+    penStrokeWidth: 1,
+    penColor: Colors.red,
+    exportBackgroundColor: Colors.transparent,
+    exportPenColor: Colors.black,
+    onDrawStart: () => print('onDrawStart called!'),
+    onDrawEnd: () => print('onDrawEnd called!'),
+  );
 
   AddCustomerController({required this.context});
 
@@ -175,6 +180,54 @@ class AddCustomerController extends MyController {
       update();
     });
     super.onInit();
+  }
+
+  apriFirma() {
+    showGeneralDialog(
+      context: context,
+      barrierColor: Colors.cyan, // Background color
+      barrierDismissible: false,
+      barrierLabel: ' Full Screen Dialog',
+      transitionDuration: const Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return Scaffold(
+          body: Column(children: [
+            Expanded(
+              child: Signature(
+                key: const Key('signature'),
+                controller: _controller,
+                //height: 300,
+                backgroundColor: Colors.grey[300]!,
+              ),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.lightBlue,
+                disabledForegroundColor: Colors.grey,
+              ),
+              onPressed: () {
+                _controller.clear();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Annulla'),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.lightBlue,
+                disabledForegroundColor: Colors.grey,
+              ),
+              onPressed: () {
+                //exportImage(context);
+                Navigator.of(context).pop();
+              },
+              child: const Text('Ok'),
+            ),
+          ]),
+        );
+      },
+    );
   }
 
   filtraPaesi(String value) {
@@ -450,15 +503,6 @@ class AddCustomerController extends MyController {
         (s) => s.descrizione!.toLowerCase().contains(query.toLowerCase()));
     return matches;
   }
-
-  /* List<Pagamenti> getPagamenti(String query) {
-    List<Pagamenti> matches = [];
-    matches.addAll(pagamenti);
-
-    matches.retainWhere(
-        (s) => s.descrizione!.toLowerCase().contains(query.toLowerCase()));
-    return matches;
-  }*/
 
   List<TipoSocieta> getTipoSocieta(String query) {
     List<TipoSocieta> matches = [];

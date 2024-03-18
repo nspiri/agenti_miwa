@@ -43,14 +43,14 @@ class _ScadenziarioListScreenState extends State<ScadenziarioListScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MyText.titleMedium(
-                      "Scadenziario",
+                      "Scadenzario",
                       fontSize: 18,
                       fontWeight: 600,
                     ),
                     MyBreadcrumb(
                       children: [
                         MyBreadcrumbItem(
-                          name: 'Scadenziario',
+                          name: 'Scadenzario',
                           active: true,
                         ),
                       ],
