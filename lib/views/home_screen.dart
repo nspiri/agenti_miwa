@@ -12,7 +12,6 @@ import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/helpers/widgets/responsive.dart';
 import 'package:foody/views/layout/layout.dart';
 import 'package:get/get.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -58,32 +57,20 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ),
               MySpacing.height(flexSpacing),
-              /* Padding(
+              Padding(
                 padding: MySpacing.x(flexSpacing / 2),
                 child: MyFlex(
                   children: [
-                    MyFlexItem(sizes: 'lg-8', child: buildDashboardAD()),
+                    /*  MyFlexItem(sizes: 'lg-8', child: buildDashboardAD()),
                     MyFlexItem(
                       sizes: 'lg-4',
                       child: buildPremiumContainer(),
-                    ),
-                    MyFlexItem(
+                    ),*/
+
+                    MyFlexItem(child: pulsanti())
+                    /* MyFlexItem(
                         child: Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            MyText.bodyMedium(
-                              "Menu Category",
-                              fontWeight: 600,
-                            ),
-                            MyText.bodyMedium(
-                              "View all",
-                              fontWeight: 600,
-                            )
-                          ],
-                        ),
-                        MySpacing.height(16),
                         SizedBox(
                           height: 170,
                           child: ListView.separated(
@@ -96,9 +83,9 @@ class _HomeScreenState extends State<HomeScreen>
                                 onTap: () {
                                   controller.onSelect(index);
                                 },
-                                color: controller.selectedId == index
+                                /*color: controller.selectedId == index
                                     ? contentTheme.primary.withAlpha(120)
-                                    : null,
+                                    : null,*/
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -126,8 +113,9 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                         )
                       ],
-                    )),
-                    MyFlexItem(
+                    )),*/
+
+                    /* MyFlexItem(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -255,14 +243,46 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                         ],
                       ),
-                    ),
+                    ),*/
                   ],
                 ),
-              ),*/
+              ),
             ],
           );
         },
       ),
+    );
+  }
+
+  Widget pulsanti() {
+    return MyFlex(
+      children: [
+        for (var i = 0; i < controller.listaPulsanti.length; i++)
+          MyFlexItem(
+              sizes: "xs-6 sm-6 md-4 lg-2",
+              child: SizedBox(
+                  height: 170,
+                  child: MyContainer(
+                    width: 165,
+                    onTap: () {
+                      controller.onSelect(i);
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Image.asset(
+                          controller.listaPulsanti[i]['image'] ?? '',
+                          height: 100,
+                        ),
+                        MySpacing.height(8),
+                        MyText.bodyMedium(
+                          controller.listaPulsanti[i]['name'] ?? '',
+                          fontWeight: 600,
+                        ),
+                      ],
+                    ),
+                  ))),
+      ],
     );
   }
 

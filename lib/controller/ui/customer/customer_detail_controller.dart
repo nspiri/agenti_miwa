@@ -10,7 +10,6 @@ import 'package:foody/model/nota.dart';
 import 'package:foody/model/order_detail.dart';
 import 'package:foody/model/request.dart' as r;
 import 'package:foody/model/scadenziario_cliente.dart';
-import 'package:foody/model/storico.dart';
 import 'package:foody/views/my_controller.dart';
 import 'package:foody/views/ui/customer/customer_detail_screen.dart';
 import 'package:get/get.dart';
@@ -51,6 +50,7 @@ class CustomerDetailController extends MyController {
         return element.descrizione;
       }
     }
+    return null;
   }
 
   String? getPaese(String? cod) {
@@ -59,6 +59,7 @@ class CustomerDetailController extends MyController {
         return element.descrizione;
       }
     }
+    return null;
   }
 
   @override

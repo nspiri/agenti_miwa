@@ -1,12 +1,50 @@
 import 'package:foody/views/my_controller.dart';
+import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeController extends MyController {
   int selectTime = 1;
-  int selectedId = 0;
+  // int selectedId = 0;
   String selectedDailyTask = 'Today';
 
-  void onSelect(int index) {
-    selectedId = index;
+  List listaPulsanti = [
+    {
+      "image": "assets/images/home/catalogo.png",
+      "name": "Catalogo",
+      "url": "https://miwasrl.com/index.php/cataloghi"
+    },
+    {
+      "image": "assets/images/home/ricette.png",
+      "name": "Ricette",
+      "url": "https://miwasrl.com/index.php/ricette"
+    },
+    {
+      "image": "assets/images/home/nuovo_cliente.png",
+      "name": "Nuovo Cliente",
+      "url": ""
+    },
+    {
+      "image": "assets/images/home/eventi.png",
+      "name": "Eventi",
+      "url": "https://miwasrl.com/index.php/eventi"
+    },
+    {
+      "image": "assets/images/home/promozioni.png",
+      "name": "Promozioni",
+      "url":
+          "https://drive.google.com/drive/folders/1OZjz7-h_5iWA5norBcF4ciV5UvBbW4Ry?usp=sharing"
+    },
+  ];
+
+  void onSelect(int index) async {
+    if (listaPulsanti[index]['url'] == "") {
+      Get.toNamed("/admin/customers/create");
+    } else {
+      final Uri url = Uri.parse(listaPulsanti[index]['url']);
+      if (!await launchUrl(url)) {
+        throw Exception('Could not launch $url');
+      }
+    }
     update();
   }
 
@@ -20,24 +58,6 @@ class HomeController extends MyController {
 
     update();
   }
-
-  List categoryList = [
-    {"image": "assets/images/fast_food/baklava.png", "name": "Baklava"},
-    {"image": "assets/images/fast_food/barbecue.png", "name": "Barbecue"},
-    {"image": "assets/images/fast_food/burger.png", "name": "Burger"},
-    {"image": "assets/images/fast_food/cake.png", "name": "Cake"},
-    {"image": "assets/images/fast_food/chicken-leg.png", "name": "chicken Leg"},
-    {"image": "assets/images/fast_food/coffee.png", "name": "Coffee"},
-    {"image": "assets/images/fast_food/cupcake.png", "name": "Cup Cake"},
-    {"image": "assets/images/fast_food/doughnut.png", "name": "Doughnut"},
-    {"image": "assets/images/fast_food/food.png", "name": "Food"},
-    {"image": "assets/images/fast_food/hamburger.png", "name": "Humburger"},
-    {"image": "assets/images/fast_food/masala-dosa.png", "name": "Masala Dosa"},
-    {"image": "assets/images/fast_food/nachos.png", "name": "Nachos"},
-    {"image": "assets/images/fast_food/noodles.png", "name": "Noodles"},
-    {"image": "assets/images/fast_food/pizza.png", "name": "Pizza"},
-    {"image": "assets/images/fast_food/salad.png", "name": "Salad"},
-  ];
 
   Map restaurant = {
     'List': [

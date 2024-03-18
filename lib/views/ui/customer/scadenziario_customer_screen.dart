@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:foody/controller/ui/customer/scadenziario_controller.dart';
-import 'package:foody/controller/ui/restaurant/restaurants_list_controller.dart';
 import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
 import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
-import 'package:foody/helpers/widgets/my_container.dart';
-import 'package:foody/helpers/widgets/my_flex.dart';
-import 'package:foody/helpers/widgets/my_flex_item.dart';
 import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/helpers/widgets/responsive.dart';
-import 'package:foody/model/restaurant_data.dart';
 import 'package:foody/model/scadenziario_cliente.dart';
 import 'package:foody/views/layout/layout.dart';
 import 'package:get/get.dart';
@@ -52,7 +47,7 @@ class _ScadenziarioScreenState extends State<ScadenziarioScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MyText.titleMedium(
-                      "Scadenziario per ${clienteSelezionato?.ragioneSociale}",
+                      "Scadenziario: ${clienteSelezionato?.ragioneSociale}",
                       fontSize: 18,
                       fontWeight: 600,
                     ),

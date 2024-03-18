@@ -1,18 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:io';
-
-import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:foody/controller/ui/cart_controller.dart';
-import 'package:foody/controller/ui/seller/add_seller_controller.dart';
 import 'package:foody/helpers/theme/app_themes.dart';
 import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/helpers/utils/show_message_dialogs.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
 import 'package:foody/helpers/utils/utils.dart';
-import 'package:foody/helpers/widgets/my_breadcrumb.dart';
-import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
 import 'package:foody/helpers/widgets/my_button.dart';
 import 'package:foody/helpers/widgets/my_container.dart';
 import 'package:foody/helpers/widgets/my_flex.dart';
@@ -25,7 +19,6 @@ import 'package:foody/images.dart';
 import 'package:foody/model/articolo.dart';
 import 'package:foody/model/customer_detail.dart';
 import 'package:foody/views/layout/layout.dart';
-import 'package:foody/views/layout/left_bar.dart';
 import 'package:foody/views/ui/lista_storico_articolo.dart';
 import 'package:foody/views/ui/modal_list_art.dart';
 import 'package:get/get.dart';
@@ -184,7 +177,7 @@ class _CartScreenState extends State<CartScreen>
                     MyFlexItem(
                         sizes: 'lg-7',
                         child: controller.carrello.isNotEmpty
-                            ? listaCarrello()
+                            ? /* listaCarrelloMobile() */ listaCarrello()
                             : Column(
                                 children: [
                                   MyText.titleLarge(
@@ -257,6 +250,46 @@ class _CartScreenState extends State<CartScreen>
     );
   }
 
+  Widget listaCarrelloMobile() {
+    return ListView.separated(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: controller.carrello.length,
+      itemBuilder: (context, index) {
+        Articolo data = controller.carrello[index];
+        return MyContainer(
+            width: double.infinity,
+            child: data.loading
+                ? Center(
+                    child: CircularProgressIndicator(
+                      color: contentTheme.primary,
+                      strokeWidth: 3,
+                    ),
+                  )
+                : Row(
+                    children: [
+                      /* Padding(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: immagine(data),
+                      ),*/
+                      Expanded(
+                        child: descrizioneMobile(data),
+                      ),
+                      /* Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: quantita(data),
+                      ),*/
+                    ],
+                  ));
+      },
+      separatorBuilder: (context, index) {
+        return SizedBox(
+          height: 12,
+        );
+      },
+    );
+  }
+
   Widget immagine(Articolo data) {
     return MyContainer(
       height: 100,
@@ -272,6 +305,46 @@ class _CartScreenState extends State<CartScreen>
               image: ExactAssetImage(Images.noImage),
               fit: BoxFit.cover,
             ),
+    );
+  }
+
+  Widget descrizioneMobile(Articolo data) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        MyText.bodyMedium(
+          "${data.descrizione} (${Utils.formatStringDecimal((data.qtaArt), data.numDecArt ?? 2)} ${data.um1})",
+          fontWeight: 600,
+          maxLines: 2,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: MyText.bodySmall(
+            "Codice: ${data.codArt}",
+          ),
+        ),
+        if (data.prezzoArticolo?.omaggio != null &&
+            data.listinoSelezionato?.listino == 1)
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: CheckboxListTile(
+              enabled: data.conf! >= data.prezzoArticolo!.omaggio!.qtaPresa!,
+              controlAffinity: ListTileControlAffinity.leading,
+              title: MyText.bodySmall(
+                "Applica omaggio prendi ${data.prezzoArticolo?.omaggio?.qtaPresa} paghi ${data.prezzoArticolo?.omaggio?.qtaPagata}",
+              ),
+              onChanged: (value) {
+                controller.onChangeApplicaOmaggio(data, value);
+              },
+              value: data.applicaOmaggio,
+              fillColor: MaterialStatePropertyAll(Colors.white),
+              activeColor: theme.colorScheme.primary,
+              checkColor: contentTheme.primary,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              visualDensity: getCompactDensity,
+            ),
+          ),
+      ],
     );
   }
 

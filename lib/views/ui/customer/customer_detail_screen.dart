@@ -17,7 +17,6 @@ import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/helpers/widgets/my_text_style.dart';
 import 'package:foody/helpers/widgets/responsive.dart';
 import 'package:foody/model/customer_detail.dart';
-import 'package:foody/model/order_detail.dart';
 import 'package:foody/model/scadenziario_cliente.dart';
 import 'package:foody/views/layout/layout.dart';
 import 'package:foody/widgets/custom_pop_menu.dart';

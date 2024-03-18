@@ -8,7 +8,6 @@ import 'package:foody/helpers/widgets/my_form_validator.dart';
 import 'package:foody/model/customer_category.dart';
 import 'package:foody/model/customers_fa.dart';
 import 'package:foody/model/nazionalita.dart';
-import 'package:foody/model/pagamenti.dart';
 import 'package:foody/model/request.dart';
 import 'package:foody/model/tipo_attivita.dart';
 import 'package:foody/model/tipo_soc.dart';
@@ -540,10 +539,6 @@ class AddCustomerController extends MyController {
       basicValidator.addError("nota1", "Inserisci il giorno di chiusura");
       valido = false;
     }
-    if (basicValidator.getController("nota2")?.text == "") {
-      basicValidator.addError("nota2", "Inserisci le note");
-      valido = false;
-    }
     if (nazionalitaSelezionata == null) {
       basicValidator.addError("nazionalita", "Seleziona la nazionalità");
       valido = false;
@@ -707,37 +702,38 @@ class AddCustomerController extends MyController {
       "pcona": zonaClienteSelezionata?.idC ?? 0,
       "tipo_attivita": tipoAttivita,
       "note": basicValidator.getController("nota2").text ?? "",
-      "destinazione": {
-        "pcdes": basicValidator
-            .getController("ragSocDest")
-            .text
-            .toString()
-            .toUpperCase(),
-        "pcnaz": nazionalitaSelezionataDest?.codice ?? "",
-        "pcpae": paeseSelezionatoDest?.codice ?? "",
-        "pcind": basicValidator
-            .getController("indirizzoDest")
-            .text
-            .toString()
-            .toUpperCase(),
-        "pccap": comuneSelezionatoDest?.cap ?? "",
-        "pcloc": comuneSelezionatoDest?.localita ?? "",
-        "pcpro": comuneSelezionatoDest?.provincia ?? "",
-        "pccfi": basicValidator
-            .getController("codFiscDest")
-            .text
-            .toString()
-            .toUpperCase(),
-        "pctpp": isCheckedDest ? "P" : "N",
-        "pcnpi": isCheckedDest
-            ? ""
-            : basicValidator
-                .getController("partIvaDest")
-                .text
-                .toString()
-                .toUpperCase(),
-        "pctps": tiposocietaSelezionataDest?.numero,
-      }
+      if (isCheckedDest)
+        "destinazione": {
+          "pcdes": basicValidator
+              .getController("ragSocDest")
+              .text
+              .toString()
+              .toUpperCase(),
+          "pcnaz": nazionalitaSelezionataDest?.codice ?? "",
+          "pcpae": paeseSelezionatoDest?.codice ?? "",
+          "pcind": basicValidator
+              .getController("indirizzoDest")
+              .text
+              .toString()
+              .toUpperCase(),
+          "pccap": comuneSelezionatoDest?.cap ?? "",
+          "pcloc": comuneSelezionatoDest?.localita ?? "",
+          "pcpro": comuneSelezionatoDest?.provincia ?? "",
+          "pccfi": basicValidator
+              .getController("codFiscDest")
+              .text
+              .toString()
+              .toUpperCase(),
+          "pctpp": isCheckedDest ? "P" : "N",
+          "pcnpi": isCheckedDest
+              ? ""
+              : basicValidator
+                  .getController("partIvaDest")
+                  .text
+                  .toString()
+                  .toUpperCase(),
+          "pctps": tiposocietaSelezionataDest?.numero,
+        }
     };
     Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrcli", etichettaCollage: "CLIENTE_NUOVO", dati: dati);

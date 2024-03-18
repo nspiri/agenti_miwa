@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
@@ -16,7 +15,6 @@ import 'package:foody/model/listino.dart';
 import 'package:foody/model/nota.dart';
 import 'package:foody/views/my_controller.dart';
 import 'package:get/get.dart';
-import 'package:foody/model/order_detail.dart';
 import 'package:foody/model/request.dart' as r;
 
 class CartController extends MyController {
@@ -242,15 +240,16 @@ class CartController extends MyController {
     } else {
       //showErrorMessage(context, "Nessuna immagine", "");
     }
+    return null;
   }
 
   Future<PrezzoArticolo?> getPrezzoArticolo(Articolo art) async {
-    String img = "";
     r.Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrart",
         etichettaCollage: "GET_CONDDOC",
         dati: {
           "cliente": destinazione?.codiceCliente ?? "",
+          "agente": LocalStorage.getLoggedUser()?.codiceAgente,
           "articolo": art.codArt,
           "data": "",
           "documento": "OC",
@@ -268,6 +267,7 @@ class CartController extends MyController {
     } else {
       //showErrorMessage(context, "Nessuna immagine", "");
     }
+    return null;
   }
 
   void decrement(Articolo art) {

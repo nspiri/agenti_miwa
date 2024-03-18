@@ -8,24 +8,20 @@ import 'package:foody/helpers/widgets/my_button.dart';
 import 'package:foody/helpers/widgets/my_container.dart';
 import 'package:foody/helpers/widgets/my_flex.dart';
 import 'package:foody/helpers/widgets/my_flex_item.dart';
-import 'package:foody/helpers/widgets/my_form_validator.dart';
 import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/helpers/widgets/my_text_style.dart';
 import 'package:foody/helpers/widgets/responsive.dart';
 import 'package:foody/model/customer_category.dart';
 import 'package:foody/model/nazionalita.dart';
-import 'package:foody/model/pagamenti.dart';
 import 'package:foody/model/tipo_attivita.dart';
 import 'package:foody/model/tipo_soc.dart';
 import 'package:foody/model/zone_clienti.dart';
 import 'package:foody/views/layout/layout.dart';
 import 'package:get/get.dart';
-import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:time_range/time_range.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
-import 'package:search_choices/search_choices.dart';
 
 class AddCustomerScreen extends StatefulWidget {
   const AddCustomerScreen({super.key});
@@ -72,7 +68,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
               ),
               MySpacing.height(flexSpacing),
               Padding(
-                padding: MySpacing.x(flexSpacing),
+                padding: MySpacing.x(flexSpacing / 2),
                 child: MyContainer(
                   padding: MySpacing.xy(0, 10),
                   child: Form(
@@ -1228,23 +1224,28 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
           fieldTitle,
         ),
         MySpacing.height(4),
-        TextFormField(
-          keyboardType: keyboaardType,
-          maxLength: maxLength,
-          enabled: enabled,
-          controller: controller,
-          validator: validator,
-          decoration: InputDecoration(
-            counterStyle: TextStyle(
-              height: double.minPositive,
+        Padding(
+          padding: const EdgeInsets.only(left: 2, right: 2),
+          child: TextFormField(
+            keyboardType: keyboaardType,
+            maxLength: maxLength,
+            enabled: enabled,
+            controller: controller,
+            validator: validator,
+            decoration: InputDecoration(
+              counterStyle: TextStyle(
+                height: double.minPositive,
+              ),
+              counterText: "",
+              hintText: hintText,
+              hintStyle: MyTextStyle.bodySmall(xMuted: true),
+              border: outlineInputBorder,
+              enabledBorder: outlineInputBorder,
+              focusedBorder: focusedInputBorder,
+              contentPadding: MySpacing.all(14),
+              isCollapsed: true,
+              floatingLabelBehavior: FloatingLabelBehavior.never,
             ),
-            counterText: "",
-            hintText: hintText,
-            hintStyle: MyTextStyle.bodySmall(xMuted: true),
-            border: outlineInputBorder,
-            contentPadding: MySpacing.all(14),
-            isCollapsed: true,
-            floatingLabelBehavior: FloatingLabelBehavior.never,
           ),
         ),
       ],

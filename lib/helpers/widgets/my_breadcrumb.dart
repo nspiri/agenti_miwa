@@ -3,9 +3,9 @@ import 'package:foody/helpers/theme/app_themes.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
 import 'package:foody/helpers/widgets/my_constant.dart';
 import 'package:foody/helpers/widgets/my_responsiv.dart';
-import 'package:foody/helpers/widgets/my_router.dart';
 import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
+import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class MyBreadcrumb extends StatelessWidget {
@@ -33,8 +33,8 @@ class MyBreadcrumb extends StatelessWidget {
       } else {
         list.add(InkWell(
             onTap: () => {
-                  if (item.route != null)
-                    MyRouter.pushReplacementNamed(context, item.route!)
+                  if (item.route != null) Get.toNamed(item.route ?? "/home")
+                  //MyRouter.pushReplacementNamed(context, item.route!)
                 },
             child: MyText.labelMedium(
               children[i].name,

@@ -5,6 +5,7 @@ import 'package:foody/views/auth/login_screen.dart';
 import 'package:foody/views/auth/register_account_screen.dart';
 import 'package:foody/views/ui/Ordini/ordine_dettaglio_screen.dart';
 import 'package:foody/views/ui/Ordini/ordini_screen.dart';
+import 'package:foody/views/ui/Statistiche/statistiche_screen.dart';
 import 'package:foody/views/ui/cart_screen.dart';
 import 'package:foody/views/home_screen.dart';
 import 'package:foody/views/ui/customer/attrezzature_customer.dart';
@@ -26,7 +27,6 @@ import 'package:foody/views/ui/customer/add_customer_screen.dart';
 import 'package:foody/views/ui/customer/customer_detail_screen.dart';
 import 'package:foody/views/ui/customer/customer_list_screen.dart';
 import 'package:foody/views/ui/dashboard_screen.dart';
-import 'package:foody/views/ui/order/order_list_screen.dart';
 import 'package:foody/views/ui/seller/add_seller_screen.dart';
 import 'package:foody/views/ui/seller/seller_detail_screen.dart';
 import 'package:foody/views/ui/seller/seller_edit_screen.dart';
@@ -169,6 +169,11 @@ getPageRoute() {
     GetPage(
         name: '/cart',
         page: () => const CartScreen(),
+        middlewares: [AuthMiddleware()]),
+
+    GetPage(
+        name: '/admin/stats',
+        page: () => const StatisticheListScreen(),
         middlewares: [AuthMiddleware()]),
 
     /// Food

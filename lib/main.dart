@@ -1,7 +1,5 @@
-import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:foody/helpers/localizations/app_localization_delegate.dart';
 import 'package:foody/helpers/localizations/language.dart';
@@ -24,10 +22,10 @@ Future<void> main() async {
   AppStyle.init();
   await ThemeCustomizer.init();
 
-  SystemChrome.setPreferredOrientations([
+  /*SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
-  ]);
+  ]);*/
 
   runApp(ChangeNotifierProvider<AppNotifier>(
     create: (context) => AppNotifier(),

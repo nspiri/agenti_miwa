@@ -249,8 +249,7 @@ class AppStyle {
       containerRadius: AppStyle.containerRadius.medium,
       cardRadius: AppStyle.cardRadius.medium,
       buttonRadius: AppStyle.buttonRadius.medium,
-      defaultBreadCrumbItem:
-          MyBreadcrumbItem(name: 'Miwa', route: '/dashboard'),
+      defaultBreadCrumbItem: MyBreadcrumbItem(name: 'Miwa', route: '/home'),
     ));
     bool isMobile = true;
     try {

@@ -14,8 +14,6 @@ import 'package:foody/helpers/widgets/my_container.dart';
 import 'package:foody/helpers/widgets/my_dashed_divider.dart';
 import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
-import 'package:foody/helpers/widgets/my_text_style.dart';
-import 'package:foody/images.dart';
 import 'package:foody/views/auth/login_screen.dart';
 import 'package:foody/widgets/custom_pop_menu.dart';
 import 'package:get/get.dart';
@@ -302,70 +300,6 @@ class _TopBarState extends State<TopBar>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: MySpacing.xy(8, 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                MyButton(
-                  onPressed: () {
-                    Get.toNamed('/admin/setting');
-                    setState(() {});
-                  },
-                  // onPressed: () =>
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  borderRadiusAll: AppStyle.buttonRadius.medium,
-                  padding: MySpacing.xy(8, 4),
-                  splashColor: theme.colorScheme.onBackground.withAlpha(20),
-                  backgroundColor: Colors.transparent,
-                  child: Row(
-                    children: [
-                      Icon(
-                        LucideIcons.user,
-                        size: 14,
-                        color: contentTheme.onBackground,
-                      ),
-                      MySpacing.width(8),
-                      MyText.labelMedium(
-                        "My Profile",
-                        fontWeight: 600,
-                      )
-                    ],
-                  ),
-                ),
-                MySpacing.height(4),
-                MyButton(
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  onPressed: () {
-                    Get.toNamed('/admin/setting');
-                    setState(() {});
-                  },
-                  borderRadiusAll: AppStyle.buttonRadius.medium,
-                  padding: MySpacing.xy(8, 4),
-                  splashColor: theme.colorScheme.onBackground.withAlpha(20),
-                  backgroundColor: Colors.transparent,
-                  child: Row(
-                    children: [
-                      Icon(
-                        LucideIcons.edit,
-                        size: 14,
-                        color: contentTheme.onBackground,
-                      ),
-                      MySpacing.width(8),
-                      MyText.labelMedium(
-                        "Edit Profile",
-                        fontWeight: 600,
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Divider(
-            height: 1,
-            thickness: 1,
-          ),
           Padding(
             padding: MySpacing.xy(8, 8),
             child: MyButton(

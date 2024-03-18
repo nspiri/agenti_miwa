@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:foody/controller/ui/customer/customer_list_controller.dart';
-import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
 import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb.dart';

@@ -3,8 +3,8 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
-const RESOURCES = {"assets/AssetManifest.bin": "78bb97494357938d9d1b8e98409f48a1",
-"assets/AssetManifest.json": "abd047049129de6a45257a87149c085f",
+const RESOURCES = {"assets/AssetManifest.bin": "66fe4e704e58315d5207fc74285dc5ba",
+"assets/AssetManifest.json": "e0d4d134a4950213b7b3c7da64234816",
 "assets/assets/data/cart_data.json": "940fb962d37af7d489bdaa0cf3a1d64a",
 "assets/assets/data/chat_data.json": "5398c3169ea3f3908ac21cccc49516e3",
 "assets/assets/data/clienti.json": "ad2ab394dc4f64148c448f78bb8bf158",
@@ -79,6 +79,11 @@ const RESOURCES = {"assets/AssetManifest.bin": "78bb97494357938d9d1b8e98409f48a1
 "assets/assets/images/food/mc_donald's.png": "2e20cccab9e36231e357b3e8d119424c",
 "assets/assets/images/food/no_image.jpg": "5bb2388e88145429c9baabf34861b8dc",
 "assets/assets/images/food/pizza_hut.png": "e9173d0e6f71e443b1134af8a4d5c756",
+"assets/assets/images/home/catalogo.png": "b8dc79277e9eca4741f13fedf158b50a",
+"assets/assets/images/home/eventi.png": "375bd12b2b48062477c1eac9a63b373d",
+"assets/assets/images/home/nuovo_cliente.png": "ac1a457a36683198bb899a34163b70c5",
+"assets/assets/images/home/promozioni.png": "8b816a696b30a6b4444b3ed0545eeef9",
+"assets/assets/images/home/ricette.png": "5e674698f4b8e1d1885c1ccc4dd14908",
 "assets/assets/images/restaurant_logo/restaurant_logo_1.png": "55e851f80324d24920536c3ee49df049",
 "assets/assets/images/restaurant_logo/restaurant_logo_10.png": "e53f8c3351af02cebf84d3d8428c9ed9",
 "assets/assets/images/restaurant_logo/restaurant_logo_11.png": "a8040ad380f96363b4f6e4c8e0dc9fd2",
@@ -124,9 +129,9 @@ const RESOURCES = {"assets/AssetManifest.bin": "78bb97494357938d9d1b8e98409f48a1
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
 "img/splash.jpg": "8a78392f13c17f6ed3dd25806739bb40",
 "img/splash.png": "52133fc7e87b86c0b528d41f4e5bfdb5",
-"index.html": "ea9fd8f054f9df80101aa8b63421b41f",
-"/": "ea9fd8f054f9df80101aa8b63421b41f",
-"main.dart.js": "18947010419a16a2dc471c5d60b9f2a8",
+"index.html": "6dc6c25ecba025dceb3223d844ebe0a9",
+"/": "6dc6c25ecba025dceb3223d844ebe0a9",
+"main.dart.js": "b865eba6a70bf281d99d873a1f8b43ef",
 "manifest.json": "70a511e80e66db4e89ea9ffca5207b03",
 "version.json": "306b0615cdcdccd2e0af45c583b56938"};
 // The application shell files that are downloaded before a service worker can

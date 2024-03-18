@@ -839,6 +839,7 @@ file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/c
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/controller/ui/Articolo/food_edit_controller.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/controller/ui/Ordini/ordine_dettaglio_controller.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/controller/ui/Ordini/ordini_controller.dart
+file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/controller/ui/Statistiche/statistiche_controller.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/controller/ui/cart_controller.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/controller/ui/chat_controller.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/controller/ui/customer/add_customer_controller.dart
@@ -923,6 +924,7 @@ file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/h
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/helpers/widgets/responsive.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/images.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/main.dart
+file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/model/agente.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/model/articolo.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/model/calcolo_totale.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/model/cart_model.dart
@@ -944,6 +946,7 @@ file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/m
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/model/request.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/model/restaurant_data.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/model/scadenziario_cliente.dart
+file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/model/statistiche.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/model/storico.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/model/tipo_attivita.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/model/tipo_soc.dart
@@ -971,6 +974,7 @@ file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/v
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/views/ui/Scadenziario/edit_restaurant_screen.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/views/ui/Scadenziario/restaurant_detail_screen.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/views/ui/Scadenziario/scadenziario_list.dart
+file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/views/ui/Statistiche/statistiche_screen.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/views/ui/cart_screen.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/views/ui/chat_screen.dart
 file:///C:/Users/Utente/Desktop/Cartelle/Progetti/prog%20flutt/agenti_miwa/lib/views/ui/customer/add_customer_screen.dart

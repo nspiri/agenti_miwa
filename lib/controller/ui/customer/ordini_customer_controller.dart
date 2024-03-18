@@ -5,11 +5,7 @@ import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/model/customer_detail.dart';
 import 'package:foody/model/ordine.dart';
-import 'package:foody/model/restaurant_data.dart';
-import 'package:foody/model/scadenziario_cliente.dart';
 import 'package:foody/views/my_controller.dart';
-import 'package:foody/views/ui/Ordini/ordini_screen.dart';
-import 'package:foody/views/ui/Scadenziario/scadenziario_list.dart';
 import 'package:foody/views/ui/customer/ordini_customer_screen.dart';
 import 'package:get/get.dart';
 import 'package:foody/model/request.dart' as r;
@@ -23,6 +19,12 @@ class OrdiniListCustomerController extends MyController {
   @override
   void onInit() {
     super.onInit();
+  }
+
+  @override
+  void onThemeChanged() {
+    data = MyDataDetailOrdiniCustomer(ordini, this);
+    update();
   }
 
   getOrdini(CustomerDetail cliente) async {

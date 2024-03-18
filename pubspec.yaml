@@ -89,6 +89,7 @@ flutter:
     - assets/lang/
     - assets/logo/
     - assets/images/fast_food/
+    - assets/images/home/
     - assets/images/restaurant_logo/
 
   # An image asset can refer to one or more resolution-specific "variants", see

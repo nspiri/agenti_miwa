@@ -9,7 +9,6 @@ import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/helpers/widgets/responsive.dart';
 import 'package:foody/model/customer_detail.dart';
-import 'package:foody/model/scadenziario_cliente.dart';
 import 'package:foody/views/layout/layout.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -48,7 +47,7 @@ class _AttrezzatureScreenState extends State<AttrezzatureScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MyText.titleMedium(
-                      "Attrezzature per ${clienteSelezionato?.ragioneSociale}",
+                      "Attrezzature: ${clienteSelezionato?.ragioneSociale}",
                       fontSize: 18,
                       fontWeight: 600,
                     ),

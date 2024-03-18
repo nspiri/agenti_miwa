@@ -17,7 +17,7 @@ class MyFormValidator {
       {bool required = false,
       List<MyFieldValidatorRule<T>> validators = const [],
       String? label,
-      dynamic? controller}) {
+      dynamic controller}) {
     _validators[name] = _createValidation<T>(name,
         required: required, validators: validators, label: label);
     if (controller != null) _controllers[name] = controller;
@@ -27,7 +27,7 @@ class MyFormValidator {
       _validators[name] != null
           ? _validators[name] as MyFieldValidator<T>
           : null;
-  dynamic? getController(String name) => _controllers[name];
+  dynamic getController(String name) => _controllers[name];
 
   MyFieldValidator<T> _createValidation<T>(String name,
       {bool required = false,

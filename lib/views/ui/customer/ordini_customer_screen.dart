@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:foody/controller/ui/Ordini/ordini_controller.dart';
 import 'package:foody/controller/ui/customer/ordini_customer_controller.dart';
-import 'package:foody/controller/ui/restaurant/restaurants_list_controller.dart';
 import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
 import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
-import 'package:foody/helpers/widgets/my_container.dart';
-import 'package:foody/helpers/widgets/my_flex.dart';
-import 'package:foody/helpers/widgets/my_flex_item.dart';
 import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/helpers/widgets/responsive.dart';
 import 'package:foody/model/customer_detail.dart';
 import 'package:foody/model/ordine.dart';
-import 'package:foody/model/restaurant_data.dart';
-import 'package:foody/model/scadenziario_cliente.dart';
 import 'package:foody/views/layout/layout.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -60,7 +53,7 @@ class _OrdiniListCustomerScreenState extends State<OrdiniListCustomerScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MyText.titleMedium(
-                      "Ordini per ${cliente?.ragioneSociale}",
+                      "Ordini: ${cliente?.ragioneSociale}",
                       fontSize: 18,
                       fontWeight: 600,
                     ),

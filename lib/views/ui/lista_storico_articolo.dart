@@ -1,9 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/utils/do_http_request.dart';
-import 'package:foody/helpers/utils/show_message_dialogs.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
 import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/helpers/widgets/my_container.dart';
@@ -11,14 +8,11 @@ import 'package:foody/helpers/widgets/my_flex.dart';
 import 'package:foody/helpers/widgets/my_flex_item.dart';
 import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
-import 'package:foody/helpers/widgets/my_text_style.dart';
 import 'package:foody/helpers/widgets/responsive.dart';
 import 'package:foody/model/articolo.dart';
 import 'package:foody/model/storico.dart';
-import 'package:foody/views/ui/modal_list_art_controller.dart';
 import 'package:foody/views/ui/modal_list_storico_art_controller.dart';
 import 'package:get/get.dart';
-import 'package:foody/model/request.dart' as r;
 import 'package:lucide_icons/lucide_icons.dart';
 
 class ModalListaStoricoArticolo extends StatefulWidget {

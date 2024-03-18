@@ -4,12 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/model/articolo.dart';
-import 'package:foody/model/customer_detail.dart';
 import 'package:foody/model/storico.dart';
 import 'package:foody/views/my_controller.dart';
-import 'package:foody/views/ui/Articolo/articoli_list_screen.dart';
 import 'package:foody/views/ui/lista_storico_articolo.dart';
-import 'package:foody/views/ui/modal_list_art.dart';
 import 'package:get/get.dart';
 import 'package:foody/model/request.dart' as r;
 

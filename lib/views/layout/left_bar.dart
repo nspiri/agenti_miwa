@@ -1,9 +1,7 @@
 import 'package:foody/helpers/utils/global.dart';
-import 'package:foody/helpers/widgets/my_router.dart';
 import 'package:get/route_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:foody/helpers/services/url_service.dart';
-import 'package:foody/helpers/theme/app_themes.dart';
 import 'package:foody/helpers/theme/theme_customizer.dart';
 import 'package:foody/helpers/utils/my_shadow.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
@@ -13,7 +11,6 @@ import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/images.dart';
 import 'package:foody/widgets/custom_pop_menu.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 typedef LeftbarMenuFunction = void Function(String key);
@@ -250,6 +247,12 @@ class _LeftBarState extends State<LeftBar>
                     title: "Scadenziario",
                     isCondensed: isCondensed,
                     route: '/admin/timetable',
+                  ),
+                  NavigationItem(
+                    iconData: LucideIcons.barChartBig,
+                    title: "Statistiche Vendite",
+                    isCondensed: isCondensed,
+                    route: '/admin/stats',
                   ),
                   /*MenuWidget(
                     iconData: LucideIcons.users,
@@ -761,7 +764,6 @@ class _NavigationItemState extends State<NavigationItem> with UIMixin {
 
   @override
   Widget build(BuildContext context) {
-    bool isActive = false;
     //bool isActive = UrlService.getCurrentUrl() == widget.route;
     return GestureDetector(
       onTap: () {

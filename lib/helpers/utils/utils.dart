@@ -17,7 +17,7 @@ class Utils {
     }
 
     String year = dateTime.year.toString();
-    String separator = showMonthShort ? " " : "/";
+    String separator = showMonthShort ? " " : "-";
     return "$date$separator$month$separator$year";
   }
 
@@ -79,6 +79,11 @@ class Utils {
     }
   }
 
+  static String getDateRequest(String date) {
+    DateTime d = stringToDate(date);
+    return dateToString(d);
+  }
+
   static String getFormattedDate(String date) {
     if (date == "") {
       return "";
@@ -99,6 +104,15 @@ class Utils {
 
   static String dateToString(DateTime date) {
     return DateFormat('dd-MM-yyyy').format(date);
+  }
+
+  static DateTime stringToData(String date) {
+    return DateFormat('dd-MM-yyyy').parse(date);
+  }
+
+  static String stringToDateR(String date) {
+    DateTime dat = DateFormat('dd-MM-yyyy').parse(date);
+    return DateFormat('yyyyMMdd').format(dat);
   }
 
   static String formatStringDecimal(double? value, int decimali) {
