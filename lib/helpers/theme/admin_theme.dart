@@ -121,7 +121,7 @@ class ContentTheme {
   final Color primary, onPrimary;
   final Color secondary, onSecondary;
   final Color success, onSuccess;
-  final Color danger, onDanger;
+  final Color danger, onDanger, dangerLight;
   final Color warning, onWarning;
   final Color info, onInfo;
   final Color light, onLight;
@@ -151,7 +151,7 @@ class ContentTheme {
       ContentThemeColor.success: {'color': c.success, 'onColor': c.onSuccess},
       ContentThemeColor.info: {'color': c.info, 'onColor': c.onInfo},
       ContentThemeColor.warning: {'color': c.warning, 'onColor': c.onWarning},
-      ContentThemeColor.danger: {'color': c.danger, 'onColor': c.onDanger},
+      ContentThemeColor.danger: {'color': c.dangerLight, 'onColor': c.onDanger},
       ContentThemeColor.light: {'color': c.light, 'onColor': c.onLight},
       ContentThemeColor.dark: {'color': c.dark, 'onColor': c.onDark},
       ContentThemeColor.pink: {'color': c.pink, 'onColor': c.onPink},
@@ -164,6 +164,7 @@ class ContentTheme {
     this.secondary = const Color(0xff6c757d),
     this.success = const Color(0xff00be82),
     this.danger = const Color(0xffdc3545),
+    this.dangerLight = const Color.fromARGB(255, 252, 86, 103),
     this.warning = const Color(0xffffc107),
     this.info = const Color(0xff0dcaf0),
     this.onLight = const Color(0xff313a46),

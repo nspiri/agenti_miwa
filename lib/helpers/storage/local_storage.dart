@@ -11,6 +11,7 @@ class LocalStorage {
   static const String _themeCustomizerKey = "theme_customizer";
   static const String _loggedUserKey = "logged_user";
   static const String _languageKey = "lang_code";
+  static const String _tokenKey = "token";
 
   static SharedPreferences? _preferencesInstance;
 
@@ -54,6 +55,14 @@ class LocalStorage {
 
   static Future<bool> setLoggedUser(User user) {
     return preferences.setString(_loggedUserKey, jsonEncode(user.toJson()));
+  }
+
+  static Future<bool> setToken(String token) {
+    return preferences.setString(_tokenKey, token);
+  }
+
+  static String? getToken() {
+    return preferences.getString(_tokenKey);
   }
 
   static User? getLoggedUser() {

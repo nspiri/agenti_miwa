@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:foody/controller/ui/cart_controller.dart';
 import 'package:foody/helpers/theme/app_themes.dart';
 import 'package:foody/helpers/utils/global.dart';
@@ -11,6 +13,7 @@ import 'package:foody/helpers/widgets/my_button.dart';
 import 'package:foody/helpers/widgets/my_container.dart';
 import 'package:foody/helpers/widgets/my_flex.dart';
 import 'package:foody/helpers/widgets/my_flex_item.dart';
+import 'package:foody/helpers/widgets/my_responsiv.dart';
 import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/helpers/widgets/my_text_style.dart';
@@ -121,7 +124,8 @@ class _CartScreenState extends State<CartScreen>
   @override
   Widget build(BuildContext context) {
     return Layout(
-      child: GetBuilder(
+        child: MyResponsive(builder: (BuildContext context, _, screenMT) {
+      return GetBuilder(
         init: controller,
         builder: (controller) {
           return Column(
@@ -177,7 +181,9 @@ class _CartScreenState extends State<CartScreen>
                     MyFlexItem(
                         sizes: 'lg-7',
                         child: controller.carrello.isNotEmpty
-                            ? /* listaCarrelloMobile() */ listaCarrello()
+                            ? screenMT.isMobile
+                                ? listaCarrelloMobile()
+                                : listaCarrello()
                             : Column(
                                 children: [
                                   MyText.titleLarge(
@@ -206,8 +212,8 @@ class _CartScreenState extends State<CartScreen>
             ],
           );
         },
-      ),
-    );
+      );
+    }));
   }
 
   Widget listaCarrello() {
@@ -266,19 +272,13 @@ class _CartScreenState extends State<CartScreen>
                       strokeWidth: 3,
                     ),
                   )
-                : Row(
+                : Column(
                     children: [
-                      /* Padding(
-                        padding: const EdgeInsets.only(right: 12),
-                        child: immagine(data),
-                      ),*/
-                      Expanded(
-                        child: descrizioneMobile(data),
+                      descrizioneMobile(data),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: quantitaMobile(data),
                       ),
-                      /* Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: quantita(data),
-                      ),*/
                     ],
                   ));
       },
@@ -312,10 +312,28 @@ class _CartScreenState extends State<CartScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MyText.bodyMedium(
-          "${data.descrizione} (${Utils.formatStringDecimal((data.qtaArt), data.numDecArt ?? 2)} ${data.um1})",
-          fontWeight: 600,
-          maxLines: 2,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: MyText.bodySmall(
+                "${data.descrizione} (${Utils.formatStringDecimal((data.qtaArt), data.numDecArt ?? 2)} ${data.um1})",
+                fontWeight: 600,
+                maxLines: 2,
+              ),
+            ),
+            MySpacing.width(8),
+            InkWell(
+              onTap: () {
+                _displayStoricoArticolo(context, data);
+              },
+              child: Icon(
+                LucideIcons.history,
+                size: 34,
+                color: contentTheme.primary,
+              ),
+            ),
+          ],
         ),
         Padding(
           padding: const EdgeInsets.only(top: 4),
@@ -344,6 +362,123 @@ class _CartScreenState extends State<CartScreen>
               visualDensity: getCompactDensity,
             ),
           ),
+        MySpacing.height(8),
+        Visibility(
+          visible: !data.applicaOmaggio && controller.isModificaPrezzo,
+          child: dropdown<Arprz>(
+            data.prezzoListini!
+                .where((element) => element.valore != 0)
+                .map(
+                  (listino) => DropdownMenuItem<Arprz>(
+                    value: listino,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          MyText.labelMedium(
+                            listino.descrizione,
+                          ),
+                          MyText.labelMedium(
+                            "€ ${Utils.formatStringDecimal(listino.valore, 3)}",
+                          ),
+                        ]),
+                  ),
+                )
+                .toList(),
+            (value) {
+              data.listinoSelezionato = value;
+              data.textControllerListino.text =
+                  "€ ${Utils.formatStringDecimal(value?.valore, 3)}";
+              controller.aggiornaPrezzoArticolo(data);
+            },
+            "Prezzo",
+            data.listinoSelezionato,
+            (BuildContext context) {
+              return data.prezzoListini!
+                  .where((element) => element.valore != 0)
+                  .map<Widget>((item) {
+                return Container(
+                  alignment: Alignment.centerRight,
+                  child: MyText.labelLarge(
+                    textAlign: TextAlign.right,
+                    "€ ${Utils.formatStringDecimal(item.valore, 3)}",
+                  ),
+                );
+              }).toList();
+            },
+          ),
+        ),
+        MySpacing.height(8),
+        Visibility(
+            visible: (data.listinoSelezionato?.listino == 1 &&
+                    !data.applicaOmaggio) &&
+                controller.isModificaSconto,
+            child: /*dropDownSconti(data)*/
+                data.prezzoArticolo?.scalaSconti != null
+                    ? dropdown<ScalaSconti>(
+                        data.prezzoArticolo!.scalaSconti!
+                            .map(
+                              (sconto) => DropdownMenuItem<ScalaSconti>(
+                                value: sconto,
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          MyText.labelMedium(
+                                            sconto.sconto == ""
+                                                ? "Nessuno sconto"
+                                                : "${sconto.sconto}%",
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          MyText.labelMedium(
+                                            "€ ${Utils.formatStringDecimal(sconto.prezzo, 3)}",
+                                          ),
+                                          MyText.labelMedium(
+                                            "Prov: ${sconto.provvigione}%",
+                                          ),
+                                        ],
+                                      ),
+                                    ]),
+                              ),
+                            )
+                            .toList(),
+                        (value) {
+                          data.scontoSelezionato = value;
+                          controller.update();
+                          data.importo = data.scontoSelezionato?.prezzo ?? 0;
+                          data.textControllerSconto.text = value?.sconto == ""
+                              ? "Nessuno sconto"
+                              : "${value?.sconto}%";
+                          data.prezzoArticolo?.provvigione =
+                              data.scontoSelezionato?.provvigione;
+                          controller.getTotali(data);
+                        },
+                        "Sconto applicato",
+                        data.scontoSelezionato,
+                        (BuildContext context) {
+                          return data.prezzoArticolo!.scalaSconti!
+                              .map<Widget>((item) {
+                            return Container(
+                              alignment: Alignment.centerRight,
+                              child: MyText.labelLarge(
+                                textAlign: TextAlign.right,
+                                item.sconto == ""
+                                    ? "Nessuno sconto"
+                                    : "${item.sconto}%",
+                              ),
+                            );
+                          }).toList();
+                        },
+                      )
+                    : Text("")),
       ],
     );
   }
@@ -425,7 +560,8 @@ class _CartScreenState extends State<CartScreen>
                     MySpacing.width(8),
                     Expanded(
                       child: Visibility(
-                        visible: !data.applicaOmaggio,
+                        visible:
+                            !data.applicaOmaggio && controller.isModificaPrezzo,
                         child: Padding(
                             padding: const EdgeInsets.only(right: 4),
                             child: dropdown<Arprz>(
@@ -478,8 +614,9 @@ class _CartScreenState extends State<CartScreen>
                       child: Padding(
                         padding: const EdgeInsets.only(left: 4),
                         child: Visibility(
-                            visible: data.listinoSelezionato?.listino == 1 &&
-                                !data.applicaOmaggio,
+                            visible: (data.listinoSelezionato?.listino == 1 &&
+                                    !data.applicaOmaggio) &&
+                                controller.isModificaSconto,
                             child: /*dropDownSconti(data)*/
                                 data.prezzoArticolo?.scalaSconti != null
                                     ? dropdown<ScalaSconti>(
@@ -535,7 +672,7 @@ class _CartScreenState extends State<CartScreen>
                                           data.prezzoArticolo?.provvigione =
                                               data.scontoSelezionato
                                                   ?.provvigione;
-                                          controller.getTotali();
+                                          controller.getTotali(data);
                                         },
                                         "Sconto applicato",
                                         data.scontoSelezionato,
@@ -568,6 +705,103 @@ class _CartScreenState extends State<CartScreen>
             ],
           ),
         ),
+      ],
+    );
+  }
+
+  Widget quantitaMobile(Articolo data) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                MyContainer.rounded(
+                  onTap: () => controller.delete(data),
+                  child: Icon(
+                    LucideIcons.trash,
+                    size: 20,
+                    color: contentTheme.danger,
+                  ),
+                ),
+                MyContainer.roundBordered(
+                  onTap: () {
+                    controller.decrement(data);
+                  },
+                  paddingAll: 4,
+                  borderRadiusAll: 2,
+                  child: Icon(
+                    LucideIcons.minus,
+                    size: 18,
+                  ),
+                ),
+                MySpacing.width(10),
+                SizedBox(
+                  width: 30,
+                  child: MyText.titleMedium(
+                    Utils.formatStringDecimal(data.conf, 0),
+                    fontWeight: 800,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                MySpacing.width(10),
+                MyContainer.roundBordered(
+                  onTap: () {
+                    controller.increment(data);
+                  },
+                  paddingAll: 4,
+                  borderRadiusAll: 2,
+                  child: Icon(
+                    LucideIcons.plus,
+                    size: 18,
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                data.loadingPrezzo
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: contentTheme.primary,
+                            strokeWidth: 3,
+                          ),
+                        ),
+                      )
+                    : MyText.bodyLarge(
+                        "€ ${Utils.formatStringDecimal((data.importoTotale), 2)}",
+                        fontWeight: 800),
+                MySpacing.height(4),
+                MyText.bodySmall(
+                  " Iva ${data.iva?.trim()}%",
+                ),
+              ],
+            ),
+          ],
+        ),
+        /* Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Center(
+              child: MyText.bodySmall(
+                "Prov: ",
+                //fontWeight: 600,
+              ),
+            ),
+            MyText.bodySmall(
+              "${data.prezzoArticolo?.provvigione}%",
+              //fontWeight: 600,
+            ),
+          ],
+        ),*/
       ],
     );
   }

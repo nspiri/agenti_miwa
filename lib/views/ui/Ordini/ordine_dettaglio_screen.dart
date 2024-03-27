@@ -269,7 +269,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen>
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            MyText.bodyLarge("€ ${Utils.formatStringDecimal((data.ocprz), 2)}",
+            MyText.bodyLarge("€ ${Utils.formatStringDecimal((data.ocruv), 2)}",
                 fontWeight: 800),
             MySpacing.height(4),
             MyText.bodySmall(
@@ -277,7 +277,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen>
             ),
           ],
         ),
-        MySpacing.height(4),
+        /*  MySpacing.height(4),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -292,7 +292,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen>
               //fontWeight: 600,
             ),
           ],
-        ),
+        ),*/
       ],
     );
   }

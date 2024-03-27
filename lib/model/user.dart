@@ -5,6 +5,8 @@ class User {
   int? idMagazzino;
   bool? modificaPrezzo;
   bool? modificaSconto;
+  int? idUtente;
+  String? token;
 
   User(
       {this.codiceAgente,
@@ -12,7 +14,9 @@ class User {
       this.idListino,
       this.idMagazzino,
       this.modificaPrezzo,
-      this.modificaSconto});
+      this.modificaSconto,
+      this.idUtente,
+      this.token});
 
   User.fromJson(Map<String, dynamic> json) {
     codiceAgente = json['CodiceAgente'];
@@ -21,6 +25,8 @@ class User {
     idMagazzino = json['IdMagazzino'];
     modificaPrezzo = json['ModificaPrezzo'];
     modificaSconto = json['ModificaSconto'];
+    idUtente = json['IdUtente'];
+    token = json['Token'];
   }
 
   Map<String, dynamic> toJson() {
@@ -31,6 +37,8 @@ class User {
     data['IdMagazzino'] = idMagazzino;
     data['ModificaPrezzo'] = modificaPrezzo;
     data['ModificaSconto'] = modificaSconto;
+    data['IdUtente'] = idUtente;
+    data['Token'] = token;
     return data;
   }
 }

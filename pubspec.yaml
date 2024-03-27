@@ -60,6 +60,9 @@ dependencies:
   dio: ^5.4.1
   signature: ^5.4.1
   syncfusion_flutter_pdf: ^23.2.7
+  open_file: ^3.3.2
+  platform_device_id: ^1.0.1
+  platform_device_id_v3: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -93,6 +96,7 @@ flutter:
     - assets/images/fast_food/
     - assets/images/home/
     - assets/images/restaurant_logo/
+    - assets/pdf/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -68,11 +68,13 @@ class CustomerDetailController extends MyController {
     update();
   }
 
-  getData(CustomerDetail cliente) async {
+  getData(CustomerDetail? cliente) async {
     dettaglio = cliente;
     //getDettaglioCliente(codCliente);
-    getScadenziarioCliente(dettaglio!.codiceCliente!);
-    getNoteCliente(dettaglio!.codiceCliente!);
+    if (dettaglio != null) {
+      getScadenziarioCliente(dettaglio!.codiceCliente!);
+      getNoteCliente(dettaglio!.codiceCliente!);
+    }
   }
 
   getDettaglioCliente(String codCliente) async {

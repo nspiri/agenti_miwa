@@ -1,6 +1,21 @@
+import 'dart:convert';
+import 'dart:html' as html;
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
+import 'package:flutter/foundation.dart';
 import 'package:foody/helpers/extention/date_time_extention.dart';
+import 'package:foody/helpers/storage/local_storage.dart';
+import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/model/listino.dart';
+import 'package:foody/model/request.dart' as r;
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
+
+import 'package:open_file/open_file.dart' as open_file;
+import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 
 class Utils {
   static getDateStringFromDateTime(DateTime dateTime,
@@ -106,6 +121,10 @@ class Utils {
     return DateFormat('dd-MM-yyyy').format(date);
   }
 
+  static String dateToStringPdf(DateTime date) {
+    return DateFormat('dd/MM/yyyy').format(date);
+  }
+
   static DateTime stringToData(String date) {
     return DateFormat('dd-MM-yyyy').parse(date);
   }
@@ -135,5 +154,18 @@ class Utils {
       lista = value;
       return lista;
     });*/
+  }
+
+  static controllaLogin() async {
+    r.Response res = await DoRequest.doHttpRequest(
+        nomeCollage: "colsrute",
+        etichettaCollage: "UTENTE",
+        dati: {"Token": LocalStorage.getToken() ?? ""});
+
+    if (res.code == 200) {
+      if (res.error != "") {
+        Get.toNamed("/auth/login");
+      }
+    }
   }
 }

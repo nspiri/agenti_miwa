@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:foody/helpers/services/auth_services.dart';
+import 'package:foody/helpers/utils/global.dart';
+import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/views/auth/forgot_password_screen.dart';
 import 'package:foody/views/auth/login_screen.dart';
 import 'package:foody/views/auth/register_account_screen.dart';
+import 'package:foody/views/ui/Attrezzature/attrezzature_screen.dart';
 import 'package:foody/views/ui/Ordini/ordine_dettaglio_screen.dart';
 import 'package:foody/views/ui/Ordini/ordini_screen.dart';
 import 'package:foody/views/ui/Statistiche/statistiche_screen.dart';
@@ -11,6 +14,7 @@ import 'package:foody/views/home_screen.dart';
 import 'package:foody/views/ui/customer/attrezzature_customer.dart';
 import 'package:foody/views/ui/customer/ordini_customer_screen.dart';
 import 'package:foody/views/ui/customer/scadenziario_customer_screen.dart';
+import 'package:foody/views/ui/customer/state_customers_screen.dart';
 import 'package:foody/views/ui/customer/storico_customer_screen.dart';
 import 'package:foody/views/ui/Articolo/add_food_screen.dart';
 import 'package:foody/views/ui/Articolo/food_detail_screen.dart';
@@ -38,6 +42,17 @@ import 'package:get/get.dart';
 class AuthMiddleware extends GetMiddleware {
   @override
   RouteSettings? redirect(String? route) {
+    Utils.controllaLogin();
+    if (route == "/admin/customers/detail" ||
+        route == "/admin/customers/orders" ||
+        route == "/admin/customers/historical" ||
+        route == "/admin/customers/timetable" ||
+        route == "/admin/customers/equipment" ||
+        route == "/cart") {
+      if (clienteSelezionato == null) {
+        return const RouteSettings(name: '/admin/customers/list');
+      }
+    }
     return AuthService.isLoggedIn
         ? null
         : const RouteSettings(name: '/auth/login');
@@ -124,6 +139,14 @@ getPageRoute() {
     GetPage(
         name: '/admin/customers/equipment',
         page: () => const AttrezzatureScreen(),
+        middlewares: [AuthMiddleware()]),
+    GetPage(
+        name: '/admin/customers/state',
+        page: () => const CustomerStateScreen(),
+        middlewares: [AuthMiddleware()]),
+    GetPage(
+        name: '/admin/equipment',
+        page: () => const AttrezzatureCondScreen(),
         middlewares: [AuthMiddleware()]),
 
     /// Seller

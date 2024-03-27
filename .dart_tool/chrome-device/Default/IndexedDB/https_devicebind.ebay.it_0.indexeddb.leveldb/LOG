@@ -1,2 +1,3 @@
-2024/02/13-10:07:59.569 3e5c Creating DB C:\Users\Utente\AppData\Local\Temp\flutter_tools.292cbfd\flutter_tools_chrome_device.cbe4549c\Default\IndexedDB\https_devicebind.ebay.it_0.indexeddb.leveldb since it was missing.
-2024/02/13-10:07:59.577 3e5c Reusing MANIFEST C:\Users\Utente\AppData\Local\Temp\flutter_tools.292cbfd\flutter_tools_chrome_device.cbe4549c\Default\IndexedDB\https_devicebind.ebay.it_0.indexeddb.leveldb/MANIFEST-000001
+2024/03/21-10:37:46.442 5cb4 Reusing MANIFEST C:\Users\Utente\AppData\Local\Temp\flutter_tools.98f9c274\flutter_tools_chrome_device.3ecd8419\Default\IndexedDB\https_devicebind.ebay.it_0.indexeddb.leveldb/MANIFEST-000001
+2024/03/21-10:37:46.442 5cb4 Recovering log #3
+2024/03/21-10:37:46.443 5cb4 Reusing old log C:\Users\Utente\AppData\Local\Temp\flutter_tools.98f9c274\flutter_tools_chrome_device.3ecd8419\Default\IndexedDB\https_devicebind.ebay.it_0.indexeddb.leveldb/000003.log 

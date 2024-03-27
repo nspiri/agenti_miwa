@@ -1,14 +1,20 @@
-2024/03/18-10:08:58.274 c54 Reusing MANIFEST C:\Users\Utente\AppData\Local\Temp\flutter_tools.601d4f60\flutter_tools_chrome_device.15446e93\Default\Session Storage/MANIFEST-000001
-2024/03/18-10:08:58.279 c54 Recovering log #32
-2024/03/18-10:08:58.283 c54 Reusing old log C:\Users\Utente\AppData\Local\Temp\flutter_tools.601d4f60\flutter_tools_chrome_device.15446e93\Default\Session Storage/000032.log 
-2024/03/18-10:08:58.286 c54 Delete type=0 #3
-2024/03/18-10:08:58.286 c54 Delete type=0 #4
-2024/03/18-10:08:58.286 c54 Delete type=2 #7
-2024/03/18-10:08:58.286 c54 Delete type=0 #8
-2024/03/18-10:08:58.286 c54 Delete type=2 #10
-2024/03/18-10:08:58.286 c54 Delete type=0 #11
-2024/03/18-10:08:58.286 c54 Delete type=0 #13
-2024/03/18-10:08:58.287 c54 Delete type=2 #14
-2024/03/18-10:08:58.287 c54 Delete type=0 #16
-2024/03/18-10:08:58.287 c54 Delete type=2 #18
-2024/03/18-10:08:58.287 c54 Delete type=0 #29
+2024/03/27-11:54:03.298 a398 Reusing MANIFEST C:\Users\Utente\AppData\Local\Temp\flutter_tools.bc63874d\flutter_tools_chrome_device.4c1bb56d\Default\Session Storage/MANIFEST-000001
+2024/03/27-11:54:03.303 a398 Recovering log #44
+2024/03/27-11:54:03.309 a398 Reusing old log C:\Users\Utente\AppData\Local\Temp\flutter_tools.bc63874d\flutter_tools_chrome_device.4c1bb56d\Default\Session Storage/000044.log 
+2024/03/27-11:54:03.311 a398 Delete type=0 #3
+2024/03/27-11:54:03.312 a398 Delete type=0 #4
+2024/03/27-11:54:03.312 a398 Delete type=2 #7
+2024/03/27-11:54:03.312 a398 Delete type=0 #8
+2024/03/27-11:54:03.312 a398 Delete type=2 #10
+2024/03/27-11:54:03.312 a398 Delete type=0 #11
+2024/03/27-11:54:03.312 a398 Delete type=0 #13
+2024/03/27-11:54:03.312 a398 Delete type=2 #14
+2024/03/27-11:54:03.313 a398 Delete type=0 #16
+2024/03/27-11:54:03.314 a398 Delete type=2 #18
+2024/03/27-11:54:03.314 a398 Delete type=2 #28
+2024/03/27-11:54:03.314 a398 Delete type=0 #29
+2024/03/27-11:54:03.314 a398 Delete type=2 #30
+2024/03/27-11:54:03.314 a398 Delete type=0 #32
+2024/03/27-11:54:03.314 a398 Delete type=2 #33
+2024/03/27-11:54:03.314 a398 Delete type=0 #37
+2024/03/27-11:54:03.314 a398 Delete type=0 #41

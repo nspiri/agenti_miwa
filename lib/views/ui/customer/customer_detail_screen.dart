@@ -32,14 +32,14 @@ class CustomerDetailScreen extends StatefulWidget {
 class _CustomerDetailScreenState extends State<CustomerDetailScreen>
     with SingleTickerProviderStateMixin, UIMixin {
   late CustomerDetailController controller;
-  late CustomerDetail? cliente;
+  CustomerDetail? cliente;
 
   @override
   void initState() {
     cliente = Get.arguments;
     cliente ??= clienteSelezionato;
     controller = Get.put(CustomerDetailController(context: context));
-    controller.getData(cliente!);
+    controller.getData(cliente);
     super.initState();
   }
 

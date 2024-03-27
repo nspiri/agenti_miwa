@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:foody/controller/ui/customer/add_customer_controller.dart';
 import 'package:foody/helpers/theme/app_themes.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
@@ -20,6 +21,7 @@ import 'package:foody/model/zone_clienti.dart';
 import 'package:foody/views/layout/layout.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:signature/signature.dart';
 import 'package:time_range/time_range.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
@@ -843,23 +845,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                               MyContainer.bordered(
                                 paddingAll: 8,
                                 onTap: () {
-                                  controller.apriFirma();
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(LucideIcons.x, size: 20),
-                                    MySpacing.width(8),
-                                    MyText.bodyMedium(
-                                      "Firma",
-                                      fontWeight: 600,
-                                    )
-                                  ],
-                                ),
-                              ),
-                              MySpacing.width(12),
-                              MyContainer.bordered(
-                                paddingAll: 8,
-                                onTap: () {
                                   controller.pulisciCampi();
                                 },
                                 child: Row(
@@ -874,8 +859,33 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                 ),
                               ),
                               MySpacing.width(12),
+                              MyContainer.bordered(
+                                paddingAll: 8,
+                                onTap: () {
+                                  apriFirma();
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      LucideIcons.fileSignature,
+                                      size: 18,
+                                    ),
+                                    MySpacing.width(8),
+                                    MyText.bodyMedium(
+                                      "Firma",
+                                      fontWeight: 600,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              MySpacing.width(12),
                               MyButton.rounded(
-                                onPressed: controller.inserisciCliente,
+                                disabled: controller.documento.isEmpty,
+                                onPressed: () {
+                                  if (controller.documento.isNotEmpty) {
+                                    controller.inserisciCliente();
+                                  }
+                                },
                                 elevation: 0,
                                 padding: MySpacing.xy(20, 18),
                                 backgroundColor: contentTheme.primary,
@@ -1266,6 +1276,79 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
           ),
         ),
       ],
+    );
+  }
+
+  apriFirma() {
+    showGeneralDialog(
+      context: context,
+      barrierColor: Colors.cyan, // Background color
+      barrierDismissible: false,
+      barrierLabel: ' Full Screen Dialog',
+      transitionDuration: const Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return Scaffold(
+          backgroundColor: Colors.grey[300]!,
+          body: Column(children: [
+            Expanded(
+              child: Signature(
+                key: const Key('signature'),
+                controller: controller.controllerSignature,
+                height: 300,
+                width: 1000,
+                backgroundColor: Colors.white,
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(bottom: 20, right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  MyContainer.bordered(
+                    paddingAll: 8,
+                    onTap: () {
+                      controller.controllerSignature.clear();
+                      Navigator.of(context).pop();
+                    },
+                    child: Row(
+                      children: [
+                        Icon(LucideIcons.x, size: 20),
+                        MySpacing.width(8),
+                        MyText.bodyMedium(
+                          "Cancella",
+                          fontWeight: 600,
+                        )
+                      ],
+                    ),
+                  ),
+                  MySpacing.width(12),
+                  MyButton.rounded(
+                    disabled: controller.documento.isEmpty,
+                    onPressed: () {
+                      controller.exportImage(context);
+                      Navigator.of(context).pop();
+                    },
+                    elevation: 0,
+                    padding: MySpacing.xy(20, 18),
+                    backgroundColor: contentTheme.primary,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(LucideIcons.x, size: 20),
+                        MySpacing.width(8),
+                        MyText.bodySmall(
+                          'Firma',
+                          color: contentTheme.onPrimary,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ]),
+        );
+      },
     );
   }
 }

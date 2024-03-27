@@ -13,6 +13,7 @@ import 'package:foody/model/cart_model.dart';
 import 'package:foody/model/customer_detail.dart';
 import 'package:foody/model/listino.dart';
 import 'package:foody/model/nota.dart';
+import 'package:foody/model/user.dart';
 import 'package:foody/views/my_controller.dart';
 import 'package:get/get.dart';
 import 'package:foody/model/request.dart' as r;
@@ -31,6 +32,7 @@ class CartController extends MyController {
   TextEditingController notaConsegna = TextEditingController();
   CalcoloTotale allTot = CalcoloTotale([], 0, 0, 0, 0, 0, 0, 0);
   bool inviaLoading = false, loadingCliente = true;
+  bool isModificaPrezzo = true, isModificaSconto = true;
   CartController({required this.context});
 
   @override
@@ -39,6 +41,11 @@ class CartController extends MyController {
   }
 
   getData(CustomerDetail cliente) async {
+    User? u = LocalStorage.getLoggedUser();
+    if (u != null) {
+      isModificaPrezzo = u.modificaPrezzo ?? true;
+      isModificaSconto = u.modificaSconto ?? true;
+    }
     destinazione = cliente;
     listini = await Utils.getNomeListini();
     fattA = null;
@@ -148,7 +155,7 @@ class CartController extends MyController {
         }*/
       }
       element.importo = element.prezzoArticolo?.prezzo ?? 0;
-      getTotali();
+      getTotali(null);
       element.loading = false;
       update();
     }
@@ -202,7 +209,7 @@ class CartController extends MyController {
           element.scontoSelezionato = null;
           element.importo = element.prezzoArticolo?.prezzo ?? 0;
         }
-        await getTotali();
+        await getTotali(null);
       }
     }
     art.loadingPrezzo = false;
@@ -321,8 +328,8 @@ class CartController extends MyController {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
-                    child: MyText.titleLarge(
-                      "Cancellare l'articolo ${art.descrizione}?",
+                    child: MyText.titleMedium(
+                      "Attenzione",
                       maxLines: 2,
                     ),
                   ),
@@ -330,13 +337,15 @@ class CartController extends MyController {
               ),
               content: Container(
                   constraints: BoxConstraints(minWidth: 100, maxWidth: 500),
-                  child: MyText.labelMedium("", maxLines: 10)),
+                  child: MyText.bodySmall(
+                      "Cancellare l'articolo ${art.descrizione}?",
+                      maxLines: 10)),
               actions: <Widget>[
                 TextButton(
                   style: TextButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.labelLarge,
                   ),
-                  child: MyText.labelMedium("No"),
+                  child: MyText.bodySmall("No"),
                   onPressed: () {
                     Navigator.of(context).pop(false);
                   },
@@ -345,7 +354,7 @@ class CartController extends MyController {
                   style: TextButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.labelLarge,
                   ),
-                  child: MyText.labelMedium("Si"),
+                  child: MyText.bodySmall("Si"),
                   onPressed: () {
                     Navigator.of(context).pop(true);
                   },
@@ -366,7 +375,7 @@ class CartController extends MyController {
             if (carrello.isEmpty) {
               allTot.azzeraRighe();
             } else {
-              getTotali();
+              getTotali(null);
             }
             update();
           }
@@ -375,7 +384,11 @@ class CartController extends MyController {
     }
   }
 
-  getTotali() async {
+  getTotali(Articolo? art) async {
+    if (art != null) {
+      art.loadingPrezzo = true;
+      update();
+    }
     List<dynamic> articoli = [];
     for (var element in carrello) {
       articoli.add({
@@ -405,6 +418,10 @@ class CartController extends MyController {
       applicaPrezzi(tot);
       update();
     }
+    if (art != null) {
+      art.loadingPrezzo = false;
+    }
+    update();
   }
 
   cancellaOrdine() {

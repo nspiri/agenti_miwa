@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/model/articolo.dart';
@@ -31,6 +32,11 @@ class ModalListaArtController extends MyController {
 
   bool isPromo = false, isTop10 = false, isAll = true;
 
+  ScrollController scrollController = ScrollController();
+  List<Articolo> articoliMobile = [];
+  int currentPage = 1;
+  int articlesPerPage = 20;
+
   ModalListaArtController(
       {required this.context,
       required this.articoliSelezionati,
@@ -40,6 +46,44 @@ class ModalListaArtController extends MyController {
   void onInit() {
     getData();
     super.onInit();
+  }
+
+  void caricaArticoli() {
+    for (int i = 1; i <= articlesPerPage; i++) {
+      if (i < articoliFiltrati.length) {
+        articoliMobile.add(articoliFiltrati[i]);
+      } else {
+        break;
+      }
+    }
+  }
+
+  void scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      _loadMoreArticles();
+    }
+  }
+
+  void _loadMoreArticles() {
+    currentPage++;
+    for (int i = 1; i <= articlesPerPage; i++) {
+      var num = i + (currentPage - 1) * articlesPerPage;
+      if (i + (currentPage - 1) * articlesPerPage < articoliFiltrati.length) {
+        articoliMobile
+            .add(articoliFiltrati[i + (currentPage - 1) * articlesPerPage]);
+      } else {
+        break;
+      }
+    }
+    update();
+  }
+
+  void _scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      _loadMoreArticles();
+    }
   }
 
   getData() async {
@@ -85,7 +129,7 @@ class ModalListaArtController extends MyController {
     if (articoliSelezionati.isEmpty) {
       for (var c = 0; c < articoli.length; c++) {
         articoli[c].conf = 0;
-        articoliFiltrati = articoli;
+        //articoliFiltrati = articoli;
       }
     } else {
       for (var c = 0; c < articoliFiltrati.length; c++) {
@@ -120,6 +164,8 @@ class ModalListaArtController extends MyController {
       sortArt();
       data = MyDataListArtModal(articoliFiltrati, context, this);
       modificaConfArt();
+      caricaArticoli();
+      scrollController.addListener(_scrollListener);
       setLoading(false);
       update();
     });
@@ -133,7 +179,12 @@ class ModalListaArtController extends MyController {
     r.Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrart",
         etichettaCollage: "TOP_VENDITE",
-        dati: {"magazzino": 1, "cliente": codCli, "top": 70});
+        dati: {
+          "magazzino": 1,
+          "cliente": codCli,
+          "top": 70,
+          "agente": LocalStorage.getLoggedUser()?.codiceAgente,
+        });
 
     if (res.code == 200) {
       var a = res.result as List<dynamic>;

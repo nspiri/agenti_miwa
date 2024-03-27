@@ -1,13 +1,58 @@
+import 'package:foody/helpers/utils/global.dart';
+import 'package:foody/model/customer_detail.dart';
+import 'package:foody/model/customer_list.dart';
 import 'package:foody/views/my_controller.dart';
 import 'package:get/get.dart';
+import 'package:get/get_navigation/src/dialog/dialog_route.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeController extends MyController {
   int selectTime = 1;
-  // int selectedId = 0;
+  int numStatoCli = 0, numAttrezz = 0;
   String selectedDailyTask = 'Today';
+  List<StatoCliente> statoClienti = [];
+  List<Attrezzatura> attrezzature = [];
 
   List listaPulsanti = [
+    {
+      "image": "assets/images/home/nuovo_cliente.png",
+      "name": "Nuovo Cliente",
+      "url": "/admin/customers/create",
+      "hover": false
+    },
+    {
+      "image": "assets/images/home/nuovo_ordine.png",
+      "name": "Nuovo Ordine",
+      "url": "/cart",
+      "hover": false
+    },
+    {
+      "image": "assets/images/home/ordini_in_corso.png",
+      "name": "Ordini In Corso",
+      "url": "/admin/orders",
+      "hover": false
+    },
+    {
+      "image": "assets/images/home/statistiche.png",
+      "name": "Statistiche Vendite",
+      "url": "/admin/stats",
+      "hover": false
+    },
+    {
+      "image": "assets/images/home/stato_cliente.png",
+      "name": "Stato Clienti",
+      "url": "/admin/customers/state",
+      "hover": false
+    },
+    {
+      "image": "assets/images/home/attrezzature.png",
+      "name": "Stato Attrezzature",
+      "url": "/admin/equipment",
+      "hover": false
+    },
+  ];
+
+  List listaLink = [
     {
       "image": "assets/images/home/catalogo.png",
       "name": "Catalogo",
@@ -17,11 +62,6 @@ class HomeController extends MyController {
       "image": "assets/images/home/ricette.png",
       "name": "Ricette",
       "url": "https://miwasrl.com/index.php/ricette"
-    },
-    {
-      "image": "assets/images/home/nuovo_cliente.png",
-      "name": "Nuovo Cliente",
-      "url": ""
     },
     {
       "image": "assets/images/home/eventi.png",
@@ -36,14 +76,39 @@ class HomeController extends MyController {
     },
   ];
 
-  void onSelect(int index) async {
-    if (listaPulsanti[index]['url'] == "") {
-      Get.toNamed("/admin/customers/create");
+  getDati() {
+    StatoCliente.dummyList.then((value) {
+      statoClienti = value;
+      numStatoCli = value.length;
+      update();
+    });
+    Attrezzatura.dummyList.then((value) {
+      attrezzature = value;
+      numAttrezz = value.length;
+      update();
+    });
+  }
+
+  void onSelectPulsante(int index) async {
+    if (listaPulsanti[index]["url"] == "/cart" && clienteSelezionato == null) {
+      Get.toNamed("/admin/customers");
     } else {
-      final Uri url = Uri.parse(listaPulsanti[index]['url']);
-      if (!await launchUrl(url)) {
-        throw Exception('Could not launch $url');
+      if (listaPulsanti[index]["url"] == "/admin/equipment") {
+        Get.toNamed(listaPulsanti[index]["url"], arguments: attrezzature);
+      } else if (listaPulsanti[index]["url"] == "/admin/customers/state") {
+        Get.toNamed(listaPulsanti[index]["url"], arguments: statoClienti);
+      } else {
+        Get.toNamed(listaPulsanti[index]["url"]);
       }
+    }
+
+    update();
+  }
+
+  void onSelectLink(int index) async {
+    final Uri url = Uri.parse(listaLink[index]['url']);
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
     }
     update();
   }
@@ -58,63 +123,4 @@ class HomeController extends MyController {
 
     update();
   }
-
-  Map restaurant = {
-    'List': [
-      {
-        'image': "assets/images/food/domino's.png",
-        'name': 'Domino\'s Pizza',
-        'star': 5,
-        'charges': 'Buy 2 get 1 Free',
-        'title': 'Pizza',
-        'range': '2 km',
-        'delivery': false
-      },
-      {
-        'image': 'assets/images/food/pizza_hut.png',
-        'name': 'Pizza Hut',
-        'star': '4.2',
-        'charges': 'Free Delivery',
-        'title': 'Pizza',
-        'range': '3.1 km',
-        'delivery': true
-      },
-      {
-        'image': 'assets/images/food/carrows.png',
-        'name': 'Carrows Restaurant',
-        'star': '1.5',
-        'charges': '\$0.99 Delivery',
-        'title': 'Fish',
-        'range': '1 km',
-        'delivery': true
-      },
-      {
-        'image': "assets/images/food/mc_donald's.png",
-        'name': 'McDonald\'s',
-        'star': '5',
-        'charges': '\$1.99 Delivery',
-        'title': 'Burger',
-        'range': '0.2 km',
-        'delivery': true
-      },
-      {
-        'image': 'assets/images/food/kfc.png',
-        'name': 'KFC',
-        'star': '3.3',
-        'charges': 'Buy 3 get 1 Free',
-        'title': 'Chicken',
-        'range': '20 km',
-        'delivery': false
-      },
-      {
-        'image': 'assets/images/food/burger_king.png',
-        'name': 'Burger King',
-        'star': '3',
-        'charges': 'Free Delivery',
-        'title': 'Burger',
-        'range': '6.1 km',
-        'delivery': true
-      },
-    ]
-  };
 }

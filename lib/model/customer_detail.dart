@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:foody/helpers/services/json_decoder.dart';
+import 'package:foody/helpers/storage/local_storage.dart';
+import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/model/identifier_model.dart';
+import 'package:foody/model/request.dart';
 
 class CustomerDetail extends IdentifierModel {
   String? codiceCliente;
@@ -254,15 +259,19 @@ class Attrezzatura {
   double? valPeriodo;
   double? qtaPeriodo;
   int? tempoGg;
+  String? codice;
+  String? descrizione;
 
   Attrezzatura(
-      {this.dataInizio,
+      this.dataInizio,
       this.attrezzatura,
       this.natura,
       this.quantitaMin,
       this.tempoGg,
       this.valPeriodo,
-      this.qtaPeriodo});
+      this.qtaPeriodo,
+      this.codice,
+      this.descrizione);
 
   Attrezzatura.fromJson(Map<String, dynamic> json) {
     dataInizio = json['data_inizio'];
@@ -272,6 +281,8 @@ class Attrezzatura {
     tempoGg = json['tempo_gg'];
     valPeriodo = json['val_periodo'];
     qtaPeriodo = json['qta_periodo'];
+    codice = json['pccod'];
+    descrizione = json['pcdes'];
   }
 
   Map<String, dynamic> toJson() {
@@ -283,7 +294,60 @@ class Attrezzatura {
     data['tempo_gg'] = tempoGg;
     data['val_periodo'] = valPeriodo;
     data['qta_periodo'] = qtaPeriodo;
+    data['pccod'] = codice;
+    data['pcdes'] = descrizione;
     return data;
+  }
+
+  static Attrezzatura fromJSON(Map<String, dynamic> json) {
+    JSONDecoder decoder = JSONDecoder(json);
+
+    String dataInizio = decoder.getString('data_inizio');
+    String attrezzatura = decoder.getString('attrezzatura');
+    String natura = decoder.getString('natura');
+    double quantitaMin = decoder.getDouble('quantita_min');
+    int tempoGg = decoder.getInt('tempo_gg');
+    double valPeriodo = decoder.getDouble('val_periodo');
+    double qtaPeriodo = decoder.getDouble('qta_periodo');
+    String codice = decoder.getString('pccod');
+    String descrizione = decoder.getString('pcdes');
+
+    return Attrezzatura(dataInizio, attrezzatura, natura, quantitaMin, tempoGg,
+        valPeriodo, qtaPeriodo, codice, descrizione);
+  }
+
+  static List<Attrezzatura> listFromJSON(List<dynamic> list) {
+    return list.map((e) => Attrezzatura.fromJSON(e)).toList();
+  }
+
+  static List<Attrezzatura>? _dummyList;
+
+  static Future<List<Attrezzatura>> get dummyList async {
+    dynamic data = json.decode(await getData());
+    _dummyList = listFromJSON(data);
+
+    return _dummyList!;
+  }
+
+  static Future<String> getData() async {
+    Response res = await DoRequest.doHttpRequest(
+        nomeCollage: "colsrcli",
+        etichettaCollage: "ATTREZZATURE",
+        dati: {
+          "agente": LocalStorage.getLoggedUser()?.codiceAgente,
+          "no_condizione": false
+        });
+
+    if (res.code == 200) {
+      var a = res.result as List<dynamic>;
+      if (a.isEmpty) {
+        return "";
+      }
+      return jsonEncode(a);
+    } else {
+      return "";
+    }
+    //return await rootBundle.loadString('assets/data/clienti.json');
   }
 }
 

@@ -97,51 +97,72 @@ class CustomersList extends IdentifierModel {
   }
 }
 
+class StatoCliente extends IdentifierModel {
+  String? data;
+  String? pccod;
+  int? counter;
+  String? pcdes;
+  String? stato;
+  bool? parcheggiare = false,
+      riprovare = false,
+      ferie = false,
+      editable = true,
+      gestito;
 
+  StatoCliente(
+      super.id, this.data, this.pccod, this.counter, this.pcdes, this.stato);
 
-
-
-/*class CustomersList extends IdentifierModel {
-  final String customerName, email, phone, status;
-  final int order;
-  final double totalOrders;
-  final DateTime customerSince;
-
-  CustomersList(super.id, this.customerName, this.email, this.phone,
-      this.status, this.order, this.totalOrders, this.customerSince);
-
-  static CustomersList fromJSON(Map<String, dynamic> json) {
+  static StatoCliente fromJSON(Map<String, dynamic> json) {
     JSONDecoder decoder = JSONDecoder(json);
 
-    String customerName = decoder.getString('customer_name');
-    String email = decoder.getString('email');
-    String phone = decoder.getString('phone');
-    String status = decoder.getString('status');
-    int order = decoder.getInt('order');
-    double totalOrders = decoder.getDouble('total_orders');
-    DateTime customerSince = decoder.getDateTime('customer_since');
+    String data = decoder.getString('data');
+    String pccod = decoder.getString('pccod');
+    int counter = decoder.getInt('counter');
+    String pcdes = decoder.getString('pcdes');
+    String stato = decoder.getString('stato');
 
-    return CustomersList(decoder.getId, customerName, email, phone, status,
-        order, totalOrders, customerSince);
+    return StatoCliente(decoder.getId, data, pccod, counter, pcdes, stato);
   }
 
-  static List<CustomersList> listFromJSON(List<dynamic> list) {
-    return list.map((e) => CustomersList.fromJSON(e)).toList();
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['data'] = data;
+    data['pccod'] = pccod;
+    data['counter'] = counter;
+    data['pcdes'] = pcdes;
+    data['stato'] = stato;
+    return data;
   }
 
-  static List<CustomersList>? _dummyList;
+  static List<StatoCliente> listFromJSON(List<dynamic> list) {
+    return list.map((e) => StatoCliente.fromJSON(e)).toList();
+  }
 
-  static Future<List<CustomersList>> get dummyList async {
-    if (_dummyList == null) {
-      dynamic data = json.decode(await getData());
-      _dummyList = listFromJSON(data);
-    }
+  static List<StatoCliente>? _dummyList;
 
-    return _dummyList!.sublist(0, 50);
+  static Future<List<StatoCliente>> get dummyList async {
+    //if (_dummyList == null) {
+    dynamic data = json.decode(await getData());
+    _dummyList = listFromJSON(data);
+    // }
+
+    return _dummyList!;
   }
 
   static Future<String> getData() async {
-    return await rootBundle.loadString('assets/data/customers_list.json');
+    Response res = await DoRequest.doHttpRequest(
+        nomeCollage: "colsrcli",
+        etichettaCollage: "CLIENTI_STATO",
+        dati: {"agente": LocalStorage.getLoggedUser()?.codiceAgente});
+
+    if (res.code == 200) {
+      var a = res.result as List<dynamic>;
+      if (a.isEmpty) {
+        return "";
+      }
+      return jsonEncode(a);
+    } else {
+      return "";
+    }
   }
 }
-*/

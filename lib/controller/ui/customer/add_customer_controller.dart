@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/helpers/utils/show_message_dialogs.dart';
+import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/helpers/widgets/my_form_validator.dart';
 import 'package:foody/model/customer_category.dart';
 import 'package:foody/model/customers_fa.dart';
@@ -37,6 +39,7 @@ class AddCustomerController extends MyController {
   List<CustomersFA> clientiFA = [];
   List<TipoSocieta> tipoSocieta = [];
   TipoSocieta? tiposocietaSelezionata;
+  List<int> documento = [];
 
   //Campi destinazione
   TipoSocieta? tiposocietaSelezionataDest;
@@ -96,7 +99,7 @@ class AddCustomerController extends MyController {
   ];
   List giorniSelezionati = [];
 
-  final SignatureController _controller = SignatureController(
+  final SignatureController controllerSignature = SignatureController(
     penStrokeWidth: 1,
     penColor: Colors.red,
     exportBackgroundColor: Colors.transparent,
@@ -182,52 +185,77 @@ class AddCustomerController extends MyController {
     super.onInit();
   }
 
-  apriFirma() {
-    showGeneralDialog(
-      context: context,
-      barrierColor: Colors.cyan, // Background color
-      barrierDismissible: false,
-      barrierLabel: ' Full Screen Dialog',
-      transitionDuration: const Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return Scaffold(
-          body: Column(children: [
-            Expanded(
-              child: Signature(
-                key: const Key('signature'),
-                controller: _controller,
-                //height: 300,
-                backgroundColor: Colors.grey[300]!,
-              ),
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.lightBlue,
-                disabledForegroundColor: Colors.grey,
-              ),
-              onPressed: () {
-                _controller.clear();
-                Navigator.of(context).pop();
-              },
-              child: const Text('Annulla'),
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.lightBlue,
-                disabledForegroundColor: Colors.grey,
-              ),
-              onPressed: () {
-                //exportImage(context);
-                Navigator.of(context).pop();
-              },
-              child: const Text('Ok'),
-            ),
-          ]),
-        );
-      },
-    );
+  Future<void> exportImage(BuildContext context) async {
+    if (controllerSignature.isEmpty) {
+      showErrorMessage(
+          context, "Attenzione", "Non è stata inserita alcuna firma");
+      /* ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          key: Key('snackbarPNG'),
+          content: Text('No content'),
+        ),
+      );*/
+      return;
+    }
+
+    final Uint8List? data =
+        await controllerSignature.toPngBytes(height: 1000, width: 1000);
+    if (data == null) {
+      return;
+    }
+    generateInvoice(data);
+  }
+
+  Future<void> generateInvoice(Uint8List? image) async {
+    try {
+      PdfDocument document =
+          PdfDocument(inputBytes: await _readDocumentData("privacy.pdf"));
+
+      PdfPage page = document.pages[0];
+      Size pageSize = page.getClientSize();
+
+      //PdfFont font = PdfStandardFont(PdfFontFamily.helvetica, 12);
+      String text = basicValidator.getController("ragioneSociale").text;
+
+      page.graphics.drawString(
+          text, PdfCjkStandardFont(PdfCjkFontFamily.heiseiMinchoW3, 12),
+          brush: PdfBrushes.black,
+          bounds: Rect.fromLTWH(
+              40, pageSize.height - 60, pageSize.width, pageSize.height));
+
+      page.graphics.drawString(Utils.dateToStringPdf(DateTime.now()),
+          PdfCjkStandardFont(PdfCjkFontFamily.heiseiMinchoW3, 12),
+          brush: PdfBrushes.black,
+          bounds: Rect.fromLTWH(pageSize.width - 330, pageSize.height - 60,
+              pageSize.width, pageSize.height));
+
+      page.graphics.drawImage(PdfBitmap(image!),
+          Rect.fromLTWH(pageSize.width - 200, pageSize.height - 140, 200, 200));
+
+      final List<int> bytes = document.saveSync();
+      documento = bytes;
+      document.dispose();
+      //  await Utils.saveAndLaunchFile(bytes, 'Invoice.pdf');
+    } catch (e) {
+      e.toString();
+    }
+
+    //final PdfDocument document = PdfDocument();
+    //   final PdfPage page = document.pages.add();
+
+    /*   PdfFont font = PdfStandardFont(PdfFontFamily.helvetica, 12);
+    String text = 'PRIVACY: TRATTAMENTO DEI DATI - art.13 reg. UE 2016/679';
+    Size size = font.measureString(text);
+
+    page.graphics.drawString(
+        text, PdfCjkStandardFont(PdfCjkFontFamily.heiseiMinchoW3, 10),
+        brush: PdfBrushes.black,
+        bounds: Rect.fromLTWH(0, 0, size.width, size.height));*/
+  }
+
+  Future<List<int>> _readDocumentData(String name) async {
+    final ByteData data = await rootBundle.load('assets/pdf/$name');
+    return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
   }
 
   filtraPaesi(String value) {
@@ -684,6 +712,21 @@ class AddCustomerController extends MyController {
     return valido;
   }
 
+  List<String> splitStringByLength(String str, int length) =>
+      [str.substring(0, length), str.substring(length)];
+
+  List<String> documentoEncode(String doc) {
+    List<String> str = [];
+    for (var c = 0; c < doc.length; c = c + 30000) {
+      if (c + 30000 > doc.length) {
+        str.add(doc.substring(c, doc.length));
+      } else {
+        str.add(doc.substring(c, c + 30000));
+      }
+    }
+    return str;
+  }
+
   Future<String> sendRequest() async {
     String giorniChiusura = "Chiuso: ";
     List tipoAttivita = [];
@@ -746,6 +789,7 @@ class AddCustomerController extends MyController {
       "pcona": zonaClienteSelezionata?.idC ?? 0,
       "tipo_attivita": tipoAttivita,
       "note": basicValidator.getController("nota2").text ?? "",
+      "privacy": documentoEncode(base64.encode(documento)),
       if (isCheckedDest)
         "destinazione": {
           "pcdes": basicValidator

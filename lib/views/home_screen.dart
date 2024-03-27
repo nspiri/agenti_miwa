@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:foody/controller/home_controller.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb.dart';
@@ -27,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     controller = Get.put(HomeController());
+    controller.getDati();
     super.initState();
   }
 
@@ -66,8 +69,19 @@ class _HomeScreenState extends State<HomeScreen>
                       sizes: 'lg-4',
                       child: buildPremiumContainer(),
                     ),*/
-
-                    MyFlexItem(child: pulsanti())
+                    MyFlexItem(child: pulsanti()),
+                    MyFlexItem(
+                      sizes: 'lg-4',
+                      child: Padding(
+                        padding: MySpacing.x(flexSpacing / 2),
+                        child: MyText.titleMedium(
+                          "Link",
+                          fontSize: 18,
+                          fontWeight: 600,
+                        ),
+                      ),
+                    ),
+                    MyFlexItem(child: link())
                     /* MyFlexItem(
                         child: Column(
                       children: [
@@ -261,22 +275,65 @@ class _HomeScreenState extends State<HomeScreen>
           MyFlexItem(
               sizes: "xs-6 sm-6 md-4 lg-2",
               child: SizedBox(
+                height: 170,
+                child: MyContainer(
+                  color: contentTheme.cardBackground,
+                  width: 165,
+                  onTap: () {
+                    controller.onSelectPulsante(i);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.asset(
+                        controller.listaPulsanti[i]['image'] ?? '',
+                        height: 100,
+                      ),
+                      MySpacing.height(8),
+                      MyText.bodyMedium(
+                        textAlign: TextAlign.center,
+                        controller.listaPulsanti[i]["url"] ==
+                                "/admin/customers/state"
+                            ? "${controller.listaPulsanti[i]['name']} (${controller.numStatoCli})"
+                            : controller.listaPulsanti[i]["url"] ==
+                                    "/admin/equipment"
+                                ? "${controller.listaPulsanti[i]['name']} (${controller.numAttrezz})"
+                                : "${controller.listaPulsanti[i]['name']}",
+                        fontWeight: 600,
+                        maxLines: 2,
+                      ),
+                    ],
+                  ),
+                ),
+              )),
+      ],
+    );
+  }
+
+  Widget link() {
+    return MyFlex(
+      children: [
+        for (var i = 0; i < controller.listaLink.length; i++)
+          MyFlexItem(
+              sizes: "xs-6 sm-6 md-4 lg-2",
+              child: SizedBox(
                   height: 170,
                   child: MyContainer(
                     width: 165,
                     onTap: () {
-                      controller.onSelect(i);
+                      controller.onSelectLink(i);
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Image.asset(
-                          controller.listaPulsanti[i]['image'] ?? '',
+                          controller.listaLink[i]['image'] ?? '',
                           height: 100,
                         ),
                         MySpacing.height(8),
                         MyText.bodyMedium(
-                          controller.listaPulsanti[i]['name'] ?? '',
+                          controller.listaLink[i]['name'] ?? '',
+                          textAlign: TextAlign.center,
                           fontWeight: 600,
                         ),
                       ],

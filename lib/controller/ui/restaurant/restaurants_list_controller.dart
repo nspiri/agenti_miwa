@@ -12,7 +12,7 @@ import 'package:foody/model/request.dart' as r;
 class ScadenziarioListController extends MyController {
   List<ScadenziarioCliente> scadenziario = [];
   DataTableSource? data;
-  bool? dataAsc = true, dataScad, importo, ragSoc, doc;
+  bool? dataAsc, dataScad = false, importo, ragSoc, doc;
 
   @override
   void onInit() {
@@ -41,8 +41,8 @@ class ScadenziarioListController extends MyController {
       if (dati != []) {
         scadenziario =
             dati.map((e) => ScadenziarioCliente.fromJson(e)).toList();
-        scadenziario
-            .sort((a, b) => int.parse(b.data!).compareTo(int.parse(a.data!)));
+        scadenziario.sort((a, b) =>
+            int.parse(a.dataScadenza!).compareTo(int.parse(b.dataScadenza!)));
         data = MyDataDetailScadenziario(scadenziario);
       }
       update();
