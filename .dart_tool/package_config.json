@@ -68,18 +68,6 @@
       "languageVersion": "2.19"
     },
     {
-      "name": "device_info",
-      "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/device_info-2.0.3",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "device_info_platform_interface",
-      "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/device_info_platform_interface-2.0.1",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
       "name": "dio",
       "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/dio-5.4.1",
       "packageUri": "lib/",
@@ -386,48 +374,6 @@
       "languageVersion": "2.19"
     },
     {
-      "name": "platform_device_id",
-      "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/platform_device_id-1.0.1",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "platform_device_id_linux",
-      "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/platform_device_id_linux-1.0.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "platform_device_id_macos",
-      "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/platform_device_id_macos-1.0.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "platform_device_id_platform_interface",
-      "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/platform_device_id_platform_interface-1.0.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "platform_device_id_v3",
-      "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/platform_device_id_v3-1.0.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "platform_device_id_web",
-      "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/platform_device_id_web-1.0.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "platform_device_id_windows",
-      "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/platform_device_id_windows-1.0.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
       "name": "plugin_platform_interface",
       "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/plugin_platform_interface-2.1.7",
       "packageUri": "lib/",
@@ -704,6 +650,30 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "webview_flutter",
+      "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/webview_flutter-4.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "webview_flutter_android",
+      "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/webview_flutter_android-3.16.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
+      "name": "webview_flutter_platform_interface",
+      "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/webview_flutter_platform_interface-2.10.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "webview_flutter_wkwebview",
+      "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
       "name": "win32",
       "rootUri": "file:///C:/Users/Utente/AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.1.0",
       "packageUri": "lib/",
@@ -728,7 +698,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2024-03-27T14:22:42.641040Z",
+  "generated": "2024-04-19T08:07:48.739378Z",
   "generator": "pub",
   "generatorVersion": "3.3.1"
 }

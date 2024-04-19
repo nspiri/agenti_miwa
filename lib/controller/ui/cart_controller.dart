@@ -17,6 +17,7 @@ import 'package:foody/model/user.dart';
 import 'package:foody/views/my_controller.dart';
 import 'package:get/get.dart';
 import 'package:foody/model/request.dart' as r;
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class CartController extends MyController {
   BuildContext context;
@@ -250,6 +251,54 @@ class CartController extends MyController {
     return null;
   }
 
+  preventivo() async {
+    List<dynamic> articoli = [];
+    for (var element in carrello) {
+      articoli.add({
+        "articolo": element.codArt,
+        "colli": int.parse(element.conf?.toStringAsFixed(0) ?? "0"),
+        "quantita": element.qtaArt,
+        "prezzo": element.prezzoArticolo?.prezzo,
+        "sconto": element.scontoSelezionato?.sconto ?? "",
+        "omaggio": element.applicaOmaggio ? applicaOmaggio(element) : 0,
+        "iva": element.iva,
+        "provvigione": element.prezzoArticolo?.provvigione
+      });
+    }
+    r.Response res = await DoRequest.doHttpRequest(
+        nomeCollage: "colsrdoc",
+        etichettaCollage: "PREVENTIVO",
+        dati: {
+          "cliente": fattA?.codiceCliente ?? destinazione?.codiceCliente ?? "",
+          "agente": LocalStorage.getLoggedUser()?.codiceAgente,
+          "destinazione":
+              fattA == null ? "" : destinazione?.codiceCliente ?? "",
+          "pagamento": int.parse(fattA != null
+              ? fattA?.codicePagamento ?? "0"
+              : destinazione?.codicePagamento ?? "0"),
+          "articoli": articoli
+        });
+    String pdf = "";
+    if (res.code == 200) {
+      var result = res.result as List<dynamic>;
+      if (result[0]["pdf"] != null) {
+        if (result.isNotEmpty) {
+          for (var element in result[0]["pdf"]) {
+            pdf += element;
+          }
+          Uint8List pdfExp = base64
+              .decode(pdf.replaceAll(RegExp(r'\s+'), '').replaceAll("[", ""));
+          PdfDocument document = PdfDocument(inputBytes: pdfExp);
+          final List<int> bytes = document.saveSync();
+          document.dispose();
+          await Utils.saveAndLaunchFile(bytes, 'Preventivo.pdf');
+        }
+      }
+    } else {
+      //showErrorMessage(context, "Nessuna immagine", "");
+    }
+  }
+
   Future<PrezzoArticolo?> getPrezzoArticolo(Articolo art) async {
     r.Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrart",
@@ -393,7 +442,7 @@ class CartController extends MyController {
     for (var element in carrello) {
       articoli.add({
         "articolo": element.codArt,
-        "colli": element.conf,
+        "colli": int.parse(element.conf?.toStringAsFixed(0) ?? "0"),
         "quantita": element.qtaArt,
         "prezzo": element.prezzoArticolo?.prezzo,
         "sconto": element.scontoSelezionato?.sconto ?? "",
@@ -406,7 +455,9 @@ class CartController extends MyController {
       "cliente": fattA?.codiceCliente ?? destinazione?.codiceCliente ?? "",
       "agente": LocalStorage.getLoggedUser()?.codiceAgente,
       "destinazione": fattA == null ? "" : destinazione?.codiceCliente ?? "",
-      "pagamento": int.parse(destinazione?.codicePagamento ?? "0"),
+      "pagamento": int.parse(fattA != null
+          ? fattA?.codicePagamento ?? "0"
+          : destinazione?.codicePagamento ?? "0"),
       "articoli": articoli,
     };
     r.Response res = await DoRequest.doHttpRequest(
@@ -439,6 +490,8 @@ class CartController extends MyController {
     carrelloGlobale = [];
     fattA = null;
     destinazione = null;
+    notaConsegna.text = "";
+    notaIncasso.text = "";
     allTot.azzeraRighe();
     update();
     Get.toNamed("/admin/customers/list");
@@ -518,7 +571,9 @@ class CartController extends MyController {
                 "agente": LocalStorage.getLoggedUser()?.codiceAgente,
                 "destinazione":
                     fattA == null ? "" : destinazione?.codiceCliente ?? "",
-                "pagamento": int.parse(destinazione?.codicePagamento ?? "0"),
+                "pagamento": int.parse(fattA != null
+                    ? fattA?.codicePagamento ?? "0"
+                    : destinazione?.codicePagamento ?? "0"),
                 "nota_consegna": notaConsegna.text,
                 "nota_incasso": notaIncasso.text,
                 "articoli": articoli,

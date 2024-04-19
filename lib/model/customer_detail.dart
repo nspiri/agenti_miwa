@@ -333,10 +333,10 @@ class Attrezzatura {
     Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrcli",
         etichettaCollage: "ATTREZZATURE",
-        dati: {
+        dati: json.encode({
           "agente": LocalStorage.getLoggedUser()?.codiceAgente,
           "no_condizione": false
-        });
+        }));
 
     if (res.code == 200) {
       var a = res.result as List<dynamic>;

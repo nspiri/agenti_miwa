@@ -1,0 +1,10 @@
+^C:\USERS\UTENTE\DESKTOP\CARTELLE\PROGETTI\PROG FLUTT\AGENTI_MIWA\BUILD\WINDOWS\X64\CMAKEFILES\B25986C1D19A378EF1339457C7EE87C1\INSTALL_FORCE.RULE
+setlocal
+cd .
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

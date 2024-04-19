@@ -61,8 +61,7 @@ dependencies:
   signature: ^5.4.1
   syncfusion_flutter_pdf: ^23.2.7
   open_file: ^3.3.2
-  platform_device_id: ^1.0.1
-  platform_device_id_v3: ^1.0.0
+  webview_flutter: ^4.7.0
 
 dev_dependencies:
   flutter_test:

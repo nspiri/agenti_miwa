@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:foody/controller/ui/customer/scadenziario_controller.dart';
 import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
 import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
+import 'package:foody/helpers/widgets/my_container.dart';
+import 'package:foody/helpers/widgets/my_responsiv.dart';
 import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/helpers/widgets/responsive.dart';
@@ -36,89 +39,273 @@ class _ScadenziarioScreenState extends State<ScadenziarioScreen>
   @override
   Widget build(BuildContext context) {
     return Layout(
-      child: GetBuilder(
+        child: MyResponsive(builder: (BuildContext context, _, screenMT) {
+      return GetBuilder(
         init: controller,
         builder: (controller) {
           return Column(
             children: [
               Padding(
-                padding: MySpacing.x(flexSpacing),
+                padding: MySpacing.x(flexSpacing / 2),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    MyText.titleMedium(
-                      "Scadenzario: ${clienteSelezionato?.ragioneSociale}",
-                      fontSize: 18,
-                      fontWeight: 600,
+                    Flexible(
+                      child: MyText.titleMedium(
+                        "Scad: ${clienteSelezionato?.ragioneSociale}",
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: 18,
+                        fontWeight: 600,
+                      ),
                     ),
-                    MyBreadcrumb(
-                      children: [
-                        MyBreadcrumbItem(
-                          name: 'Scadenzario',
-                          active: true,
-                        ),
-                      ],
-                    ),
+                    MySpacing.width(8),
+                    if (screenMT.isMobile == true)
+                      SizedBox(
+                          child: MyText.bodyLarge(
+                        "Totale: € ${controller.totale}",
+                        fontWeight: 600,
+                      )),
+                    if (screenMT.isMobile == false)
+                      MyBreadcrumb(
+                        children: [
+                          MyBreadcrumbItem(
+                            name: 'Scadenzario',
+                            active: true,
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),
-              MySpacing.height(flexSpacing),
+              if (screenMT.isMobile == true) MySpacing.height(flexSpacing / 2),
+              if (screenMT.isMobile == true)
+                Padding(
+                  padding: MySpacing.x(flexSpacing / 2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: MyContainer(
+                          onTap: () {
+                            controller.getScadenziarioCliente();
+                          },
+                          paddingAll: 8,
+                          color: controller.tutti
+                              ? contentTheme.success
+                              : contentTheme.primary,
+                          child: Row(
+                            children: [
+                              Icon(
+                                LucideIcons.listPlus,
+                                size: 20,
+                                color: contentTheme.onPrimary,
+                              ),
+                              MySpacing.width(8),
+                              MyText.bodyMedium(
+                                "Tutte le Scadenze",
+                                color: contentTheme.onPrimary,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      MySpacing.width(8),
+                      Expanded(
+                        child: MyContainer(
+                          onTap: () {
+                            controller.scadute();
+                          },
+                          paddingAll: 8,
+                          color: controller.scaduti
+                              ? contentTheme.success
+                              : contentTheme.primary,
+                          child: Row(
+                            children: [
+                              Icon(
+                                LucideIcons.euro,
+                                size: 20,
+                                color: contentTheme.onPrimary,
+                              ),
+                              MySpacing.width(8),
+                              MyText.bodyMedium(
+                                "Scadute",
+                                color: contentTheme.onPrimary,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              MySpacing.height(flexSpacing / 2),
               Padding(
-                padding: MySpacing.x(flexSpacing),
+                padding: MySpacing.x(flexSpacing / 2),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        if (controller.scadenziario.isNotEmpty)
-                          SizedBox(
-                            width: double.infinity,
-                            child: PaginatedDataTable(
-                              header: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: MySpacing.top(24),
-                                    child: SizedBox(
-                                      width: 250,
-                                      child: TextField(
-                                        decoration: InputDecoration(
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(4),
+                        //if (controller.scadenziario.isNotEmpty)
+                        !controller.isLoading
+                            ? SizedBox(
+                                width: double.infinity,
+                                child: PaginatedDataTable(
+                                  header: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: MySpacing.top(24),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SizedBox(
+                                              width: 250,
+                                              child: TextField(
+                                                decoration: InputDecoration(
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(4),
+                                                      ),
+                                                    ),
+                                                    prefixIcon: Icon(
+                                                        LucideIcons.search,
+                                                        size: 20),
+                                                    hintText: 'Cerca',
+                                                    contentPadding:
+                                                        MySpacing.xy(12, 8)),
+                                                onChanged: (value) {
+                                                  controller
+                                                      .filterByName(value);
+                                                },
                                               ),
                                             ),
-                                            prefixIcon: Icon(LucideIcons.search,
-                                                size: 20),
-                                            hintText: 'Cerca',
-                                            contentPadding:
-                                                MySpacing.xy(12, 8)),
-                                        onChanged: (value) {
-                                          controller.filterByName(value);
-                                        },
+                                            MySpacing.width(8),
+                                            if (screenMT.isMobile == true)
+                                              IconButton(
+                                                  onPressed: () {
+                                                    for (var element in controller
+                                                        .filterScadenziario) {
+                                                      if (element.selected) {
+                                                        controller.generaPdf();
+                                                        break;
+                                                      }
+                                                    }
+                                                  },
+                                                  icon: Icon(
+                                                    LucideIcons.fileDown,
+                                                    color: contentTheme.primary,
+                                                  ))
+                                          ],
+                                        ),
                                       ),
-                                    ),
+                                      if (screenMT.isMobile == false)
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            MyContainer(
+                                              onTap: () {
+                                                controller
+                                                    .getScadenziarioCliente();
+                                              },
+                                              paddingAll: 8,
+                                              color: controller.tutti
+                                                  ? contentTheme.success
+                                                  : contentTheme.primary,
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    LucideIcons.listPlus,
+                                                    size: 20,
+                                                    color:
+                                                        contentTheme.onPrimary,
+                                                  ),
+                                                  MySpacing.width(8),
+                                                  MyText.bodyMedium(
+                                                    "Tutte le Scadenze",
+                                                    color:
+                                                        contentTheme.onPrimary,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            MySpacing.width(8),
+                                            MyContainer(
+                                              onTap: () {
+                                                controller.scadute();
+                                              },
+                                              paddingAll: 8,
+                                              color: controller.scaduti
+                                                  ? contentTheme.success
+                                                  : contentTheme.primary,
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    LucideIcons.euro,
+                                                    size: 20,
+                                                    color:
+                                                        contentTheme.onPrimary,
+                                                  ),
+                                                  MySpacing.width(8),
+                                                  MyText.bodyMedium(
+                                                    "Scadute",
+                                                    color:
+                                                        contentTheme.onPrimary,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            MySpacing.width(8),
+                                            Padding(
+                                              padding: MySpacing.top(0),
+                                              child: SizedBox(
+                                                  child: MyText.bodyLarge(
+                                                "Totale: € ${controller.totale}",
+                                                fontWeight: 600,
+                                              )),
+                                            ),
+                                            MySpacing.width(8),
+                                            IconButton(
+                                                onPressed: () {
+                                                  for (var element in controller
+                                                      .filterScadenziario) {
+                                                    if (element.selected) {
+                                                      controller.generaPdf();
+                                                      break;
+                                                    }
+                                                  }
+                                                },
+                                                icon: Icon(
+                                                  LucideIcons.fileDown,
+                                                  color: contentTheme.primary,
+                                                ))
+                                          ],
+                                        )
+                                    ],
                                   ),
-                                  Padding(
-                                    padding: MySpacing.top(24),
-                                    child: SizedBox(
-                                        child: MyText.bodyLarge(
-                                      "Totale: € ${controller.totale}",
-                                      fontWeight: 600,
-                                    )),
-                                  ),
-                                ],
-                              ),
-                              sortAscending: true,
-                              onSelectAll: (_) => {},
-                              dataRowMaxHeight: 52,
-                              //columnSpacing: 170,
-                              showFirstLastButtons: true,
-                              showCheckboxColumn: true,
-                              columns: [
-                                /*DataColumn(
+                                  sortAscending: true,
+                                  onSelectAll: (val) {
+                                    controller.all = !controller.all;
+                                    for (var element
+                                        in controller.filterScadenziario) {
+                                      element.selected = controller.all;
+                                    }
+                                    controller.changeValue();
+                                  },
+                                  dataRowMaxHeight: 52,
+                                  //columnSpacing: 170,
+                                  showFirstLastButtons: true,
+                                  showCheckboxColumn: true,
+                                  columns: [
+                                    /*DataColumn(
                                     label: MyText.labelLarge(
                                   'Cod. Cliente',
                                 )),
@@ -130,39 +317,47 @@ class _ScadenziarioScreenState extends State<ScadenziarioScreen>
                                     label: MyText.labelLarge(
                                   'Doc.',
                                 )),*/
-                                DataColumn(
-                                    onSort: (columnIndex, ascending) =>
-                                        controller.orderByDoc(),
-                                    label: ordinamento(
-                                        "Documento", controller.doc)),
-                                DataColumn(
-                                    onSort: (columnIndex, ascending) =>
-                                        controller.orderByData(),
-                                    label: ordinamento(
-                                        "Data", controller.dataAsc)),
-                                DataColumn(
-                                    label: MyText.labelLarge('Tipo Pagamento',
-                                        fontWeight: 600)),
-                                DataColumn(
-                                    onSort: (columnIndex, ascending) =>
-                                        controller.orderByDataScad(),
-                                    label: ordinamento(
-                                        "Scadenza", controller.dataScad)),
-                                DataColumn(
-                                    onSort: (columnIndex, ascending) =>
-                                        controller.orderByImporto(),
-                                    numeric: true,
-                                    label: ordinamento(
-                                        "Importo", controller.importo)),
-                              ],
-                              source: controller.data!,
-                              rowsPerPage: controller.data!.rowCount > 20
-                                  ? 20
-                                  : controller.data!.rowCount == 0
-                                      ? 1
-                                      : controller.data!.rowCount,
-                            ),
-                          ),
+                                    DataColumn(
+                                        onSort: (columnIndex, ascending) =>
+                                            controller.orderByDoc(),
+                                        label: ordinamento(
+                                            "Documento", controller.doc)),
+                                    DataColumn(
+                                        onSort: (columnIndex, ascending) =>
+                                            controller.orderByData(),
+                                        label: ordinamento(
+                                            "Data", controller.dataAsc)),
+                                    DataColumn(
+                                        label: MyText.labelLarge(
+                                            'Tipo Pagamento',
+                                            fontWeight: 600)),
+                                    DataColumn(
+                                        onSort: (columnIndex, ascending) =>
+                                            controller.orderByDataScad(),
+                                        label: ordinamento(
+                                            "Scadenza", controller.dataScad)),
+                                    DataColumn(
+                                        onSort: (columnIndex, ascending) =>
+                                            controller.orderByImporto(),
+                                        numeric: true,
+                                        label: ordinamento(
+                                            "Importo", controller.importo)),
+                                  ],
+                                  showEmptyRows: false,
+                                  source: controller.data!,
+                                  rowsPerPage: controller.data!.rowCount > 20
+                                      ? 20
+                                      : controller.data!.rowCount == 0
+                                          ? 1
+                                          : controller.data!.rowCount,
+                                ),
+                              )
+                            : Center(
+                                child: CircularProgressIndicator(
+                                  color: contentTheme.primary,
+                                  strokeWidth: 3,
+                                ),
+                              ),
                       ],
                     ),
                   ],
@@ -171,8 +366,8 @@ class _ScadenziarioScreenState extends State<ScadenziarioScreen>
             ],
           );
         },
-      ),
-    );
+      );
+    }));
   }
 
   Widget ordinamento(String titolo, bool? valore) {
@@ -191,8 +386,8 @@ class _ScadenziarioScreenState extends State<ScadenziarioScreen>
 
 class MyDataDetailScadenziarioCliente extends DataTableSource with UIMixin {
   List<ScadenziarioCliente> listaScadenziario = [];
-
-  MyDataDetailScadenziarioCliente(this.listaScadenziario);
+  ScadenziarioController controller;
+  MyDataDetailScadenziarioCliente(this.listaScadenziario, this.controller);
 
   @override
   bool get isRowCountApproximate => false;
@@ -237,6 +432,11 @@ class MyDataDetailScadenziarioCliente extends DataTableSource with UIMixin {
           "€ ${Utils.formatStringDecimal(scadenza.importo, 2)}",
         )),
       ],
+      selected: controller.filterScadenziario[index].selected,
+      onSelectChanged: (value) {
+        controller.filterScadenziario[index].selected = value ?? false;
+        controller.changeValue();
+      },
     );
   }
 

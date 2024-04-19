@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\windows\x64\CMakeFiles\094d0f98995ad75b1368acedee512d2e\flutter_windows.dll.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\windows\x64\CMakeFiles\0a91d23669d5c25ced120277546e394d\flutter_assemble.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\windows\flutter\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\windows\x64\flutter\CMakeFiles\flutter_assemble" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{73541872-A19B-3130-87CB-4BFE08F39F1B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

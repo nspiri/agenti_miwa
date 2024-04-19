@@ -66,8 +66,8 @@ class LocalStorage {
   }
 
   static User? getLoggedUser() {
-    User user =
-        User.fromJson(jsonDecode(preferences.getString(_loggedUserKey) ?? ""));
+    User user = User.fromJson(
+        jsonDecode(preferences.getString(_loggedUserKey) ?? "{}"));
     return user;
   }
 }

@@ -4,6 +4,10 @@ import 'package:foody/helpers/utils/ui_mixins.dart';
 import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
+import 'package:foody/helpers/widgets/my_container.dart';
+import 'package:foody/helpers/widgets/my_flex.dart';
+import 'package:foody/helpers/widgets/my_flex_item.dart';
+import 'package:foody/helpers/widgets/my_responsiv.dart';
 import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/helpers/widgets/my_text_style.dart';
@@ -34,13 +38,14 @@ class _StatisticheListScreenState extends State<StatisticheListScreen>
   @override
   Widget build(BuildContext context) {
     return Layout(
-      child: GetBuilder(
+        child: MyResponsive(builder: (BuildContext context, _, screenMT) {
+      return GetBuilder(
         init: controller,
         builder: (controller) {
           return Column(
             children: [
               Padding(
-                padding: MySpacing.x(flexSpacing),
+                padding: MySpacing.x(flexSpacing / 2),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -60,9 +65,15 @@ class _StatisticheListScreenState extends State<StatisticheListScreen>
                   ],
                 ),
               ),
-              MySpacing.height(flexSpacing),
+              MySpacing.height(12),
+              if (screenMT.isMobile || screenMT.isTablet)
+                Padding(
+                  padding: MySpacing.x(flexSpacing / 2),
+                  child: filtriMobile(),
+                ),
+              MySpacing.height(flexSpacing / 2),
               Padding(
-                padding: MySpacing.x(flexSpacing),
+                padding: MySpacing.x(flexSpacing / 2),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -70,53 +81,86 @@ class _StatisticheListScreenState extends State<StatisticheListScreen>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         //if (controller.statistiche.isNotEmpty)
-                        SizedBox(
-                          width: double.infinity,
-                          child: PaginatedDataTable(
-                            header: filtri(),
-                            sortAscending: true,
-                            onSelectAll: (_) => {},
-                            dataRowMaxHeight: 52,
-                            //columnSpacing: 170,
-                            showFirstLastButtons: true,
-                            showCheckboxColumn: true,
-                            columns: [
-                              DataColumn(
-                                  onSort: (columnIndex, ascending) =>
-                                      controller.orderByCategoria(),
-                                  label: ordinamento(
-                                      "Categoria", controller.categoria)),
-                              DataColumn(
-                                  onSort: (columnIndex, ascending) =>
-                                      controller.orderByArticolo(),
-                                  label: ordinamento(
-                                      "Articolo", controller.articolo)),
-                              if (controller.isChecked)
-                                DataColumn(
-                                    onSort: (columnIndex, ascending) =>
-                                        controller.orderByCliente(),
-                                    label: ordinamento(
-                                        "Cliente", controller.cliente)),
-                              DataColumn(
-                                  onSort: (columnIndex, ascending) =>
-                                      controller.orderByQta(),
-                                  numeric: true,
-                                  label: ordinamento("Q.ta", controller.qta)),
-                              DataColumn(
-                                  numeric: true,
-                                  onSort: (columnIndex, ascending) =>
-                                      controller.orderByValore(),
-                                  label:
-                                      ordinamento("Valore", controller.valore)),
-                            ],
-                            source: controller.data!,
-                            rowsPerPage: controller.data!.rowCount > 20
-                                ? 20
-                                : controller.data!.rowCount == 0
-                                    ? 1
-                                    : controller.data!.rowCount,
-                          ),
-                        ),
+                        !controller.isLoading
+                            ? SizedBox(
+                                width: double.infinity,
+                                child: PaginatedDataTable(
+                                  header: screenMT.isMobile || screenMT.isTablet
+                                      ? Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 10, right: 10),
+                                          child: SizedBox(
+                                            child: TextField(
+                                              decoration: InputDecoration(
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(4),
+                                                  ),
+                                                ),
+                                                prefixIcon: Icon(
+                                                    LucideIcons.search,
+                                                    size: 20),
+                                                hintText: 'Cerca',
+                                              ),
+                                              onChanged: (value) {
+                                                controller.filterByName(value);
+                                              },
+                                            ),
+                                          ),
+                                        )
+                                      : filtri(),
+                                  sortAscending: true,
+                                  onSelectAll: (_) => {},
+                                  dataRowMaxHeight: 52,
+                                  //columnSpacing: 170,
+                                  showFirstLastButtons: true,
+                                  showCheckboxColumn: true,
+                                  columns: [
+                                    DataColumn(
+                                        onSort: (columnIndex, ascending) =>
+                                            controller.orderByCategoria(),
+                                        label: ordinamento(
+                                            "Categoria", controller.categoria)),
+                                    DataColumn(
+                                        onSort: (columnIndex, ascending) =>
+                                            controller.orderByArticolo(),
+                                        label: ordinamento(
+                                            "Articolo", controller.articolo)),
+                                    if (controller.isChecked)
+                                      DataColumn(
+                                          onSort: (columnIndex, ascending) =>
+                                              controller.orderByCliente(),
+                                          label: ordinamento(
+                                              "Cliente", controller.cliente)),
+                                    DataColumn(
+                                        onSort: (columnIndex, ascending) =>
+                                            controller.orderByQta(),
+                                        numeric: true,
+                                        label: ordinamento(
+                                            "Q.ta", controller.qta)),
+                                    DataColumn(
+                                        numeric: true,
+                                        onSort: (columnIndex, ascending) =>
+                                            controller.orderByValore(),
+                                        label: ordinamento(
+                                            "Valore", controller.valore)),
+                                  ],
+                                  showEmptyRows: false,
+                                  source: controller.data!,
+                                  rowsPerPage: controller.data!.rowCount > 20
+                                      ? 20
+                                      : controller.data!.rowCount == 0
+                                          ? 1
+                                          : controller.data!.rowCount,
+                                ),
+                              )
+                            : Center(
+                                child: CircularProgressIndicator(
+                                  color: contentTheme.primary,
+                                  strokeWidth: 3,
+                                ),
+                              ),
                       ],
                     ),
                   ],
@@ -125,8 +169,8 @@ class _StatisticheListScreenState extends State<StatisticheListScreen>
             ],
           );
         },
-      ),
-    );
+      );
+    }));
   }
 
   Widget filtri() {
@@ -269,6 +313,128 @@ class _StatisticheListScreenState extends State<StatisticheListScreen>
           ),
         ),
       ],
+    );
+  }
+
+  Widget filtriMobile() {
+    return Card(
+      //paddingAll: 0,
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          leading: Icon(
+            LucideIcons.listFilter,
+            color: contentTheme.primary,
+          ),
+          title: MyText.titleMedium(
+            "Filtri",
+            fontWeight: 600,
+          ),
+          childrenPadding: MySpacing.x(12),
+          expandedCrossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MyFlex(spacing: 0, children: [
+              MyFlexItem(
+                sizes: "xs-6 sm-6 md-6 lg-6",
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 4),
+                  child: TextField(
+                      controller: controller.dateControllerDa,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4),
+                            ),
+                          ),
+                          prefixIcon: Icon(LucideIcons.calendar, size: 20),
+                          hintText: 'Da',
+                          contentPadding: MySpacing.xy(12, 8)),
+                      readOnly: true,
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: Utils.stringToData(
+                                controller.dateControllerDa.text),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2101));
+                        controller.dateControllerDa.text =
+                            Utils.getDateTimeStringFromDateTime(
+                                pickedDate ?? DateTime.now(),
+                                showTime: false);
+                        controller.getStatisticheCliente();
+                      }),
+                ),
+              ),
+              MyFlexItem(
+                sizes: "xs-6 sm-6 md-6 lg-6",
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 4),
+                  child: TextField(
+                      controller: controller.dateControllerA,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4),
+                            ),
+                          ),
+                          prefixIcon: Icon(LucideIcons.calendar, size: 20),
+                          hintText: 'A',
+                          contentPadding: MySpacing.xy(12, 8)),
+                      readOnly: true,
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: Utils.stringToData(controller
+                                .dateControllerA.text), //get today's date
+                            firstDate: DateTime(
+                                2000), //DateTime.now() - not to allow to choose before today.
+                            lastDate: DateTime(2101));
+                        controller.dateControllerA.text =
+                            Utils.getDateTimeStringFromDateTime(
+                                pickedDate ?? DateTime.now(),
+                                showTime: false);
+                        controller.getStatisticheCliente();
+                      }),
+                ),
+              )
+            ]),
+            MySpacing.height(12),
+            SizedBox(
+              //width: 150,
+              child: buildDropDownField<Agente>(
+                  controller.agenti
+                      .map(
+                        (societa) => DropdownMenuItem<Agente>(
+                          value: societa,
+                          child: MyText.labelMedium(
+                            societa.pcdes ?? "",
+                          ),
+                        ),
+                      )
+                      .toList(), (value) {
+                controller.agenteSelezionato = value;
+                controller.getStatisticheCliente();
+              }, "Agenti", controller.agenteSelezionato),
+            ),
+            MySpacing.height(8),
+            SizedBox(
+              width: 150,
+              child: CheckboxListTile(
+                controlAffinity: ListTileControlAffinity.leading,
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+                title: MyText.bodyMedium(
+                  "Dett. clienti",
+                  fontWeight: 600,
+                ),
+                value: controller.isChecked,
+                onChanged: (value) => controller.onChangeCheckBox(value),
+              ),
+            ),
+            MySpacing.height(8),
+          ],
+        ),
+      ),
     );
   }
 

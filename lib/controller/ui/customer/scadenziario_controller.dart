@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
@@ -8,12 +9,15 @@ import 'package:foody/model/scadenziario_cliente.dart';
 import 'package:foody/views/my_controller.dart';
 import 'package:foody/views/ui/customer/scadenziario_customer_screen.dart';
 import 'package:foody/model/request.dart' as r;
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class ScadenziarioController extends MyController {
-  List<ScadenziarioCliente> scadenziario = [];
+  List<ScadenziarioCliente> scadenziario = [], filterScadenziario = [];
   DataTableSource? data;
   bool? dataAsc, dataScad = false, importo, ragSoc, doc;
   String? codiceCliente;
+  bool all = false, tutti = true, scaduti = false;
+  bool isLoading = true;
 
   @override
   void onInit() {
@@ -23,20 +27,27 @@ class ScadenziarioController extends MyController {
 
   @override
   void onThemeChanged() {
-    data = MyDataDetailScadenziarioCliente(scadenziario);
+    data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
     update();
   }
 
   getScadenziarioCliente() async {
-    codiceCliente = clienteSelezionato?.codiceCliente;
+    scaduti = false;
+    tutti = true;
+    isLoading = true;
+    update();
+    codiceCliente = clienteSelezionato?.codCliFattA != ""
+        ? clienteSelezionato?.codCliFattA
+        : clienteSelezionato?.codiceCliente;
     r.Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrcli",
         etichettaCollage: "GET_SCAD",
         dati: {
           "agente": LocalStorage.getLoggedUser()?.codiceAgente,
-          "cliente": clienteSelezionato?.codiceCliente ?? ""
+          "cliente": codiceCliente
         });
-
+    isLoading = false;
+    update();
     if (res.code == 200) {
       var a = res.result as dynamic;
       List<dynamic> dati = json.decode(jsonEncode(a));
@@ -45,7 +56,8 @@ class ScadenziarioController extends MyController {
             dati.map((e) => ScadenziarioCliente.fromJson(e)).toList();
         scadenziario.sort((a, b) =>
             int.parse(a.dataScadenza!).compareTo(int.parse(b.dataScadenza!)));
-        data = MyDataDetailScadenziarioCliente(scadenziario);
+        filterScadenziario = scadenziario;
+        data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
       }
       update();
     } else {
@@ -54,26 +66,88 @@ class ScadenziarioController extends MyController {
     }
   }
 
+  scadute() {
+    scaduti = true;
+    tutti = false;
+    filterScadenziario = scadenziario
+        .where((element) =>
+            int.parse(element.dataScadenza ?? "0") <
+            int.parse(Utils.stringToDateR(Utils.dateToString(DateTime.now()))))
+        .toList();
+    data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
+    update();
+  }
+
+  changeValue() {
+    data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
+    update();
+  }
+
   String get totale {
     double totale = 0;
-    for (var element in scadenziario) {
-      totale = totale + (element.importo ?? 0).toDouble();
+    for (var element in filterScadenziario) {
+      if (element.selected) {
+        totale = totale + (element.importo ?? 0).toDouble();
+      }
     }
     return Utils.formatStringDecimal(totale, 2);
   }
 
+  generaPdf() async {
+    List<dynamic> clienti = [];
+    for (var element in filterScadenziario) {
+      if (element.selected) {
+        clienti.add({
+          "documento":
+              "${element.documento} ${element.serie}/${element.numero}",
+          "data": element.data,
+          "tipo": element.tipoPagamento,
+          "scadenza": element.dataScadenza,
+          "importo": element.importo
+        });
+      }
+    }
+    r.Response res = await DoRequest.doHttpRequest(
+        nomeCollage: "colsrcli",
+        etichettaCollage: "SCAD_STAMPA",
+        dati: {
+          "cliente": codiceCliente,
+          "agente": LocalStorage.getLoggedUser()?.codiceAgente,
+          "scadenze": clienti
+        });
+    String pdf = "";
+    if (res.code == 200) {
+      var result = res.result as List<dynamic>;
+      if (result[0]["pdf"] != null) {
+        if (result.isNotEmpty) {
+          for (var element in result[0]["pdf"]) {
+            pdf += element;
+          }
+          Uint8List pdfExp = base64
+              .decode(pdf.replaceAll(RegExp(r'\s+'), '').replaceAll("[", ""));
+          PdfDocument document = PdfDocument(inputBytes: pdfExp);
+          final List<int> bytes = document.saveSync();
+          document.dispose();
+          await Utils.saveAndLaunchFile(bytes, 'scadenziario.pdf');
+        }
+      }
+    } else {
+      //showErrorMessage(context, "Nessuna immagine", "");
+    }
+  }
+
   void filterByName(String value) {
     if (value == "") {
-      data = MyDataDetailScadenziarioCliente(scadenziario);
+      data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
     } else {
-      var filterCustomers = scadenziario
+      var filterCustomers = filterScadenziario
           .where((element) =>
               element.ragioneSociale!
                   .toLowerCase()
                   .contains(value.toLowerCase()) ||
               element.documento!.toLowerCase().contains(value.toLowerCase()))
           .toList();
-      data = MyDataDetailScadenziarioCliente(filterCustomers);
+      data = MyDataDetailScadenziarioCliente(filterCustomers, this);
     }
     update();
   }
@@ -85,13 +159,13 @@ class ScadenziarioController extends MyController {
     dataScad = null;
     dataAsc ??= false;
     if (dataAsc!) {
-      scadenziario
+      filterScadenziario
           .sort((a, b) => int.parse(a.data!).compareTo(int.parse(b.data!)));
-      data = MyDataDetailScadenziarioCliente(scadenziario);
+      data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
     } else {
-      scadenziario
+      filterScadenziario
           .sort((a, b) => int.parse(b.data!).compareTo(int.parse(a.data!)));
-      data = MyDataDetailScadenziarioCliente(scadenziario);
+      data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
     }
     dataAsc = !dataAsc!;
     update();
@@ -104,13 +178,13 @@ class ScadenziarioController extends MyController {
     dataAsc = null;
     dataScad ??= false;
     if (dataScad!) {
-      scadenziario.sort((a, b) =>
+      filterScadenziario.sort((a, b) =>
           int.parse(a.dataScadenza!).compareTo(int.parse(b.dataScadenza!)));
-      data = MyDataDetailScadenziarioCliente(scadenziario);
+      data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
     } else {
-      scadenziario.sort((a, b) =>
+      filterScadenziario.sort((a, b) =>
           int.parse(b.dataScadenza!).compareTo(int.parse(a.dataScadenza!)));
-      data = MyDataDetailScadenziarioCliente(scadenziario);
+      data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
     }
     dataScad = !dataScad!;
     update();
@@ -124,11 +198,11 @@ class ScadenziarioController extends MyController {
     importo ??= true;
 
     if (importo!) {
-      scadenziario.sort((a, b) => a.importo!.compareTo(b.importo!));
-      data = MyDataDetailScadenziarioCliente(scadenziario);
+      filterScadenziario.sort((a, b) => a.importo!.compareTo(b.importo!));
+      data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
     } else {
-      scadenziario.sort((a, b) => b.importo!.compareTo(a.importo!));
-      data = MyDataDetailScadenziarioCliente(scadenziario);
+      filterScadenziario.sort((a, b) => b.importo!.compareTo(a.importo!));
+      data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
     }
     importo = !importo!;
     update();
@@ -141,13 +215,13 @@ class ScadenziarioController extends MyController {
     importo = null;
     ragSoc ??= true;
     if (ragSoc!) {
-      scadenziario
+      filterScadenziario
           .sort((a, b) => b.ragioneSociale!.compareTo(a.ragioneSociale!));
-      data = MyDataDetailScadenziarioCliente(scadenziario);
+      data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
     } else {
-      scadenziario
+      filterScadenziario
           .sort((a, b) => a.ragioneSociale!.compareTo(b.ragioneSociale!));
-      data = MyDataDetailScadenziarioCliente(scadenziario);
+      data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
     }
     ragSoc = !ragSoc!;
     update();
@@ -160,13 +234,13 @@ class ScadenziarioController extends MyController {
     ragSoc = null;
     doc ??= true;
     if (doc!) {
-      scadenziario.sort((a, b) => ("${b.documento}${b.serie}${b.numero}")
+      filterScadenziario.sort((a, b) => ("${b.documento}${b.serie}${b.numero}")
           .compareTo(("${a.documento}${a.serie}${a.numero}")));
-      data = MyDataDetailScadenziarioCliente(scadenziario);
+      data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
     } else {
-      scadenziario.sort((a, b) => ("${a.documento}${a.serie}${a.numero}")
+      filterScadenziario.sort((a, b) => ("${a.documento}${a.serie}${a.numero}")
           .compareTo(("${b.documento}${b.serie}${b.numero}")));
-      data = MyDataDetailScadenziarioCliente(scadenziario);
+      data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
     }
     doc = !doc!;
     update();

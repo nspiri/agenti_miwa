@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:foody/controller/ui/customer/attrezzature_controller.dart';
 import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
@@ -42,14 +43,18 @@ class _AttrezzatureScreenState extends State<AttrezzatureScreen>
           return Column(
             children: [
               Padding(
-                padding: MySpacing.x(flexSpacing),
+                padding: MySpacing.x(flexSpacing / 2),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    MyText.titleMedium(
-                      "Attrezzature: ${clienteSelezionato?.ragioneSociale}",
-                      fontSize: 18,
-                      fontWeight: 600,
+                    Flexible(
+                      child: MyText.titleMedium(
+                        "Attrezzature: ${clienteSelezionato?.ragioneSociale}",
+                        fontSize: 18,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        fontWeight: 600,
+                      ),
                     ),
                     MyBreadcrumb(
                       children: [
@@ -62,9 +67,9 @@ class _AttrezzatureScreenState extends State<AttrezzatureScreen>
                   ],
                 ),
               ),
-              MySpacing.height(flexSpacing),
+              MySpacing.height(flexSpacing / 2),
               Padding(
-                padding: MySpacing.x(flexSpacing),
+                padding: MySpacing.x(flexSpacing / 2),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -146,6 +151,7 @@ class _AttrezzatureScreenState extends State<AttrezzatureScreen>
                                           'Val. Periodo',
                                         )),
                                   ],
+                                  showEmptyRows: false,
                                   source: controller.data!,
                                   rowsPerPage: controller.data!.rowCount > 20
                                       ? 20
@@ -154,14 +160,12 @@ class _AttrezzatureScreenState extends State<AttrezzatureScreen>
                                           : controller.data!.rowCount,
                                 ),
                               )
-                            : Container(
-                                child: Column(children: [
-                                  MyText.titleMedium(
-                                    "Non ci sono attrezzature per questo cliente",
-                                    fontWeight: 600,
-                                  )
-                                ]),
-                              ),
+                            : Column(children: [
+                                MyText.titleMedium(
+                                  "Non ci sono attrezzature per questo cliente",
+                                  fontWeight: 600,
+                                )
+                              ])
                       ],
                     ),
                   ],

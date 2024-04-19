@@ -34,6 +34,8 @@ class Articolo extends IdentifierModel {
   double importoTotale = 0;
   bool applicaOmaggio = false;
   bool loading = true, loadingPrezzo = false;
+  int? nrVendite;
+  String? ultimaVendita;
   final TextEditingController textControllerListino = TextEditingController();
   final SuggestionsBoxController controllerListino = SuggestionsBoxController();
   final TextEditingController textControllerSconto = TextEditingController();
@@ -56,7 +58,9 @@ class Articolo extends IdentifierModel {
       this.disponibile,
       this.codCatProvv,
       this.esistenza,
-      this.prezzoListini);
+      this.prezzoListini,
+      this.nrVendite,
+      this.ultimaVendita);
 
   static Articolo fromJSON(Map<String, dynamic> json) {
     JSONDecoder decoder = JSONDecoder(json);
@@ -76,6 +80,8 @@ class Articolo extends IdentifierModel {
     double disponibile = decoder.getDouble('aqdin');
     int codCatProvv = decoder.getInt('arpro');
     int esistenza = decoder.getInt('aqesi');
+    int nrVendite = decoder.getInt('nr_vendite');
+    String ultimaVendita = decoder.getString('ultima_vendita');
     List<Arprz> prezzoListini = [];
     if (json['arprz'] != null) {
       prezzoListini = <Arprz>[];
@@ -85,24 +91,25 @@ class Articolo extends IdentifierModel {
     }
 
     return Articolo(
-      decoder.getId,
-      codArt,
-      codCatSconti,
-      descrizione,
-      codCatListini,
-      catStatistica,
-      codAlt,
-      um1,
-      iva,
-      qtaArt,
-      codCatScontiQta,
-      numDecArt,
-      notaArt,
-      disponibile,
-      codCatProvv,
-      esistenza,
-      prezzoListini,
-    );
+        decoder.getId,
+        codArt,
+        codCatSconti,
+        descrizione,
+        codCatListini,
+        catStatistica,
+        codAlt,
+        um1,
+        iva,
+        qtaArt,
+        codCatScontiQta,
+        numDecArt,
+        notaArt,
+        disponibile,
+        codCatProvv,
+        esistenza,
+        prezzoListini,
+        nrVendite,
+        ultimaVendita);
   }
 
   static List<Articolo> listFromJSON(List<dynamic> list) {

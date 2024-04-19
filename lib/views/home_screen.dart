@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen>
           return Column(
             children: [
               Padding(
-                padding: MySpacing.x(flexSpacing),
+                padding: MySpacing.x(flexSpacing / 2),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -59,9 +59,9 @@ class _HomeScreenState extends State<HomeScreen>
                   ],
                 ),
               ),
-              MySpacing.height(flexSpacing),
+              MySpacing.height(flexSpacing / 2),
               Padding(
-                padding: MySpacing.x(flexSpacing / 2),
+                padding: MySpacing.xy(flexSpacing / 2, flexSpacing / 2),
                 child: MyFlex(
                   children: [
                     /*  MyFlexItem(sizes: 'lg-8', child: buildDashboardAD()),
@@ -82,182 +82,6 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ),
                     MyFlexItem(child: link())
-                    /* MyFlexItem(
-                        child: Column(
-                      children: [
-                        SizedBox(
-                          height: 170,
-                          child: ListView.separated(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: controller.categoryList.length,
-                            itemBuilder: (context, index) {
-                              return MyContainer(
-                                width: 165,
-                                onTap: () {
-                                  controller.onSelect(index);
-                                },
-                                /*color: controller.selectedId == index
-                                    ? contentTheme.primary.withAlpha(120)
-                                    : null,*/
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Image.asset(
-                                      controller.categoryList[index]['image'] ??
-                                          '',
-                                      height: 100,
-                                    ),
-                                    MySpacing.height(8),
-                                    MyText.bodyMedium(
-                                      controller.categoryList[index]['name'] ??
-                                          '',
-                                      fontWeight: 600,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return SizedBox(
-                                width: 16,
-                              );
-                            },
-                          ),
-                        )
-                      ],
-                    )),*/
-
-                    /* MyFlexItem(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          MyText.bodyLarge(
-                            "Restaurant Nearby",
-                            fontWeight: 600,
-                          ),
-                          MySpacing.height(flexSpacing),
-                          GridView.builder(
-                            shrinkWrap: true,
-                            itemCount: controller.restaurant['List'].length,
-                            gridDelegate:
-                                SliverGridDelegateWithMaxCrossAxisExtent(
-                              mainAxisExtent: 150,
-                              maxCrossAxisExtent: 600,
-                              childAspectRatio: 0.6,
-                              crossAxisSpacing: 16,
-                              mainAxisSpacing: 16,
-                            ),
-                            itemBuilder: (context, index) {
-                              return MyContainer(
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      controller.restaurant['List'][index]
-                                          ['image'],
-                                      height: 100,
-                                      width: 100,
-                                    ),
-                                    MySpacing.width(12),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        MyText.bodyMedium(
-                                          controller.restaurant['List'][index]
-                                              ['name'],
-                                          fontWeight: 600,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Icon(
-                                                  LucideIcons.star,
-                                                  color: contentTheme.primary,
-                                                  size: 20,
-                                                ),
-                                                MySpacing.width(8),
-                                                MyText.bodyMedium(controller
-                                                    .restaurant['List'][index]
-                                                        ['star']
-                                                    .toString())
-                                              ],
-                                            ),
-                                            MySpacing.width(12),
-                                            MyContainer(
-                                              borderRadiusAll: 200,
-                                              paddingAll: 6,
-                                              color: controller.restaurant[
-                                                              'List'][index]
-                                                          ['delivery'] ==
-                                                      false
-                                                  ? contentTheme.danger
-                                                      .withAlpha(40)
-                                                  : contentTheme.success
-                                                      .withAlpha(40),
-                                              child: MyText.bodySmall(
-                                                controller.restaurant['List']
-                                                    [index]['charges'],
-                                                fontWeight: 600,
-                                                color: controller.restaurant[
-                                                                'List'][index]
-                                                            ['delivery'] ==
-                                                        false
-                                                    ? contentTheme.danger
-                                                    : contentTheme.success,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Icon(LucideIcons.utensils,
-                                                    size: 20),
-                                                MySpacing.width(8),
-                                                MyText.bodyMedium(
-                                                  controller.restaurant['List']
-                                                      [index]['title'],
-                                                  fontWeight: 600,
-                                                  muted: true,
-                                                )
-                                              ],
-                                            ),
-                                            MySpacing.width(12),
-                                            Row(
-                                              children: [
-                                                Icon(LucideIcons.mapPin,
-                                                    size: 20),
-                                                MySpacing.width(8),
-                                                MyText.bodyMedium(
-                                                  controller.restaurant['List']
-                                                      [index]['range'],
-                                                  fontWeight: 600,
-                                                  muted: true,
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),*/
                   ],
                 ),
               ),
@@ -277,7 +101,6 @@ class _HomeScreenState extends State<HomeScreen>
               child: SizedBox(
                 height: 170,
                 child: MyContainer(
-                  color: contentTheme.cardBackground,
                   width: 165,
                   onTap: () {
                     controller.onSelectPulsante(i);

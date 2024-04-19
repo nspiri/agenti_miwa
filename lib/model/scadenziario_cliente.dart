@@ -8,6 +8,7 @@ class ScadenziarioCliente {
   String? tipoPagamento;
   String? codCliente;
   double? importo;
+  bool selected = false;
 
   ScadenziarioCliente(
       {this.documento,

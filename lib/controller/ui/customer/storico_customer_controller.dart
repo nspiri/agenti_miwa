@@ -13,7 +13,9 @@ class EditCustomerController extends MyController {
   DataTableSource? data;
   String codCliente;
 
-  bool? dataAsc = false, doc, desc, prezzo, importo;
+  bool? dataAsc = true, doc, desc, prezzo, importo;
+
+  bool isLoading = true;
 
   EditCustomerController({required this.codCliente});
 
@@ -33,6 +35,8 @@ class EditCustomerController extends MyController {
   }
 
   getScadenziarioCliente(String codCliente) async {
+    isLoading = true;
+    update();
     Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrcli",
         etichettaCollage: "STORICO",
@@ -41,14 +45,15 @@ class EditCustomerController extends MyController {
           "cliente": codCliente,
           "articolo": ""
         });
-
+    isLoading = false;
+    update();
     if (res.code == 200) {
       var a = res.result as dynamic;
       List<dynamic> dati = json.decode(jsonEncode(a));
       if (dati != []) {
         storico = dati.map((e) => Storico.fromJson(e)).toList();
         storico
-            .sort((a, b) => int.parse(a.data!).compareTo(int.parse(b.data!)));
+            .sort((a, b) => int.parse(b.data!).compareTo(int.parse(a.data!)));
         data = MyDataDetailStorico(storico);
       }
       update();
@@ -84,7 +89,7 @@ class EditCustomerController extends MyController {
     doc = null;
     prezzo = null;
     importo = null;
-    dataAsc ??= false;
+    dataAsc ??= true;
     if (dataAsc!) {
       storico.sort((a, b) => int.parse(a.data!).compareTo(int.parse(b.data!)));
       data = MyDataDetailStorico(storico);

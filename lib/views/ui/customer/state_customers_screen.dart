@@ -9,6 +9,7 @@ import 'package:foody/helpers/widgets/my_flex_item.dart';
 import 'package:foody/helpers/widgets/my_responsiv.dart';
 import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
+import 'package:foody/helpers/widgets/my_text_style.dart';
 import 'package:foody/helpers/widgets/responsive.dart';
 import 'package:foody/model/customer_list.dart';
 import 'package:foody/views/layout/layout.dart';
@@ -105,70 +106,87 @@ class _CustomerStateScreenState extends State<CustomerStateScreen>
                     !controller.loadingTable
                         ? SizedBox(
                             width: double.infinity,
-                            child: PaginatedDataTable(
-                              showCheckboxColumn: false,
-                              header: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: MySpacing.top(24),
-                                    child: SizedBox(
-                                      width: 250,
-                                      child: TextField(
-                                        decoration: InputDecoration(
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(4),
-                                              ),
+                            child: controller.data!.rowCount == 0
+                                ? Padding(
+                                    padding: const EdgeInsets.only(left: 8),
+                                    child: MyText.titleMedium(
+                                        "Non ci sono clienti da gestire"),
+                                  )
+                                : PaginatedDataTable(
+                                    showCheckboxColumn: false,
+                                    header: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: MySpacing.top(24),
+                                          child: SizedBox(
+                                            width: 250,
+                                            child: TextField(
+                                              decoration: InputDecoration(
+                                                  border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(4),
+                                                    ),
+                                                  ),
+                                                  prefixIcon: Icon(
+                                                      LucideIcons.search,
+                                                      size: 20),
+                                                  hintText: 'Cerca',
+                                                  contentPadding:
+                                                      MySpacing.xy(12, 8)),
+                                              onChanged: (value) {
+                                                controller.filterByName(value);
+                                              },
                                             ),
-                                            prefixIcon: Icon(LucideIcons.search,
-                                                size: 20),
-                                            hintText: 'Cerca',
-                                            contentPadding:
-                                                MySpacing.xy(12, 8)),
-                                        onChanged: (value) {
-                                          controller.filterByName(value);
-                                        },
-                                      ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                              source: controller.data!,
-                              columns: [
-                                /*DataColumn(
+                                    showEmptyRows: false,
+                                    source: controller.data!,
+                                    columns: [
+                                      /*DataColumn(
                                     onSort: (columnIndex, ascending) =>
                                         controller.orderByCod(),
                                     label: ordinamento(
                                         "Codice", controller.codice)),*/
-                                DataColumn(
-                                    onSort: (columnIndex, ascending) =>
-                                        controller.orderByRagSoc(),
-                                    label: ordinamento(
-                                        "Ragione Sociale", controller.ragSoc)),
-                                DataColumn(
-                                    onSort: (columnIndex, ascending) =>
-                                        controller.orderByUltimaConsegna(),
-                                    label: ordinamento(
-                                        "Data Stato", controller.ultCons)),
-                                DataColumn(
-                                  numeric: true,
-                                  label: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      MyText.bodyMedium('Parcheggiato /',
-                                          fontWeight: 600),
-                                      MySpacing.width(12),
-                                      MyText.bodyMedium('Riprovare /',
-                                          fontWeight: 600),
-                                      MySpacing.width(8),
-                                      MyText.bodyMedium('Chiuso per ferie',
-                                          fontWeight: 600),
-                                    ],
-                                  ),
-                                ),
-                                /*  DataColumn(
+                                      DataColumn(
+                                          onSort: (columnIndex, ascending) =>
+                                              controller.orderByRagSoc(),
+                                          label: ordinamento("Ragione Sociale",
+                                              controller.ragSoc)),
+                                      DataColumn(
+                                          onSort: (columnIndex, ascending) =>
+                                              controller
+                                                  .orderByUltimaConsegna(),
+                                          label: ordinamento("Data Stato",
+                                              controller.ultCons)),
+                                      DataColumn(
+                                          onSort: (columnIndex, ascending) =>
+                                              controller
+                                                  .orderByUltimaConsegna(),
+                                          label: ordinamento("Nota", null)),
+                                      DataColumn(
+                                        numeric: true,
+                                        label: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            MyText.bodyMedium('Parcheggiato /',
+                                                fontWeight: 600),
+                                            MySpacing.width(12),
+                                            MyText.bodyMedium('Riprovare /',
+                                                fontWeight: 600),
+                                            MySpacing.width(8),
+                                            MyText.bodyMedium(
+                                                'Chiuso per ferie',
+                                                fontWeight: 600),
+                                          ],
+                                        ),
+                                      ),
+                                      /*  DataColumn(
                                     numeric: true,
                                     label: MyText.bodyMedium('Riprovare',
                                         fontWeight: 600)),
@@ -176,16 +194,17 @@ class _CustomerStateScreenState extends State<CustomerStateScreen>
                                     numeric: true,
                                     label: MyText.bodyMedium('Chiuso per ferie',
                                         fontWeight: 600)),*/
-                              ],
-                              columnSpacing: 10,
-                              horizontalMargin: 20,
-                              rowsPerPage: controller.data!.rowCount > 20
+                                    ],
+                                    columnSpacing: 10,
+                                    horizontalMargin: 20,
+                                    rowsPerPage: /*controller.data!.rowCount > 20
                                   ? 20
                                   : controller.data!.rowCount == 0
                                       ? 1
-                                      : controller.data!.rowCount,
-                              dataRowMaxHeight: 48,
-                            ),
+                                      :*/
+                                        controller.data!.rowCount,
+                                    dataRowMaxHeight: 48,
+                                  ),
                           )
                         : Center(
                             child: CircularProgressIndicator(
@@ -371,6 +390,26 @@ class MyDataState extends DataTableSource with UIMixin {
         DataCell(
           MyText.bodySmall(
             Utils.getFormattedDate(customer.data ?? ""),
+          ),
+        ),
+        DataCell(
+          SizedBox(
+            width: 300,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 4),
+              child: TextField(
+                maxLength: 100,
+                controller: customer.controller,
+                decoration: InputDecoration(
+                    counterText: "",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(4),
+                      ),
+                    ),
+                    contentPadding: MySpacing.xy(12, 4)),
+              ),
+            ),
           ),
         ),
         DataCell(

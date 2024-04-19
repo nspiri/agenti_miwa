@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/helpers/utils/show_message_dialogs.dart';
@@ -19,6 +21,9 @@ class CustomerListController extends MyController {
   bool loading = true;
 
   bool? ragSoc = false, localita, provincia, ultCons;
+
+  final ScrollController controllerScroll = ScrollController();
+  final FocusNode focusNode = FocusNode();
 
   CustomerListController({required this.context});
 
@@ -44,6 +49,29 @@ class CustomerListController extends MyController {
   void onThemeChanged() {
     data = MyData(filterCustomers, this);
     update();
+  }
+
+  void handleKeyEvent(RawKeyEvent event) {
+    var offset = controllerScroll.offset;
+    if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+      if (kReleaseMode) {
+        controllerScroll.animateTo(offset - 30,
+            duration: Duration(milliseconds: 1), curve: Curves.ease);
+      } else {
+        controllerScroll.animateTo(offset - 30,
+            duration: Duration(milliseconds: 1), curve: Curves.ease);
+      }
+      update();
+    } else if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+      if (kReleaseMode) {
+        controllerScroll.animateTo(offset + 30,
+            duration: Duration(milliseconds: 1), curve: Curves.ease);
+      } else {
+        controllerScroll.animateTo(offset + 30,
+            duration: Duration(milliseconds: 1), curve: Curves.ease);
+      }
+      update();
+    }
   }
 
   goToOrder(String codCliente) async {

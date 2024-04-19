@@ -52,6 +52,10 @@ class AuthMiddleware extends GetMiddleware {
       if (clienteSelezionato == null) {
         return const RouteSettings(name: '/admin/customers/list');
       }
+    } else if (route == "/admin/orderdetail") {
+      if (ordineSelezionato == null) {
+        return const RouteSettings(name: '/admin/orders');
+      }
     }
     return AuthService.isLoggedIn
         ? null

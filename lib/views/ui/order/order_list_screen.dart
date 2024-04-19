@@ -96,6 +96,7 @@ class _OrderListScreenState extends State<OrderListScreen>
                                   ),
                                 ],
                               ),
+                              showEmptyRows: false,
                               source: controller.data!,
                               columns: [
                                 DataColumn(

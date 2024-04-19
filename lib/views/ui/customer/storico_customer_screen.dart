@@ -33,9 +33,12 @@ class _EditCustomerScreenState extends State<EditCustomerScreen>
   void initState() {
     cliente = Get.arguments;
     cliente ??= clienteSelezionato;
-    controller = Get.put(
-        EditCustomerController(codCliente: cliente?.codiceCliente ?? ""));
-    controller.getData(cliente?.codiceCliente ?? "");
+    var codCli = (cliente?.codCliFattA != ""
+            ? cliente?.codCliFattA
+            : cliente?.codiceCliente) ??
+        "";
+    controller = Get.put(EditCustomerController(codCliente: codCli));
+    controller.getData(codCli);
     super.initState();
   }
 
@@ -48,7 +51,7 @@ class _EditCustomerScreenState extends State<EditCustomerScreen>
           return Column(
             children: [
               Padding(
-                padding: MySpacing.x(flexSpacing),
+                padding: MySpacing.x(flexSpacing / 2),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -65,116 +68,117 @@ class _EditCustomerScreenState extends State<EditCustomerScreen>
                   ],
                 ),
               ),
-              MySpacing.height(flexSpacing),
+              MySpacing.height(flexSpacing / 2),
               Padding(
                 padding: MySpacing.x(flexSpacing / 2),
-                child: MyFlex(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MyFlexItem(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (controller.data != null)
-                            SizedBox(
-                              width: double.infinity,
-                              child: PaginatedDataTable(
-                                showCheckboxColumn: false,
-                                header: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: MySpacing.top(24),
-                                      child: SizedBox(
-                                        width: 250,
-                                        child: TextField(
-                                          decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(4),
-                                                ),
+                    //if (controller.data != null)
+                    !controller.isLoading
+                        ? SizedBox(
+                            width: double.infinity,
+                            child: PaginatedDataTable(
+                              showCheckboxColumn: false,
+                              header: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: MySpacing.top(24),
+                                    child: SizedBox(
+                                      width: 250,
+                                      child: TextField(
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(4),
                                               ),
-                                              prefixIcon: Icon(
-                                                  LucideIcons.search,
-                                                  size: 20),
-                                              hintText: 'Cerca',
-                                              contentPadding:
-                                                  MySpacing.xy(12, 8)),
-                                          onChanged: (value) {
-                                            controller.filterByName(value);
-                                          },
-                                        ),
+                                            ),
+                                            prefixIcon: Icon(LucideIcons.search,
+                                                size: 20),
+                                            hintText: 'Cerca',
+                                            contentPadding:
+                                                MySpacing.xy(12, 8)),
+                                        onChanged: (value) {
+                                          controller.filterByName(value);
+                                        },
                                       ),
                                     ),
-                                  ],
-                                ),
-                                source: controller.data!,
-                                columns: [
-                                  DataColumn(
-                                      onSort: (columnIndex, ascending) =>
-                                          controller.orderByData(),
-                                      label: ordinamento(
-                                          "Data", controller.dataAsc)),
-                                  /* DataColumn(
+                                  ),
+                                ],
+                              ),
+                              source: controller.data!,
+                              columns: [
+                                DataColumn(
+                                    onSort: (columnIndex, ascending) =>
+                                        controller.orderByData(),
+                                    label: ordinamento(
+                                        "Data", controller.dataAsc)),
+                                /* DataColumn(
                                       onSort: (columnIndex, ascending) =>
                                           controller.orderByDoc(),
                                       label: MyText.bodyMedium('Doc.',
                                           fontWeight: 600)),*/
-                                  DataColumn(
-                                      onSort: (columnIndex, ascending) =>
-                                          controller.orderByDoc(),
-                                      label: ordinamento(
-                                          "Documento", controller.doc)),
-                                  /* DataColumn(
+                                DataColumn(
+                                    onSort: (columnIndex, ascending) =>
+                                        controller.orderByDoc(),
+                                    label: ordinamento(
+                                        "Documento", controller.doc)),
+                                /* DataColumn(
                                       onSort: (columnIndex, ascending) =>
                                           controller.orderByCodArt(),
                                       label: MyText.bodyMedium('Codice Art.',
                                           fontWeight: 600)),*/
-                                  DataColumn(
-                                      onSort: (columnIndex, ascending) =>
-                                          controller.orderByDesc(),
-                                      label: ordinamento(
-                                          "Descrizione", controller.desc)),
-                                  /* DataColumn(
+                                DataColumn(
+                                    onSort: (columnIndex, ascending) =>
+                                        controller.orderByDesc(),
+                                    label: ordinamento(
+                                        "Descrizione", controller.desc)),
+                                /* DataColumn(
                                       onSort: (columnIndex, ascending) =>
                                           controller.orderByUm(),
                                       label: MyText.bodyMedium('Um',
                                           fontWeight: 600)),*/
-                                  DataColumn(
-                                      label: MyText.bodyMedium('Q.ta',
-                                          fontWeight: 600)),
-                                  DataColumn(
-                                      onSort: (columnIndex, ascending) =>
-                                          controller.orderByPrezzo(),
-                                      label: ordinamento(
-                                          "Prezzo", controller.prezzo)),
-                                  DataColumn(
-                                      label: MyText.bodyMedium('Sconti',
-                                          fontWeight: 600)),
-                                  DataColumn(
-                                      onSort: (columnIndex, ascending) =>
-                                          controller.orderByImporto(),
-                                      label: ordinamento(
-                                          "Importo", controller.importo)),
-                                  DataColumn(
-                                      onSort: (columnIndex, ascending) =>
-                                          controller.orderByIva(),
-                                      label: MyText.bodyMedium('Iva',
-                                          fontWeight: 600)),
-                                ],
-                                columnSpacing: 10,
-                                horizontalMargin: 20,
-                                rowsPerPage: controller.data!.rowCount > 20
-                                    ? 20
-                                    : controller.data!.rowCount == 0
-                                        ? 1
-                                        : controller.data!.rowCount,
-                                dataRowMaxHeight: 48,
-                              ),
+                                DataColumn(
+                                    label: MyText.bodyMedium('Q.ta',
+                                        fontWeight: 600)),
+                                DataColumn(
+                                    onSort: (columnIndex, ascending) =>
+                                        controller.orderByPrezzo(),
+                                    label: ordinamento(
+                                        "Prezzo", controller.prezzo)),
+                                DataColumn(
+                                    label: MyText.bodyMedium('Sconti',
+                                        fontWeight: 600)),
+                                DataColumn(
+                                    onSort: (columnIndex, ascending) =>
+                                        controller.orderByImporto(),
+                                    label: ordinamento(
+                                        "Importo", controller.importo)),
+                                DataColumn(
+                                    onSort: (columnIndex, ascending) =>
+                                        controller.orderByIva(),
+                                    label: MyText.bodyMedium('Iva',
+                                        fontWeight: 600)),
+                              ],
+                              showEmptyRows: false,
+                              columnSpacing: 10,
+                              horizontalMargin: 20,
+                              rowsPerPage: controller.data!.rowCount > 20
+                                  ? 20
+                                  : controller.data!.rowCount == 0
+                                      ? 1
+                                      : controller.data!.rowCount,
+                              dataRowMaxHeight: 48,
                             ),
-                        ],
-                      ),
-                    ),
+                          )
+                        : Center(
+                            child: CircularProgressIndicator(
+                              color: contentTheme.primary,
+                              strokeWidth: 3,
+                            ),
+                          ),
                   ],
                 ),
               ),

@@ -16,6 +16,7 @@ class StatisticheController extends MyController {
   Agente? agenteSelezionato;
   DataTableSource? data;
   bool? categoria, articolo = false, cliente, qta, valore;
+  bool isLoading = true;
 
   TextEditingController dateControllerDa = TextEditingController();
   TextEditingController dateControllerA = TextEditingController();
@@ -55,7 +56,13 @@ class StatisticheController extends MyController {
       List<dynamic> dati = json.decode(jsonEncode(a));
       if (dati != []) {
         agenti = dati.map((e) => Agente.fromJson(e)).toList();
-        agenteSelezionato = agenti[0];
+        var codAgenteLoggato = LocalStorage.getLoggedUser()?.codiceAgente ?? "";
+        for (Agente element in agenti) {
+          if (codAgenteLoggato == element.pccod) {
+            agenteSelezionato = element;
+          }
+        }
+        agenteSelezionato ??= agenti[0];
       }
       update();
     } else {
@@ -64,6 +71,8 @@ class StatisticheController extends MyController {
   }
 
   getStatisticheCliente() async {
+    isLoading = true;
+    update();
     r.Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrcli",
         etichettaCollage: "STAT_VEND",
@@ -74,7 +83,8 @@ class StatisticheController extends MyController {
               agenteSelezionato?.pccod ?? "",
           "clienti": isChecked
         });
-
+    isLoading = false;
+    update();
     if (res.code == 200) {
       var a = res.result as dynamic;
       List<dynamic> dati = json.decode(jsonEncode(a));

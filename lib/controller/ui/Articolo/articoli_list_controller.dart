@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:foody/helpers/utils/do_http_request.dart';
+import 'package:foody/helpers/utils/show_message_dialogs.dart';
 import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/model/articolo.dart';
 import 'package:foody/model/listino.dart';
+import 'package:foody/model/request.dart' as r;
 import 'package:foody/views/my_controller.dart';
 import 'package:foody/views/ui/Articolo/articoli_list_screen.dart';
 import 'package:get/get.dart';
@@ -21,6 +26,10 @@ class FoodController extends MyController {
       sortPrezzo3,
       sortDisp,
       sortCat;
+  ScrollController scrollController = ScrollController();
+  List<Articolo> articoliMobile = [];
+  int currentPage = 1;
+  int articlesPerPage = 20;
 
   FoodController({required this.context});
 
@@ -31,12 +40,53 @@ class FoodController extends MyController {
       articoliFiltrati = articoli;
       articoliFiltrati.sort((a, b) =>
           a.descrizione!.toLowerCase().compareTo(b.descrizione!.toLowerCase()));
+      caricaArticoli();
+      scrollController.addListener(_scrollListener);
       data = MyData(articoliFiltrati, context, this);
       loading = false;
       update();
     });
     getData();
     super.onInit();
+  }
+
+  void caricaArticoli() {
+    articoliMobile = [];
+    for (int i = 0; i <= articlesPerPage; i++) {
+      if (i < articoliFiltrati.length) {
+        articoliMobile.add(articoliFiltrati[i]);
+      } else {
+        break;
+      }
+    }
+  }
+
+  void scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      _loadMoreArticles();
+    }
+  }
+
+  void _loadMoreArticles() {
+    currentPage++;
+    for (int i = 1; i <= articlesPerPage; i++) {
+      var num = i + (currentPage - 1) * articlesPerPage;
+      if (i + (currentPage - 1) * articlesPerPage < articoliFiltrati.length) {
+        articoliMobile
+            .add(articoliFiltrati[i + (currentPage - 1) * articlesPerPage]);
+      } else {
+        break;
+      }
+    }
+    update();
+  }
+
+  void _scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      _loadMoreArticles();
+    }
   }
 
   getData() async {
@@ -51,9 +101,10 @@ class FoodController extends MyController {
 
   void filterByName(String value) {
     if (value == "") {
+      articoliFiltrati = articoli;
       data = MyData(articoliFiltrati, context, this);
     } else {
-      var filterCustomers = articoliFiltrati
+      articoliFiltrati = articoli
           .where((element) =>
               element.descrizione!
                   .toLowerCase()
@@ -64,11 +115,59 @@ class FoodController extends MyController {
                   .toLowerCase()
                   .contains(value.toLowerCase()))
           .toList();
-      filterCustomers.sort((a, b) =>
+      articoliFiltrati.sort((a, b) =>
           a.descrizione!.toLowerCase().compareTo(b.descrizione!.toLowerCase()));
-      data = MyData(filterCustomers, context, this);
+      caricaArticoli();
+      data = MyData(articoliFiltrati, context, this);
     }
     update();
+  }
+
+  void mostraImmagine(Articolo articolo) async {
+    String img = "";
+    r.Response res = await DoRequest.doHttpRequest(
+        nomeCollage: "colsrart",
+        etichettaCollage: "ARTICOLO",
+        dati: {"magazzino": 1, "articolo": articolo.codArt});
+
+    if (res.code == 200) {
+      var result = res.result as List<dynamic>;
+      if (result.isNotEmpty) {
+        if (result[0]["arime"] != null) {
+          for (var element in result[0]["arime"]) {
+            img += element;
+          }
+          await showDialog(
+              context: context,
+              builder: (_) => Dialog(
+                    child: Stack(
+                      children: [
+                        Image.memory(
+                          base64.decode(img
+                              .replaceAll(RegExp(r'\s+'), '')
+                              .replaceAll("[", "")),
+                          //base64Decode(img),
+                          fit: BoxFit.cover,
+                        ),
+                        Positioned(
+                            right: 0,
+                            child: IconButton(
+                              icon: Icon(Icons.cancel),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              alignment: Alignment.topRight,
+                            ))
+                      ],
+                    ),
+                  ));
+        } else {
+          showErrorMessage(context, "Nessuna immagine", "");
+        }
+      }
+    } else {
+      showErrorMessage(context, "Nessuna immagine", "");
+    }
   }
 
   tuttiGliArticoli() {
@@ -76,8 +175,10 @@ class FoodController extends MyController {
     loading = true;
     update();
     Articolo.dummyList.then((value) {
+      articoli = value;
       articoliFiltrati = value;
       sortArt();
+      caricaArticoli();
       data = MyData(articoliFiltrati, context, this);
       loading = false;
       update();
@@ -88,7 +189,7 @@ class FoodController extends MyController {
     isPromo = true;
     loading = true;
     update();
-    articoliFiltrati = articoli
+    articoli = articoli
         .where((element) =>
             element.prezzoListini
                 ?.where((element) => element.listino == 2)
@@ -96,7 +197,9 @@ class FoodController extends MyController {
                 .valore !=
             0)
         .toList();
+    articoliFiltrati = articoli;
     sortArt();
+    caricaArticoli();
     data = MyData(articoliFiltrati, context, this);
     loading = false;
     update();

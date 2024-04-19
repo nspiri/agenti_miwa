@@ -42,3 +42,36 @@ class User {
     return data;
   }
 }
+
+class ControlloUtente {
+  String? utente;
+  bool? confermaStatoClienti;
+  bool? attivo;
+  String? codiceAgente;
+  String? token;
+
+  ControlloUtente(
+      {this.utente,
+      this.confermaStatoClienti,
+      this.attivo,
+      this.codiceAgente,
+      this.token});
+
+  ControlloUtente.fromJson(Map<String, dynamic> json) {
+    utente = json['Utente'];
+    confermaStatoClienti = json['ConfermaStatoClienti'];
+    attivo = json['Attivo'];
+    codiceAgente = json['CodiceAgente'];
+    token = json['Token'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Utente'] = utente;
+    data['ConfermaStatoClienti'] = confermaStatoClienti;
+    data['Attivo'] = attivo;
+    data['CodiceAgente'] = codiceAgente;
+    data['Token'] = token;
+    return data;
+  }
+}

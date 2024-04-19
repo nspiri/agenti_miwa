@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:html' as html;
+import 'pdf_mobile.dart' if (dart.library.html) 'pdf_web.dart' as web;
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
@@ -7,8 +7,11 @@ import 'package:flutter/foundation.dart';
 import 'package:foody/helpers/extention/date_time_extention.dart';
 import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
+import 'package:foody/model/customer_detail.dart';
+import 'package:foody/model/customer_list.dart';
 import 'package:foody/model/listino.dart';
 import 'package:foody/model/request.dart' as r;
+import 'package:foody/model/user.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -160,12 +163,64 @@ class Utils {
     r.Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrute",
         etichettaCollage: "UTENTE",
-        dati: {"Token": LocalStorage.getToken() ?? ""});
+        dati: {
+          "Token": LocalStorage.getToken() ?? "",
+          "IdUtente": LocalStorage.getLoggedUser()?.idUtente ?? 0
+        });
 
     if (res.code == 200) {
       if (res.error != "") {
         Get.toNamed("/auth/login");
       }
+      var a = res.result as List<dynamic>;
+      if (a.isNotEmpty) {
+        ControlloUtente user = ControlloUtente.fromJson(a[0]);
+        if (user.confermaStatoClienti == true) {
+          StatoCliente.dummyList.then((value) {
+            for (var element in value) {
+              if (element.stato == "") {
+                Get.toNamed("/admin/customers/state", arguments: value);
+              }
+            }
+          });
+        }
+      }
     }
+  }
+
+  static Future<void> saveAndLaunchFile(
+      List<int> bytes, String fileName) async {
+    web.launchFile(bytes, fileName);
+    /* if (kIsWeb) {
+      web.launchFile(bytes, fileName);
+    } else {
+      String? path;
+      if (Platform.isAndroid ||
+          Platform.isIOS ||
+          Platform.isLinux ||
+          Platform.isWindows) {
+        final Directory directory =
+            await path_provider.getApplicationSupportDirectory();
+        path = directory.path;
+      } else {
+        path = await PathProviderPlatform.instance.getApplicationSupportPath();
+      }
+      final File file =
+          File(Platform.isWindows ? '$path\\$fileName' : '$path/$fileName');
+      await file.writeAsBytes(bytes, flush: true);
+      if (Platform.isAndroid || Platform.isIOS) {
+        //Launch the file (used open_file package)
+        await open_file.OpenFile.open('$path/$fileName');
+      } else if (Platform.isWindows) {
+        await Process.run('start', <String>['$path\\$fileName'],
+            runInShell: true);
+      } else if (Platform.isMacOS) {
+        await Process.run('open', <String>['$path/$fileName'],
+            runInShell: true);
+      } else if (Platform.isLinux) {
+        await Process.run('xdg-open', <String>['$path/$fileName'],
+            runInShell: true);
+      }
+    }*/
   }
 }

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/helpers/utils/utils.dart';
@@ -27,7 +29,9 @@ class ModalListaArtController extends MyController {
       sortPrezzo2,
       sortPrezzo3,
       sortDisp,
-      sortCat;
+      sortCat,
+      isUltimaVendita = false,
+      isNrVendite = false;
   bool loading = true;
 
   bool isPromo = false, isTop10 = false, isAll = true;
@@ -36,6 +40,9 @@ class ModalListaArtController extends MyController {
   List<Articolo> articoliMobile = [];
   int currentPage = 1;
   int articlesPerPage = 20;
+
+  final ScrollController controllerScroll = ScrollController();
+  final FocusNode focusNode = FocusNode();
 
   ModalListaArtController(
       {required this.context,
@@ -48,8 +55,32 @@ class ModalListaArtController extends MyController {
     super.onInit();
   }
 
+  void handleKeyEvent(RawKeyEvent event) {
+    var offset = controllerScroll.offset;
+    if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+      if (kReleaseMode) {
+        controllerScroll.animateTo(offset - 30,
+            duration: Duration(milliseconds: 1), curve: Curves.ease);
+      } else {
+        controllerScroll.animateTo(offset - 30,
+            duration: Duration(milliseconds: 1), curve: Curves.ease);
+      }
+      update();
+    } else if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+      if (kReleaseMode) {
+        controllerScroll.animateTo(offset + 30,
+            duration: Duration(milliseconds: 1), curve: Curves.ease);
+      } else {
+        controllerScroll.animateTo(offset + 30,
+            duration: Duration(milliseconds: 1), curve: Curves.ease);
+      }
+      update();
+    }
+  }
+
   void caricaArticoli() {
-    for (int i = 1; i <= articlesPerPage; i++) {
+    articoliMobile = [];
+    for (int i = 0; i <= articlesPerPage; i++) {
       if (i < articoliFiltrati.length) {
         articoliMobile.add(articoliFiltrati[i]);
       } else {
@@ -193,16 +224,78 @@ class ModalListaArtController extends MyController {
         setData();
       }
       dynamic dati = json.decode(jsonEncode(a));
-      articoliFiltrati = Articolo.listFromJSON(dati);
+      articoli = Articolo.listFromJSON(dati);
+      articoliFiltrati = articoli;
       sortArt();
       setData();
       modificaConfArt();
+      caricaArticoli();
       setLoading(false);
       update();
     } else {
       setLoading(false);
       return "";
     }
+  }
+
+  orderNrVendite() {
+    isUltimaVendita = null;
+    sortDesc = null;
+    sortCodAlt = null;
+    sortConf = null;
+    sortPrezzo1 = null;
+    sortPrezzo2 = null;
+    sortPrezzo3 = null;
+    sortDisp = null;
+    sortCat = null;
+    sortDesc = null;
+    sortCodArt = null;
+    isNrVendite ??= false;
+    if (isNrVendite!) {
+      articoliFiltrati.sort((a, b) => a.nrVendite!.compareTo(b.nrVendite!));
+      data = MyDataListArtModal(articoliFiltrati, context, this);
+    } else {
+      articoliFiltrati.sort((a, b) => b.nrVendite!.compareTo(a.nrVendite!));
+      data = MyDataListArtModal(articoliFiltrati, context, this);
+    }
+    isNrVendite = !isNrVendite!;
+    caricaArticoli();
+    update();
+  }
+
+  orderUltimaVendita() {
+    sortDesc = null;
+    sortCodAlt = null;
+    sortConf = null;
+    sortPrezzo1 = null;
+    sortPrezzo2 = null;
+    sortPrezzo3 = null;
+    sortDisp = null;
+    sortCat = null;
+    sortDesc = null;
+    sortCodArt = null;
+    isNrVendite = null;
+    isUltimaVendita ??= false;
+    if (isUltimaVendita!) {
+      articoliFiltrati.sort((a, b) {
+        int val =
+            int.parse(a.ultimaVendita!).compareTo(int.parse(b.ultimaVendita!));
+        if (val != 0) return val;
+        return a.nrVendite!.compareTo(b.nrVendite!);
+      });
+      data = MyDataListArtModal(articoliFiltrati, context, this);
+    } else {
+      articoliFiltrati.sort((a, b) {
+        int val =
+            int.parse(b.ultimaVendita!).compareTo(int.parse(a.ultimaVendita!));
+        if (val != 0) return val;
+        return b.nrVendite!.compareTo(a.nrVendite!);
+      });
+      data = MyDataListArtModal(articoliFiltrati, context, this);
+    }
+    isUltimaVendita = !isUltimaVendita!;
+    caricaArticoli();
+    update();
   }
 
   setData() {
@@ -214,7 +307,7 @@ class ModalListaArtController extends MyController {
     isAll = false;
     isTop10 = false;
     setLoading(true);
-    articoliFiltrati = articoli
+    articoli = articoli
         .where((element) =>
             element.prezzoListini
                 ?.where((element) => element.listino == 2)
@@ -222,9 +315,11 @@ class ModalListaArtController extends MyController {
                 .valore !=
             0)
         .toList();
+    articoliFiltrati = articoli;
     sortArt();
     data = MyDataListArtModal(articoliFiltrati, context, this);
     modificaConfArt();
+    caricaArticoli();
     setLoading(false);
     update();
   }
@@ -279,6 +374,7 @@ class ModalListaArtController extends MyController {
 
   void filterByName(String value) {
     if (value == "") {
+      articoliFiltrati = articoli;
       data = MyDataListArtModal(articoliFiltrati, context, this);
     } else {
       articoliFiltrati = articoli
@@ -294,12 +390,15 @@ class ModalListaArtController extends MyController {
           .toList();
       articoliFiltrati.sort((a, b) =>
           a.descrizione!.toLowerCase().compareTo(b.descrizione!.toLowerCase()));
+      caricaArticoli();
       data = MyDataListArtModal(articoliFiltrati, context, this);
     }
     update();
   }
 
   void orderByCodArt() {
+    isUltimaVendita = null;
+    isNrVendite = null;
     sortDesc = null;
     sortCodAlt = null;
     sortConf = null;
@@ -324,6 +423,8 @@ class ModalListaArtController extends MyController {
   }
 
   void orderByDesc() {
+    isUltimaVendita = null;
+    isNrVendite = null;
     sortCodArt = null;
     sortCodAlt = null;
     sortConf = null;
@@ -347,6 +448,8 @@ class ModalListaArtController extends MyController {
   }
 
   void orderByCodAlt() {
+    isUltimaVendita = null;
+    isNrVendite = null;
     sortDesc = null;
     sortConf = null;
     sortPrezzo1 = null;
@@ -370,6 +473,8 @@ class ModalListaArtController extends MyController {
   }
 
   void orderByConf() {
+    isUltimaVendita = null;
+    isNrVendite = null;
     sortDesc = null;
     sortCodArt = null;
     sortPrezzo1 = null;
@@ -392,6 +497,8 @@ class ModalListaArtController extends MyController {
   }
 
   void orderByPrezzo1() {
+    isUltimaVendita = null;
+    isNrVendite = null;
     sortDesc = null;
     sortCodArt = null;
     sortPrezzo2 = null;
@@ -416,6 +523,8 @@ class ModalListaArtController extends MyController {
   }
 
   void orderByPrezzo2() {
+    isUltimaVendita = null;
+    isNrVendite = null;
     sortDesc = null;
     sortCodArt = null;
     sortPrezzo1 = null;
@@ -440,6 +549,8 @@ class ModalListaArtController extends MyController {
   }
 
   void orderByPrezzo3() {
+    isUltimaVendita = null;
+    isNrVendite = null;
     sortDesc = null;
     sortCodArt = null;
     sortPrezzo2 = null;
@@ -464,6 +575,8 @@ class ModalListaArtController extends MyController {
   }
 
   void orderByDispo() {
+    isUltimaVendita = null;
+    isNrVendite = null;
     sortDesc = null;
     sortCodArt = null;
     sortPrezzo2 = null;
@@ -486,6 +599,8 @@ class ModalListaArtController extends MyController {
   }
 
   void orderByCatArt() {
+    isUltimaVendita = null;
+    isNrVendite = null;
     sortDesc = null;
     sortCodArt = null;
     sortPrezzo2 = null;

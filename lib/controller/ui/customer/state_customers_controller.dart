@@ -123,6 +123,8 @@ class CustomerStateController extends MyController {
   salvaClienti() async {
     List<Map<String, dynamic>> dati = [];
     String data = Utils.stringToDateR(Utils.dateToString(DateTime.now()));
+    filterCustomers.sort(
+        (a, b) => a.pccod!.toLowerCase().compareTo(b.pccod!.toLowerCase()));
     for (var element in filterCustomers) {
       if (element.parcheggiare == true ||
           element.riprovare == true ||
@@ -137,7 +139,8 @@ class CustomerStateController extends MyController {
               ? "R"
               : element.ferie == true
                   ? "C"
-                  : "P"
+                  : "P",
+          "nota": element.controller.text
         });
       }
     }

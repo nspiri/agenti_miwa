@@ -59,28 +59,32 @@ class AuthLayout extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            Container(
-              margin: MySpacing.top(100),
-              width: MediaQuery.of(context).size.width,
-              child: MyFlex(
-                wrapAlignment: WrapAlignment.center,
-                wrapCrossAlignment: WrapCrossAlignment.start,
-                runAlignment: WrapAlignment.center,
-                spacing: 0,
-                runSpacing: 0,
-                children: [
-                  MyFlexItem(
-                    sizes: "xxl-8 lg-8 md-9 sm-10",
-                    child: MyContainer(
-                      paddingAll: 0,
-                      borderRadiusAll: 12,
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      color: AdminTheme.theme.contentTheme.background
-                          .withOpacity(0.95),
-                      child: child ?? Container(),
+            SingleChildScrollView(
+              child: Container(
+                margin: MySpacing.fromLTRB(0, 100, 0, 100),
+                width: MediaQuery.of(context).size.width,
+                child: MyFlex(
+                  wrapAlignment: WrapAlignment.center,
+                  wrapCrossAlignment: WrapCrossAlignment.start,
+                  runAlignment: WrapAlignment.center,
+                  spacing: 0,
+                  runSpacing: 0,
+                  children: [
+                    MyFlexItem(
+                      sizes: "xxl-8 lg-8 md-9 sm-10",
+                      child: MyContainer(
+                        paddingAll: 0,
+                        borderRadiusAll: 12,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        color: AdminTheme.theme.contentTheme.background
+                            .withOpacity(0.95),
+                        child: SingleChildScrollView(
+                            key: controller.scrollKey,
+                            child: child ?? Container()),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

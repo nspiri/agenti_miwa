@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen>
               MyFlexItem(
                 sizes: "lg-6",
                 child: Padding(
-                  padding: MySpacing.only(left: 50, right: 65),
+                  padding: MySpacing.only(left: 30, right: 30),
                   child: Form(
                     key: controller.basicValidator.formKey,
                     child: Column(
@@ -93,6 +93,8 @@ class _LoginScreenState extends State<LoginScreen>
                               labelText: "Indirizzo Email",
                               labelStyle: MyTextStyle.bodySmall(xMuted: true),
                               border: outlineInputBorder,
+                              enabledBorder: outlineInputBorder,
+                              focusedBorder: focusedInputBorder,
                               prefixIcon: const Icon(
                                 LucideIcons.mail,
                                 size: 20,
@@ -114,6 +116,8 @@ class _LoginScreenState extends State<LoginScreen>
                               labelText: "Password",
                               labelStyle: MyTextStyle.bodySmall(xMuted: true),
                               border: outlineInputBorder,
+                              enabledBorder: outlineInputBorder,
+                              focusedBorder: focusedInputBorder,
                               prefixIcon: const Icon(
                                 LucideIcons.lock,
                                 size: 20,

@@ -120,9 +120,13 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen>
                 padding: MySpacing.xy(8, 4),
                 splashColor: contentTheme.danger.withAlpha(28),
                 backgroundColor: Colors.transparent,
-                child: MyText.labelMedium(
-                  "Nuovo ordine",
-                  fontWeight: 600,
+                child: Row(
+                  children: [
+                    MyText.labelMedium(
+                      "Nuovo ordine",
+                      fontWeight: 600,
+                    ),
+                  ],
                 )),
           ),
           Padding(
@@ -134,9 +138,13 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen>
                 padding: MySpacing.xy(8, 4),
                 splashColor: contentTheme.danger.withAlpha(28),
                 backgroundColor: Colors.transparent,
-                child: MyText.labelMedium(
-                  "Ordini in corso",
-                  fontWeight: 600,
+                child: Row(
+                  children: [
+                    MyText.labelMedium(
+                      "Ordini in corso",
+                      fontWeight: 600,
+                    ),
+                  ],
                 )),
           ),
           Padding(
@@ -148,9 +156,13 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen>
                 padding: MySpacing.xy(8, 4),
                 splashColor: contentTheme.danger.withAlpha(28),
                 backgroundColor: Colors.transparent,
-                child: MyText.labelMedium(
-                  "Scadenziario",
-                  fontWeight: 600,
+                child: Row(
+                  children: [
+                    MyText.labelMedium(
+                      "Scadenziario",
+                      fontWeight: 600,
+                    ),
+                  ],
                 )),
           ),
           Padding(
@@ -162,9 +174,13 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen>
                 padding: MySpacing.xy(8, 4),
                 splashColor: contentTheme.danger.withAlpha(28),
                 backgroundColor: Colors.transparent,
-                child: MyText.labelMedium(
-                  "Storico",
-                  fontWeight: 600,
+                child: Row(
+                  children: [
+                    MyText.labelMedium(
+                      "Storico",
+                      fontWeight: 600,
+                    ),
+                  ],
                 )),
           ),
           Padding(
@@ -185,9 +201,13 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen>
                 padding: MySpacing.xy(8, 4),
                 splashColor: contentTheme.danger.withAlpha(28),
                 backgroundColor: Colors.transparent,
-                child: MyText.labelMedium(
-                  "Attrezzature",
-                  fontWeight: 600,
+                child: Row(
+                  children: [
+                    MyText.labelMedium(
+                      "Attrezzature",
+                      fontWeight: 600,
+                    ),
+                  ],
                 )),
           )
         ],

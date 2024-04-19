@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
+import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/model/customer_detail.dart';
 import 'package:foody/model/ordine.dart';
 import 'package:foody/views/my_controller.dart';
@@ -15,6 +16,7 @@ class OrdiniListCustomerController extends MyController {
   DataTableSource? data;
   bool? dataAsc = true, doc, ragSoc, localita, totale;
   CustomerDetail? clienteSelezionato;
+  bool isLoading = true;
 
   @override
   void onInit() {
@@ -28,15 +30,20 @@ class OrdiniListCustomerController extends MyController {
   }
 
   getOrdini(CustomerDetail cliente) async {
+    isLoading = true;
+    update();
     clienteSelezionato = cliente;
     r.Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrdoc",
         etichettaCollage: "OC_ELENCO",
         dati: {
           "agente": LocalStorage.getLoggedUser()?.codiceAgente,
-          "cliente": cliente.codiceCliente
+          "cliente": cliente.codCliFattA != ""
+              ? cliente.codCliFattA
+              : cliente.codiceCliente
         });
-
+    isLoading = false;
+    update();
     if (res.code == 200) {
       var a = res.result as dynamic;
       List<dynamic> dati = json.decode(jsonEncode(a));
@@ -54,6 +61,7 @@ class OrdiniListCustomerController extends MyController {
   }
 
   goToDettaglio(Ordine ordine) async {
+    ordineSelezionato = ordine;
     Get.toNamed('/admin/orderdetail', arguments: ordine);
     /* for (var element in ordini) {
       if ("${element.ocsig}${element.ocser}${element.ocnum}" ==

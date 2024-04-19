@@ -36,9 +36,10 @@ class _OrdiniListScreenState extends State<OrdiniListScreen>
         init: controller,
         builder: (controller) {
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: MySpacing.x(flexSpacing),
+                padding: MySpacing.x(flexSpacing / 2),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -58,89 +59,106 @@ class _OrdiniListScreenState extends State<OrdiniListScreen>
                   ],
                 ),
               ),
-              MySpacing.height(flexSpacing),
+              MySpacing.height(flexSpacing / 2),
               Padding(
-                padding: MySpacing.x(flexSpacing),
+                padding: MySpacing.x(flexSpacing / 2),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        if (controller.ordini.isNotEmpty)
-                          SizedBox(
-                            width: double.infinity,
-                            child: PaginatedDataTable(
-                              showCheckboxColumn: false,
-                              header: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: MySpacing.top(24),
-                                    child: SizedBox(
-                                      width: 250,
-                                      child: TextField(
-                                        decoration: InputDecoration(
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(4),
+                        //if (controller.ordini.isNotEmpty)
+                        !controller.isLoading
+                            ? controller.ordini.isNotEmpty
+                                ? SizedBox(
+                                    width: double.infinity,
+                                    child: PaginatedDataTable(
+                                      showCheckboxColumn: false,
+                                      header: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: MySpacing.top(24),
+                                            child: SizedBox(
+                                              width: 250,
+                                              child: TextField(
+                                                decoration: InputDecoration(
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(4),
+                                                      ),
+                                                    ),
+                                                    prefixIcon: Icon(
+                                                        LucideIcons.search,
+                                                        size: 20),
+                                                    hintText: 'Cerca',
+                                                    contentPadding:
+                                                        MySpacing.xy(12, 8)),
+                                                onChanged: (value) {
+                                                  controller
+                                                      .filterByName(value);
+                                                },
                                               ),
                                             ),
-                                            prefixIcon: Icon(LucideIcons.search,
-                                                size: 20),
-                                            hintText: 'Cerca',
-                                            contentPadding:
-                                                MySpacing.xy(12, 8)),
-                                        onChanged: (value) {
-                                          controller.filterByName(value);
-                                        },
+                                          ),
+                                        ],
                                       ),
+                                      sortAscending: true,
+                                      onSelectAll: (_) => {},
+                                      dataRowMaxHeight: 52,
+                                      showEmptyRows: false,
+                                      showFirstLastButtons: true,
+                                      columns: [
+                                        DataColumn(
+                                            onSort: (columnIndex, ascending) =>
+                                                controller.orderByDoc(),
+                                            label: ordinamento(
+                                                "Documento", controller.doc)),
+                                        DataColumn(
+                                            onSort: (columnIndex, ascending) =>
+                                                controller.orderByData(),
+                                            label: ordinamento(
+                                                "Data", controller.dataAsc)),
+                                        DataColumn(
+                                            onSort: (columnIndex, ascending) =>
+                                                controller.orderByRagSoc(),
+                                            label: ordinamento("Rag. Sociale",
+                                                controller.ragSoc)),
+                                        DataColumn(
+                                            onSort: (columnIndex, ascending) =>
+                                                controller.orderByLocalita(),
+                                            label: ordinamento("Località",
+                                                controller.localita)),
+                                        DataColumn(
+                                            onSort: (columnIndex, ascending) =>
+                                                controller.orderByTot(),
+                                            numeric: true,
+                                            label: ordinamento(
+                                                "Totale", controller.totale)),
+                                      ],
+                                      source: controller.data!,
+                                      rowsPerPage:
+                                          controller.data!.rowCount > 20
+                                              ? 20
+                                              : controller.data!.rowCount == 0
+                                                  ? 1
+                                                  : controller.data!.rowCount,
                                     ),
-                                  ),
-                                ],
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.only(top: 16),
+                                    child: MyText.titleMedium(
+                                        "Non ci sono ordini in corso"),
+                                  )
+                            : Center(
+                                child: CircularProgressIndicator(
+                                  color: contentTheme.primary,
+                                  strokeWidth: 3,
+                                ),
                               ),
-                              sortAscending: true,
-                              onSelectAll: (_) => {},
-                              dataRowMaxHeight: 52,
-                              //columnSpacing: 170,
-                              showFirstLastButtons: true,
-                              columns: [
-                                DataColumn(
-                                    onSort: (columnIndex, ascending) =>
-                                        controller.orderByDoc(),
-                                    label: ordinamento(
-                                        "Documento", controller.doc)),
-                                DataColumn(
-                                    onSort: (columnIndex, ascending) =>
-                                        controller.orderByData(),
-                                    label: ordinamento(
-                                        "Data", controller.dataAsc)),
-                                DataColumn(
-                                    onSort: (columnIndex, ascending) =>
-                                        controller.orderByRagSoc(),
-                                    label: ordinamento(
-                                        "Rag. Sociale", controller.ragSoc)),
-                                DataColumn(
-                                    onSort: (columnIndex, ascending) =>
-                                        controller.orderByLocalita(),
-                                    label: ordinamento(
-                                        "Località", controller.localita)),
-                                DataColumn(
-                                    onSort: (columnIndex, ascending) =>
-                                        controller.orderByTot(),
-                                    numeric: true,
-                                    label: ordinamento(
-                                        "Totale", controller.totale)),
-                              ],
-                              source: controller.data!,
-                              rowsPerPage: controller.data!.rowCount > 20
-                                  ? 20
-                                  : controller.data!.rowCount == 0
-                                      ? 1
-                                      : controller.data!.rowCount,
-                            ),
-                          ),
                       ],
                     ),
                   ],

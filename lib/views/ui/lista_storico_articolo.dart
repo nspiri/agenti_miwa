@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
 import 'package:foody/helpers/utils/utils.dart';
@@ -55,10 +56,13 @@ class _ModalListaStoricoArticoloState extends State<ModalListaStoricoArticolo>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        MyText.titleMedium(
-                          "${widget.articolo.descrizione}",
-                          fontSize: 18,
-                          fontWeight: 600,
+                        Flexible(
+                          child: MyText.titleMedium(
+                            maxLines: 2,
+                            "${widget.articolo.descrizione}",
+                            fontSize: 18,
+                            fontWeight: 600,
+                          ),
                         ),
                         Row(
                           children: [
@@ -134,6 +138,7 @@ class _ModalListaStoricoArticoloState extends State<ModalListaStoricoArticolo>
                                             ),
                                           ],
                                         ),
+                                        showEmptyRows: false,
                                         showCheckboxColumn: false,
                                         columns: [
                                           DataColumn(

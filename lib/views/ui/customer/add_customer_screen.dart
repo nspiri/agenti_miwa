@@ -68,9 +68,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                   ],
                 ),
               ),
-              MySpacing.height(flexSpacing),
               Padding(
-                padding: MySpacing.x(flexSpacing / 2),
+                padding: MySpacing.xy(flexSpacing / 2, flexSpacing),
                 child: MyContainer(
                   padding: MySpacing.xy(0, 10),
                   child: Form(

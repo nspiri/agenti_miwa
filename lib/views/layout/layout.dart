@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foody/controller/layout/layout_controller.dart';
+import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/theme/admin_theme.dart';
 import 'package:foody/helpers/theme/app_style.dart';
 import 'package:foody/helpers/theme/app_themes.dart';
@@ -12,10 +13,13 @@ import 'package:foody/helpers/widgets/my_responsiv.dart';
 import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/helpers/widgets/responsive.dart';
+import 'package:foody/views/auth/login_screen.dart';
 import 'package:foody/views/layout/left_bar.dart';
 import 'package:foody/views/layout/right_bar.dart';
 import 'package:foody/views/layout/top_bar.dart';
 import 'package:foody/widgets/custom_pop_menu.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -26,7 +30,9 @@ class Layout extends StatelessWidget {
   final topBarTheme = AdminTheme.theme.topBarTheme;
   final contentTheme = AdminTheme.theme.contentTheme;
 
-  Layout({super.key, this.child});
+  bool isScroll;
+
+  Layout({super.key, this.child, this.isScroll = false});
 
   @override
   Widget build(BuildContext context) {
@@ -41,20 +47,20 @@ class Layout extends StatelessWidget {
 
   Widget mobileScreen() {
     return Scaffold(
-      key: controller.scaffoldKey,
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: Row(
-          children: [
-            Flexible(
-              child: MyText.labelSmall(
-                clienteSelezionato?.ragioneSociale ?? "",
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+        key: controller.scaffoldKey,
+        appBar: AppBar(
+          elevation: 0,
+          centerTitle: true,
+          title: Row(
+            children: [
+              Flexible(
+                child: MyText.labelSmall(
+                  clienteSelezionato?.ragioneSociale ?? "",
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-            ),
-            /*  Row(
+              /*  Row(
               children: [
                 buildTopBar(LucideIcons.mapPin, contentTheme.success),
                 MySpacing.width(12),
@@ -63,45 +69,44 @@ class Layout extends StatelessWidget {
                 buildTopBar(LucideIcons.badgePercent, contentTheme.danger),
               ],
             ),*/
-          ],
-        ),
-        actions: [
-          Row(
-            children: [
-              /* MyContainer.roundBordered(
+            ],
+          ),
+          actions: [
+            Row(
+              children: [
+                /* MyContainer.roundBordered(
                 paddingAll: 8,
                 child: Icon(LucideIcons.shoppingCart, size: 20),
               ),*/
-              CustomPopupMenu(
-                backdrop: true,
-                onChange: (_) {},
-                offsetX: -110,
-                offsetY: 0,
-                menu: Padding(
-                  padding: MySpacing.xy(8, 8),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      MyContainer.roundBordered(
-                          paddingAll: 8,
-                          child: Icon(LucideIcons.user, size: 20)),
-                    ],
+                CustomPopupMenu(
+                  backdrop: true,
+                  onChange: (_) {},
+                  offsetX: -110,
+                  offsetY: 0,
+                  menu: Padding(
+                    padding: MySpacing.xy(8, 8),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        MyContainer.roundBordered(
+                            paddingAll: 8,
+                            child: Icon(LucideIcons.user, size: 20)),
+                      ],
+                    ),
                   ),
+                  menuBuilder: (_) => buildAccountMenu(),
                 ),
-                menuBuilder: (_) => buildAccountMenu(),
-              ),
-            ],
-          ),
-        ],
-      ),
-      drawer: LeftBar(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          key: controller.scrollKey,
-          child: child,
+              ],
+            ),
+          ],
         ),
-      ),
-    );
+        drawer: LeftBar(),
+        body: isScroll == false
+            ? SingleChildScrollView(
+                key: controller.scrollKey,
+                child: child,
+              )
+            : SafeArea(child: child ?? Text("")));
   }
 
   Widget buildTopBar(IconData icon, Color color) {
@@ -296,7 +301,11 @@ class Layout extends StatelessWidget {
             padding: MySpacing.xy(8, 8),
             child: MyButton(
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              onPressed: () => {},
+              onPressed: () async {
+                await LocalStorage.setLoggedInUser(false);
+                //languageHideFn?.call();
+                Get.offAll(LoginScreen());
+              },
               borderRadiusAll: AppStyle.buttonRadius.medium,
               padding: MySpacing.xy(8, 4),
               splashColor: contentTheme.danger.withAlpha(28),

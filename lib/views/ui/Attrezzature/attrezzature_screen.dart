@@ -164,6 +164,7 @@ class _AttrezzatureCondScreenState extends State<AttrezzatureCondScreen>
                                           'Val. Periodo',
                                         )),
                                   ],
+                                  showEmptyRows: false,
                                   source: controller.data!,
                                   rowsPerPage: controller.data!.rowCount > 20
                                       ? 20

@@ -1,0 +1,1 @@
+ C:\\Users\\Utente\\Desktop\\Cartelle\\Progetti\\prog\ flutt\\agenti_miwa\\.dart_tool\\flutter_build\\03ad90f69562acc87156fe9348c44b94\\native_assets.yaml: 

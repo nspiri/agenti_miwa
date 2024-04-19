@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:foody/helpers/services/json_decoder.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/model/identifier_model.dart';
@@ -70,10 +71,8 @@ class CustomersList extends IdentifierModel {
   static List<CustomersList>? _dummyList;
 
   static Future<List<CustomersList>> get dummyList async {
-    if (_dummyList == null) {
-      dynamic data = json.decode(await getData());
-      _dummyList = listFromJSON(data);
-    }
+    dynamic data = json.decode(await getData());
+    _dummyList = listFromJSON(data);
 
     return _dummyList!;
   }
@@ -108,6 +107,7 @@ class StatoCliente extends IdentifierModel {
       ferie = false,
       editable = true,
       gestito;
+  TextEditingController controller = TextEditingController();
 
   StatoCliente(
       super.id, this.data, this.pccod, this.counter, this.pcdes, this.stato);
@@ -141,10 +141,12 @@ class StatoCliente extends IdentifierModel {
   static List<StatoCliente>? _dummyList;
 
   static Future<List<StatoCliente>> get dummyList async {
-    //if (_dummyList == null) {
+    String dati = await getData();
+    if (dati == "") {
+      return [];
+    }
     dynamic data = json.decode(await getData());
     _dummyList = listFromJSON(data);
-    // }
 
     return _dummyList!;
   }

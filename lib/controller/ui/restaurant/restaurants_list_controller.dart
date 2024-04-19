@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:foody/helpers/storage/local_storage.dart';
@@ -8,11 +9,14 @@ import 'package:foody/model/scadenziario_cliente.dart';
 import 'package:foody/views/my_controller.dart';
 import 'package:foody/views/ui/Scadenziario/scadenziario_list.dart';
 import 'package:foody/model/request.dart' as r;
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class ScadenziarioListController extends MyController {
-  List<ScadenziarioCliente> scadenziario = [];
+  List<ScadenziarioCliente> scadenziario = [], filterScadenziario = [];
   DataTableSource? data;
   bool? dataAsc, dataScad = false, importo, ragSoc, doc;
+  bool all = false, tutti = true, scaduti = false;
+  bool isLoading = true;
 
   @override
   void onInit() {
@@ -22,11 +26,15 @@ class ScadenziarioListController extends MyController {
 
   @override
   void onThemeChanged() {
-    data = MyDataDetailScadenziario(scadenziario);
+    data = MyDataDetailScadenziario(filterScadenziario, this);
     update();
   }
 
   getScadenziarioCliente() async {
+    tutti = true;
+    scaduti = false;
+    isLoading = true;
+    update();
     r.Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrcli",
         etichettaCollage: "GET_SCAD",
@@ -35,6 +43,8 @@ class ScadenziarioListController extends MyController {
           "cliente": ""
         });
 
+    isLoading = false;
+    update();
     if (res.code == 200) {
       var a = res.result as dynamic;
       List<dynamic> dati = json.decode(jsonEncode(a));
@@ -43,7 +53,8 @@ class ScadenziarioListController extends MyController {
             dati.map((e) => ScadenziarioCliente.fromJson(e)).toList();
         scadenziario.sort((a, b) =>
             int.parse(a.dataScadenza!).compareTo(int.parse(b.dataScadenza!)));
-        data = MyDataDetailScadenziario(scadenziario);
+        filterScadenziario = scadenziario;
+        data = MyDataDetailScadenziario(filterScadenziario, this);
       }
       update();
     } else {
@@ -52,26 +63,88 @@ class ScadenziarioListController extends MyController {
     }
   }
 
+  generaPdf() async {
+    List<dynamic> clienti = [];
+    for (var element in filterScadenziario) {
+      if (element.selected) {
+        clienti.add({
+          "documento":
+              "${element.documento} ${element.serie}/${element.numero}",
+          "data": element.data,
+          "tipo": element.tipoPagamento,
+          "scadenza": element.dataScadenza,
+          "importo": element.importo
+        });
+      }
+    }
+    r.Response res = await DoRequest.doHttpRequest(
+        nomeCollage: "colsrcli",
+        etichettaCollage: "SCAD_STAMPA",
+        dati: {
+          "cliente": "",
+          "agente": LocalStorage.getLoggedUser()?.codiceAgente,
+          "scadenze": clienti
+        });
+    String pdf = "";
+    if (res.code == 200) {
+      var result = res.result as List<dynamic>;
+      if (result[0]["pdf"] != null) {
+        if (result.isNotEmpty) {
+          for (var element in result[0]["pdf"]) {
+            pdf += element;
+          }
+          Uint8List pdfExp = base64
+              .decode(pdf.replaceAll(RegExp(r'\s+'), '').replaceAll("[", ""));
+          PdfDocument document = PdfDocument(inputBytes: pdfExp);
+          final List<int> bytes = document.saveSync();
+          document.dispose();
+          await Utils.saveAndLaunchFile(bytes, 'scadenziario.pdf');
+        }
+      }
+    } else {
+      //showErrorMessage(context, "Nessuna immagine", "");
+    }
+  }
+
+  scadute() {
+    scaduti = true;
+    tutti = false;
+    filterScadenziario = scadenziario
+        .where((element) =>
+            int.parse(element.dataScadenza ?? "0") <
+            int.parse(Utils.stringToDateR(Utils.dateToString(DateTime.now()))))
+        .toList();
+    data = MyDataDetailScadenziario(filterScadenziario, this);
+    update();
+  }
+
+  changeValue() {
+    data = MyDataDetailScadenziario(filterScadenziario, this);
+    update();
+  }
+
   String get totale {
     double totale = 0;
-    for (var element in scadenziario) {
-      totale = totale + (element.importo ?? 0).toDouble();
+    for (var element in filterScadenziario) {
+      if (element.selected) {
+        totale = totale + (element.importo ?? 0).toDouble();
+      }
     }
     return Utils.formatStringDecimal(totale, 2);
   }
 
   void filterByName(String value) {
     if (value == "") {
-      data = MyDataDetailScadenziario(scadenziario);
+      data = MyDataDetailScadenziario(filterScadenziario, this);
     } else {
-      var filterCustomers = scadenziario
+      var filterCustomers = filterScadenziario
           .where((element) =>
               element.ragioneSociale!
                   .toLowerCase()
                   .contains(value.toLowerCase()) ||
               element.documento!.toLowerCase().contains(value.toLowerCase()))
           .toList();
-      data = MyDataDetailScadenziario(filterCustomers);
+      data = MyDataDetailScadenziario(filterCustomers, this);
     }
     update();
   }
@@ -83,13 +156,13 @@ class ScadenziarioListController extends MyController {
     dataScad = null;
     dataAsc ??= false;
     if (dataAsc!) {
-      scadenziario
+      filterScadenziario
           .sort((a, b) => int.parse(a.data!).compareTo(int.parse(b.data!)));
-      data = MyDataDetailScadenziario(scadenziario);
+      data = MyDataDetailScadenziario(filterScadenziario, this);
     } else {
-      scadenziario
+      filterScadenziario
           .sort((a, b) => int.parse(b.data!).compareTo(int.parse(a.data!)));
-      data = MyDataDetailScadenziario(scadenziario);
+      data = MyDataDetailScadenziario(filterScadenziario, this);
     }
     dataAsc = !dataAsc!;
     update();
@@ -102,13 +175,13 @@ class ScadenziarioListController extends MyController {
     dataAsc = null;
     dataScad ??= false;
     if (dataScad!) {
-      scadenziario.sort((a, b) =>
+      filterScadenziario.sort((a, b) =>
           int.parse(a.dataScadenza!).compareTo(int.parse(b.dataScadenza!)));
-      data = MyDataDetailScadenziario(scadenziario);
+      data = MyDataDetailScadenziario(filterScadenziario, this);
     } else {
-      scadenziario.sort((a, b) =>
+      filterScadenziario.sort((a, b) =>
           int.parse(b.dataScadenza!).compareTo(int.parse(a.dataScadenza!)));
-      data = MyDataDetailScadenziario(scadenziario);
+      data = MyDataDetailScadenziario(filterScadenziario, this);
     }
     dataScad = !dataScad!;
     update();
@@ -122,11 +195,11 @@ class ScadenziarioListController extends MyController {
     importo ??= true;
 
     if (importo!) {
-      scadenziario.sort((a, b) => a.importo!.compareTo(b.importo!));
-      data = MyDataDetailScadenziario(scadenziario);
+      filterScadenziario.sort((a, b) => a.importo!.compareTo(b.importo!));
+      data = MyDataDetailScadenziario(filterScadenziario, this);
     } else {
-      scadenziario.sort((a, b) => b.importo!.compareTo(a.importo!));
-      data = MyDataDetailScadenziario(scadenziario);
+      filterScadenziario.sort((a, b) => b.importo!.compareTo(a.importo!));
+      data = MyDataDetailScadenziario(filterScadenziario, this);
     }
     importo = !importo!;
     update();
@@ -139,13 +212,13 @@ class ScadenziarioListController extends MyController {
     importo = null;
     ragSoc ??= true;
     if (ragSoc!) {
-      scadenziario
+      filterScadenziario
           .sort((a, b) => b.ragioneSociale!.compareTo(a.ragioneSociale!));
-      data = MyDataDetailScadenziario(scadenziario);
+      data = MyDataDetailScadenziario(filterScadenziario, this);
     } else {
-      scadenziario
+      filterScadenziario
           .sort((a, b) => a.ragioneSociale!.compareTo(b.ragioneSociale!));
-      data = MyDataDetailScadenziario(scadenziario);
+      data = MyDataDetailScadenziario(filterScadenziario, this);
     }
     ragSoc = !ragSoc!;
     update();
@@ -158,13 +231,13 @@ class ScadenziarioListController extends MyController {
     ragSoc = null;
     doc ??= true;
     if (doc!) {
-      scadenziario.sort((a, b) => ("${b.documento}${b.serie}${b.numero}")
+      filterScadenziario.sort((a, b) => ("${b.documento}${b.serie}${b.numero}")
           .compareTo(("${a.documento}${a.serie}${a.numero}")));
-      data = MyDataDetailScadenziario(scadenziario);
+      data = MyDataDetailScadenziario(filterScadenziario, this);
     } else {
-      scadenziario.sort((a, b) => ("${a.documento}${a.serie}${a.numero}")
+      filterScadenziario.sort((a, b) => ("${a.documento}${a.serie}${a.numero}")
           .compareTo(("${b.documento}${b.serie}${b.numero}")));
-      data = MyDataDetailScadenziario(scadenziario);
+      data = MyDataDetailScadenziario(filterScadenziario, this);
     }
     doc = !doc!;
     update();

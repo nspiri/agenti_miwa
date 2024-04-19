@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:foody/controller/ui/Ordini/ordine_dettaglio_controller.dart';
 import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
@@ -7,6 +8,7 @@ import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/helpers/widgets/my_container.dart';
 import 'package:foody/helpers/widgets/my_flex.dart';
 import 'package:foody/helpers/widgets/my_flex_item.dart';
+import 'package:foody/helpers/widgets/my_responsiv.dart';
 import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/helpers/widgets/my_text_style.dart';
@@ -70,14 +72,15 @@ class _OrderDetailScreenState extends State<OrderDetailScreen>
   @override
   Widget build(BuildContext context) {
     return Layout(
-      child: GetBuilder(
+        child: MyResponsive(builder: (BuildContext context, _, screenMT) {
+      return GetBuilder(
         init: controller,
         builder: (controller) {
           return SingleChildScrollView(
             child: Column(
               children: [
                 Padding(
-                  padding: MySpacing.x(flexSpacing),
+                  padding: MySpacing.x(flexSpacing / 2),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -111,15 +114,17 @@ class _OrderDetailScreenState extends State<OrderDetailScreen>
                     ],
                   ),
                 ),
-                MySpacing.height(flexSpacing),
+                MySpacing.height(flexSpacing / 2),
                 Padding(
-                  padding: MySpacing.x(flexSpacing / 2),
+                  padding: MySpacing.xy(flexSpacing / 2, flexSpacing / 2),
                   child: MyFlex(
                     children: [
                       MyFlexItem(
                           sizes: 'lg-7',
                           child: !controller.loading
-                              ? listaCarrello()
+                              ? screenMT.isMobile
+                                  ? listaCarrelloMobile()
+                                  : listaCarrello()
                               : Column(
                                   children: [
                                     MyText.titleLarge(
@@ -145,8 +150,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen>
             ),
           );
         },
-      ),
-    );
+      );
+    }));
   }
 
   Widget listaCarrello() {
@@ -182,6 +187,33 @@ class _OrderDetailScreenState extends State<OrderDetailScreen>
     );
   }
 
+  Widget listaCarrelloMobile() {
+    return ListView.separated(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: controller.righeDett.length,
+      itemBuilder: (context, index) {
+        RigaDettaglio data = controller.righeDett[index];
+        return MyContainer(
+            width: double.infinity,
+            child: Column(
+              children: [
+                descrizioneMobile(data),
+                /*Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: quantita(data),
+                ),*/
+              ],
+            ));
+      },
+      separatorBuilder: (context, index) {
+        return SizedBox(
+          height: 12,
+        );
+      },
+    );
+  }
+
   Widget immagine(RigaDettaglio data) {
     return MyContainer(
       height: 100,
@@ -197,6 +229,119 @@ class _OrderDetailScreenState extends State<OrderDetailScreen>
               image: ExactAssetImage(Images.noImage),
               fit: BoxFit.cover,
             ),
+    );
+  }
+
+  Widget descrizioneMobile(RigaDettaglio data) {
+    return MyFlex(
+      wrapCrossAlignment: WrapCrossAlignment.center,
+      children: [
+        MyFlexItem(
+          sizes: "md-12 lg-12 sm-12",
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  /*InkWell(
+                    onTap: () {
+                      _displayStoricoArticolo(context, data);
+                    },
+                    child: Icon(
+                      LucideIcons.history,
+                      size: 26,
+                      color: contentTheme.primary,
+                    ),
+                  ),
+                  MySpacing.width(8),*/
+                  Flexible(
+                    child: MyText.bodyMedium(
+                      "${data.ocdsc} (${Utils.formatStringDecimal(data.ocqta, 2)} ${data.arum})",
+                      fontWeight: 600,
+                      maxLines: 2,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: MyText.bodySmall(
+                          "Codice: ${data.ocart}",
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: MyText.bodySmall(
+                          "Prezzo: € ${Utils.formatStringDecimal(data.ocprz, 3)}",
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: MyText.bodySmall(
+                            "Sconto: ${data.ocsco == "" ? "Nessuno sconto" : data.ocsco}${data.ocsco == "" ? "" : "%"}"),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: quantitaMobile(data),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget quantitaMobile(RigaDettaglio data) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SizedBox(
+          child: MyText.titleMedium(
+            maxLines: 1,
+            "${Utils.formatStringDecimal((data.occol ?? 0).toDouble(), 0)} * ${Utils.formatStringDecimal(data.ocqta, 2)} ${data.arum}",
+            fontWeight: 800,
+            textAlign: TextAlign.right,
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            MyText.bodyLarge("€ ${Utils.formatStringDecimal((data.ocruv), 2)}",
+                fontWeight: 800),
+            MyText.bodySmall(
+              " Iva ${data.ocali?.trim()}%",
+            ),
+          ],
+        ),
+        /*  MySpacing.height(4),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Center(
+              child: MyText.bodySmall(
+                "Prov: ",
+                //fontWeight: 600,
+              ),
+            ),
+            MyText.bodySmall(
+              "${data.ocpro}%",
+              //fontWeight: 600,
+            ),
+          ],
+        ),*/
+      ],
     );
   }
 
@@ -293,47 +438,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen>
             ),
           ],
         ),*/
-      ],
-    );
-  }
-
-  dropdown<T>(
-      List<DropdownMenuItem<T>> items,
-      Function(T? value) onChanged,
-      String title,
-      T? valoreSelezionato,
-      List<Widget> Function(BuildContext)? selectedBuilder) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        MyText.labelMedium(
-          title,
-        ),
-        MySpacing.height(4),
-        DropdownButtonFormField<T>(
-          dropdownColor: contentTheme.background,
-          isDense: true,
-          items: items,
-          icon: Icon(
-            LucideIcons.chevronDown,
-            size: 20,
-          ),
-          decoration: InputDecoration(
-            hintStyle: MyTextStyle.bodySmall(xMuted: true),
-            border: outlineInputBorder,
-            enabledBorder: outlineInputBorder,
-            focusedBorder: focusedInputBorder,
-            contentPadding: MySpacing.all(8),
-            isCollapsed: true,
-            floatingLabelBehavior: FloatingLabelBehavior.never,
-          ),
-          //validator: controller.basicValidator.getValidation(validation),
-          value: valoreSelezionato,
-          selectedItemBuilder: selectedBuilder,
-          onChanged: (value) {
-            onChanged(value);
-          },
-        )
       ],
     );
   }

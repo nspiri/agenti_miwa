@@ -79,7 +79,9 @@ class _CartScreenState extends State<CartScreen>
               height: MediaQuery.of(context).size.height,
               color: Colors.white,
               child: ModalListaArticoli(
-                codCliente: cliente?.codiceCliente ?? "",
+                codCliente: cliente?.codCliFattA == ""
+                    ? cliente?.codiceCliente ?? ""
+                    : cliente?.codCliFattA ?? "",
                 articoliSelezionati: controller.carrello,
                 articoliCancellati: controller.articoliCancellati,
               )),
@@ -156,20 +158,37 @@ class _CartScreenState extends State<CartScreen>
                         ),
                       ],
                     ),
-                    MyButton.rounded(
-                      onPressed: () {
-                        controller.loading = true;
-                        controller.update();
-                        _displayDialog(context);
-                      },
-                      elevation: 0,
-                      padding: MySpacing.xy(20, 16),
-                      backgroundColor: contentTheme.primary,
-                      child: MyText.bodyMedium(
-                        'Articoli',
-                        color: contentTheme.onPrimary,
-                      ),
-                    )
+                    Row(
+                      children: [
+                        MyButton.rounded(
+                          onPressed: () {
+                            controller.preventivo();
+                          },
+                          elevation: 0,
+                          padding: MySpacing.xy(20, 16),
+                          backgroundColor: contentTheme.primary,
+                          child: MyText.bodyMedium(
+                            'Preventivo',
+                            color: contentTheme.onPrimary,
+                          ),
+                        ),
+                        MySpacing.width(8),
+                        MyButton.rounded(
+                          onPressed: () {
+                            controller.loading = true;
+                            controller.update();
+                            _displayDialog(context);
+                          },
+                          elevation: 0,
+                          padding: MySpacing.xy(20, 16),
+                          backgroundColor: contentTheme.primary,
+                          child: MyText.bodyMedium(
+                            'Articoli',
+                            color: contentTheme.onPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -187,18 +206,16 @@ class _CartScreenState extends State<CartScreen>
                             : Column(
                                 children: [
                                   MyText.titleLarge(
-                                    controller.loading
-                                        ? "Caricamento..."
-                                        : "Nessun articolo in lista...",
+                                    "Nessun articolo in lista...",
                                     fontWeight: 600,
                                   ),
-                                  MySpacing.height(24),
+                                  /* MySpacing.height(24),
                                   controller.loading
                                       ? CircularProgressIndicator(
                                           color: contentTheme.primary,
                                           strokeWidth: 3,
                                         )
-                                      : Text(""),
+                                      : Text(""),*/
                                 ],
                               )),
                     MyFlexItem(
@@ -1091,8 +1108,11 @@ class _CartScreenState extends State<CartScreen>
               maxLength: 50,
               controller: controller.notaIncasso,
               decoration: InputDecoration(
+                counterText: "",
                 hintStyle: MyTextStyle.bodySmall(xMuted: true),
                 border: outlineInputBorder,
+                enabledBorder: outlineInputBorder,
+                focusedBorder: focusedInputBorder,
                 contentPadding: MySpacing.all(12),
                 isCollapsed: true,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -1112,8 +1132,11 @@ class _CartScreenState extends State<CartScreen>
               maxLength: 50,
               controller: controller.notaConsegna,
               decoration: InputDecoration(
+                counterText: "",
                 hintStyle: MyTextStyle.bodySmall(xMuted: true),
                 border: outlineInputBorder,
+                enabledBorder: outlineInputBorder,
+                focusedBorder: focusedInputBorder,
                 contentPadding: MySpacing.all(12),
                 isCollapsed: true,
                 floatingLabelBehavior: FloatingLabelBehavior.never,

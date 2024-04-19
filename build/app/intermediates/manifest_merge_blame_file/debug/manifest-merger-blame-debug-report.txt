@@ -101,49 +101,89 @@
 77            android:name="flutterEmbedding"
 78            android:value="2" />
 79
-80        <activity
-80-->[:url_launcher_android] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-13:74
-81            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
-81-->[:url_launcher_android] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-74
-82            android:exported="false"
-82-->[:url_launcher_android] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-37
-83            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-83-->[:url_launcher_android] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-71
-84
-85        <uses-library
-85-->[androidx.window:window:1.0.0-beta04] C:\Users\Utente\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
-86            android:name="androidx.window.extensions"
-86-->[androidx.window:window:1.0.0-beta04] C:\Users\Utente\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
-87            android:required="false" />
-87-->[androidx.window:window:1.0.0-beta04] C:\Users\Utente\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
-88        <uses-library
-88-->[androidx.window:window:1.0.0-beta04] C:\Users\Utente\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
-89            android:name="androidx.window.sidecar"
-89-->[androidx.window:window:1.0.0-beta04] C:\Users\Utente\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
-90            android:required="false" /> <!-- Needs to be explicitly declared on P+ -->
-90-->[androidx.window:window:1.0.0-beta04] C:\Users\Utente\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
-91        <uses-library
-91-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\Utente\.gradle\caches\transforms-3\10573cd3896b16f5dcfdc7ca46129976\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:39:9-41:40
-92            android:name="org.apache.http.legacy"
-92-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\Utente\.gradle\caches\transforms-3\10573cd3896b16f5dcfdc7ca46129976\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:40:13-50
-93            android:required="false" />
-93-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\Utente\.gradle\caches\transforms-3\10573cd3896b16f5dcfdc7ca46129976\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:41:13-37
+80        <provider
+80-->[:open_file] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:11:9-20:20
+81            android:name="com.crazecoder.openfile.FileProvider"
+81-->[:open_file] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-64
+82            android:authorities="com.example.foody.fileProvider.com.crazecoder.openfile"
+82-->[:open_file] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-88
+83            android:exported="false"
+83-->[:open_file] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-37
+84            android:grantUriPermissions="true" >
+84-->[:open_file] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-47
+85            <meta-data
+85-->[:open_file] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:17:13-19:53
+86                android:name="android.support.FILE_PROVIDER_PATHS"
+86-->[:open_file] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:18:17-67
+87                android:resource="@xml/filepaths" />
+87-->[:open_file] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:19:17-50
+88        </provider>
+89
+90        <activity
+90-->[:url_launcher_android] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-13:74
+91            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+91-->[:url_launcher_android] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-74
+92            android:exported="false"
+92-->[:url_launcher_android] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-37
+93            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+93-->[:url_launcher_android] C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-71
 94
-95        <activity
-95-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Utente\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45
-96            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-96-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Utente\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:19-85
-97            android:exported="false"
-97-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Utente\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:22:19-43
-98            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-98-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Utente\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:21:19-78
-99
-100        <meta-data
-100-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\Utente\.gradle\caches\transforms-3\f64fba6e6efbe26a4b67f791bcfc957f\transformed\jetified-play-services-basement-18.0.0\AndroidManifest.xml:21:9-23:69
-101            android:name="com.google.android.gms.version"
-101-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\Utente\.gradle\caches\transforms-3\f64fba6e6efbe26a4b67f791bcfc957f\transformed\jetified-play-services-basement-18.0.0\AndroidManifest.xml:22:13-58
-102            android:value="@integer/google_play_services_version" />
-102-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\Utente\.gradle\caches\transforms-3\f64fba6e6efbe26a4b67f791bcfc957f\transformed\jetified-play-services-basement-18.0.0\AndroidManifest.xml:23:13-66
-103    </application>
+95        <uses-library
+95-->[androidx.window:window:1.0.0-beta04] C:\Users\Utente\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
+96            android:name="androidx.window.extensions"
+96-->[androidx.window:window:1.0.0-beta04] C:\Users\Utente\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
+97            android:required="false" />
+97-->[androidx.window:window:1.0.0-beta04] C:\Users\Utente\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+98        <uses-library
+98-->[androidx.window:window:1.0.0-beta04] C:\Users\Utente\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
+99            android:name="androidx.window.sidecar"
+99-->[androidx.window:window:1.0.0-beta04] C:\Users\Utente\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+100            android:required="false" /> <!-- Needs to be explicitly declared on P+ -->
+100-->[androidx.window:window:1.0.0-beta04] C:\Users\Utente\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
+101        <uses-library
+101-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\Utente\.gradle\caches\transforms-3\10573cd3896b16f5dcfdc7ca46129976\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:39:9-41:40
+102            android:name="org.apache.http.legacy"
+102-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\Utente\.gradle\caches\transforms-3\10573cd3896b16f5dcfdc7ca46129976\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:40:13-50
+103            android:required="false" />
+103-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\Utente\.gradle\caches\transforms-3\10573cd3896b16f5dcfdc7ca46129976\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:41:13-37
 104
-105</manifest>
+105        <activity
+105-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Utente\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45
+106            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+106-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Utente\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:19-85
+107            android:exported="false"
+107-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Utente\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:22:19-43
+108            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+108-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\Utente\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:21:19-78
+109
+110        <meta-data
+110-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\Utente\.gradle\caches\transforms-3\f64fba6e6efbe26a4b67f791bcfc957f\transformed\jetified-play-services-basement-18.0.0\AndroidManifest.xml:21:9-23:69
+111            android:name="com.google.android.gms.version"
+111-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\Utente\.gradle\caches\transforms-3\f64fba6e6efbe26a4b67f791bcfc957f\transformed\jetified-play-services-basement-18.0.0\AndroidManifest.xml:22:13-58
+112            android:value="@integer/google_play_services_version" />
+112-->[com.google.android.gms:play-services-basement:18.0.0] C:\Users\Utente\.gradle\caches\transforms-3\f64fba6e6efbe26a4b67f791bcfc957f\transformed\jetified-play-services-basement-18.0.0\AndroidManifest.xml:23:13-66
+113
+114        <provider
+114-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Utente\.gradle\caches\transforms-3\e04bc3769bedd8dd6f8ca688986b0355\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+115            android:name="androidx.startup.InitializationProvider"
+115-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Utente\.gradle\caches\transforms-3\e04bc3769bedd8dd6f8ca688986b0355\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+116            android:authorities="com.example.foody.androidx-startup"
+116-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Utente\.gradle\caches\transforms-3\e04bc3769bedd8dd6f8ca688986b0355\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+117            android:exported="false" >
+117-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Utente\.gradle\caches\transforms-3\e04bc3769bedd8dd6f8ca688986b0355\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+118            <meta-data
+118-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Utente\.gradle\caches\transforms-3\e04bc3769bedd8dd6f8ca688986b0355\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+119                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+119-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Utente\.gradle\caches\transforms-3\e04bc3769bedd8dd6f8ca688986b0355\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+120                android:value="androidx.startup" />
+120-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Utente\.gradle\caches\transforms-3\e04bc3769bedd8dd6f8ca688986b0355\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+121            <meta-data
+121-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Utente\.gradle\caches\transforms-3\8c1e738388b632b23acecc5b0cf3e292\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+122                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+122-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Utente\.gradle\caches\transforms-3\8c1e738388b632b23acecc5b0cf3e292\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+123                android:value="androidx.startup" />
+123-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Utente\.gradle\caches\transforms-3\8c1e738388b632b23acecc5b0cf3e292\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+124        </provider>
+125    </application>
+126
+127</manifest>
