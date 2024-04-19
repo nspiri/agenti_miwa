@@ -71,7 +71,7 @@ class CustomersList extends IdentifierModel {
   static List<CustomersList>? _dummyList;
 
   static Future<List<CustomersList>> get dummyList async {
-    dynamic data = json.decode(await getData());
+    dynamic data = jsonDecode(await getData());
     _dummyList = listFromJSON(data);
 
     return _dummyList!;
@@ -88,7 +88,7 @@ class CustomersList extends IdentifierModel {
       if (a.isEmpty) {
         return "";
       }
-      return jsonEncode(a);
+      return json.encode(a);
     } else {
       return "";
     }

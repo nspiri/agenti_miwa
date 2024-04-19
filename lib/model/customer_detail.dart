@@ -323,7 +323,7 @@ class Attrezzatura {
   static List<Attrezzatura>? _dummyList;
 
   static Future<List<Attrezzatura>> get dummyList async {
-    dynamic data = json.decode(await getData());
+    dynamic data = jsonDecode(await getData());
     _dummyList = listFromJSON(data);
 
     return _dummyList!;
@@ -333,17 +333,17 @@ class Attrezzatura {
     Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrcli",
         etichettaCollage: "ATTREZZATURE",
-        dati: json.encode({
+        dati: {
           "agente": LocalStorage.getLoggedUser()?.codiceAgente,
           "no_condizione": false
-        }));
+        });
 
     if (res.code == 200) {
       var a = res.result as List<dynamic>;
       if (a.isEmpty) {
         return "";
       }
-      return jsonEncode(a);
+      return json.encode(a);
     } else {
       return "";
     }

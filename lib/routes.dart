@@ -25,17 +25,16 @@ import 'package:foody/views/ui/foods_screen.dart';
 import 'package:foody/views/ui/Scadenziario/add_restaurant_screen.dart';
 import 'package:foody/views/ui/Scadenziario/edit_restaurant_screen.dart';
 import 'package:foody/views/ui/Scadenziario/scadenziario_list.dart';
-import 'package:foody/views/ui/Scadenziario/restaurant_detail_screen.dart';
-import 'package:foody/views/ui/chat_screen.dart';
+//import 'package:foody/views/ui/chat_screen.dart';
 import 'package:foody/views/ui/customer/add_customer_screen.dart';
 import 'package:foody/views/ui/customer/customer_detail_screen.dart';
 import 'package:foody/views/ui/customer/customer_list_screen.dart';
 import 'package:foody/views/ui/dashboard_screen.dart';
-import 'package:foody/views/ui/seller/add_seller_screen.dart';
+/*import 'package:foody/views/ui/seller/add_seller_screen.dart';
 import 'package:foody/views/ui/seller/seller_detail_screen.dart';
 import 'package:foody/views/ui/seller/seller_edit_screen.dart';
 import 'package:foody/views/ui/seller/seller_list_screen.dart';
-import 'package:foody/views/ui/setting_screen.dart';
+import 'package:foody/views/ui/setting_screen.dart';*/
 import 'package:foody/views/ui/wallet_screen.dart';
 import 'package:get/get.dart';
 
@@ -90,10 +89,10 @@ getPageRoute() {
     ///*************PAGES*************///
 
     ///Chat
-    GetPage(
+    /*   GetPage(
         name: '/chat',
         page: () => const ChatScreen(),
-        middlewares: [AuthMiddleware()]),
+        middlewares: [AuthMiddleware()]),*/
 
     /// ORDINI
     GetPage(
@@ -154,7 +153,7 @@ getPageRoute() {
         middlewares: [AuthMiddleware()]),
 
     /// Seller
-    GetPage(
+    /*  GetPage(
         name: '/admin/sellers',
         page: () => const SellerListScreen(),
         middlewares: [AuthMiddleware()]),
@@ -169,17 +168,17 @@ getPageRoute() {
     GetPage(
         name: '/admin/sellers/edit',
         page: () => const SellerEditScreen(),
-        middlewares: [AuthMiddleware()]),
+        middlewares: [AuthMiddleware()]),*/
 
     /// Restaurants
     GetPage(
         name: '/admin/timetable',
         page: () => const ScadenziarioListScreen(),
         middlewares: [AuthMiddleware()]),
-    GetPage(
+    /* GetPage(
         name: '/admin/restaurants/detail',
         page: () => const RestaurantDetailScreen(),
-        middlewares: [AuthMiddleware()]),
+        middlewares: [AuthMiddleware()]),*/
 
     GetPage(
         name: '/admin/restaurants/create',
@@ -240,10 +239,10 @@ getPageRoute() {
         middlewares: [AuthMiddleware()]),
 
     /// Setting
-    GetPage(
+    /*   GetPage(
         name: '/admin/setting',
         page: () => const SettingScreen(),
-        middlewares: [AuthMiddleware()]),
+        middlewares: [AuthMiddleware()]),*/
   ];
   return routes
       .map((e) => GetPage(

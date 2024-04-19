@@ -137,9 +137,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\windows\x64\runner\foody.vcxproj">
-      <Project>{0A8ED0AB-E05C-3BDC-BC6A-A8884D1B485F}</Project>
-      <Name>foody</Name>
+    <ProjectReference Include="C:\Users\Utente\Desktop\Cartelle\Progetti\prog flutt\agenti_miwa\build\windows\x64\runner\MexalOrder.vcxproj">
+      <Project>{B0783F8E-3B05-3A23-8AA2-C6EE4D75ACF1}</Project>
+      <Name>MexalOrder</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
