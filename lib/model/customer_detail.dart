@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:foody/helpers/services/json_decoder.dart';
 import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
+import 'package:foody/model/articolo.dart';
 import 'package:foody/model/identifier_model.dart';
 import 'package:foody/model/request.dart';
 
@@ -53,6 +54,7 @@ class CustomerDetail extends IdentifierModel {
   double? sconto;
   List<Attrezzatura>? attrezzature;
   List<GiorniConsegne>? giorniConsegne;
+  bool? attivo = true;
 
   CustomerDetail(
       super.id,
@@ -101,7 +103,8 @@ class CustomerDetail extends IdentifierModel {
       this.tipoSconto,
       this.sconto,
       this.attrezzature,
-      this.giorniConsegne);
+      this.giorniConsegne,
+      this.attivo);
 
   static CustomerDetail fromJSON(Map<String, dynamic> json) {
     JSONDecoder decoder = JSONDecoder(json);
@@ -163,6 +166,8 @@ class CustomerDetail extends IdentifierModel {
         attrezzature?.add(new Attrezzatura.fromJson(v));
       });
     }
+    bool attivo = true;
+    if (json['pccpr'] == 0) attivo = false;
 
     List<GiorniConsegne>? giorniConsegne;
     if (json['giorni_consegne'] != null) {
@@ -219,11 +224,70 @@ class CustomerDetail extends IdentifierModel {
         tipoSconto,
         sconto,
         attrezzature,
-        giorniConsegne);
+        giorniConsegne,
+        attivo);
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['pcpro'] = this.provincia;
+    data['pccfi'] = this.codiceFiscale;
+    data['pcnaz'] = this.nazionalita;
+    //data['pctps'] = this.tipo;
+    data['pccod'] = this.codiceCliente;
+    data['pcdes'] = this.ragioneSociale;
+    data['pcnds1'] = this.nota1;
+    data['pctft_prec'] = this.fattAnnPrec;
+    data['pcpae'] = this.siglaNazione;
+    //data['pcpec'] = this.pec;
+    data['pcint'] = this.email;
+    data['pcnud'] = this.docUltimaConsegna;
+    data['pcloc'] = this.localita;
+    data['pcind'] = this.indirizzo;
+    data['pctpp'] = this.tipoAttivita;
+    data['pctel'] = this.telefono;
+    data['pccap'] = this.cap;
+    data['pcfax'] = this.fax;
+    data['pcurl'] = this.sitoInternet;
+    if (this.giorniConsegne != null) {
+      data['giorni_consegne'] =
+          this.giorniConsegne!.map((v) => v.toJson()).toList();
+    }
+    data['pcnpi'] = this.partitaIva;
+    data['pctft1_corr'] = this.fattAnnCorr;
+    //data['pcsdi'] = this.codSdi;
+    data['pccpr'] = this.codCatProv;
+    data['pclis_desc'] = this.descListino;
+    data['pcnds2'] = this.nota2;
+    data['pcpag_cptis'] = this.tipoSconto;
+    data['pcvbl'] = this.valoreOrdini;
+    data['pcduc'] = this.dataUltimaConsegna;
+    data['pcona'] = this.codZona;
+    data['pcpag'] = this.codicePagamento;
+    data['pcpag_desc'] = this.descPagamento;
+    data['pccsc_desc'] = this.descCatSconti;
+    data['pcpag_cpsco'] = this.sconto;
+    data['pcfid'] = this.valFido;
+    data['pcfms'] = this.codMessFuoriFido;
+    data['rischio'] = this.rischio;
+    data['pcfms_desc'] = this.descMessFuoriFido;
+    if (this.attrezzature != null) {
+      data['attrezzature'] = this.attrezzature!.map((v) => v.toJson()).toList();
+    }
+    data['pcona_desc'] = this.descZona;
+    data['pccst'] = this.codCatStat;
+    if (this.tipoAttivita != null) {
+      data['tipo_attivita'] =
+          this.tipoAttivita!.map((v) => v.toJson()).toList();
+    }
+    data['pccst_desc'] = this.descCatStat;
+    data['pclis'] = this.codListino;
+    data['pcfta'] = this.codCliFattA;
+    data['pcfta_desc'] = this.ragSocFattA;
+    data['pcasi'] = this.assoggIva;
+    data['pccpr_desc'] = this.descCatProv;
+    data['pccsc'] = this.codCatSconti;
+    data['pcsco'] = this.scontoIncondizionato;
     return data;
   }
 
@@ -382,4 +446,11 @@ class GiorniConsegne {
     data['ChiusuraOrdini'] = this.chiusuraOrdini;
     return data;
   }
+}
+
+class PassaggioDatiOrdine {
+  CustomerDetail? cliente;
+  List<Articolo>? carrello = [];
+
+  PassaggioDatiOrdine({this.cliente, this.carrello});
 }

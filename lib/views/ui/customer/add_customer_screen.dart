@@ -237,6 +237,19 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                         TextInputType.text),
                                   ),
                                   MyFlexItem(
+                                    sizes: "md-12 sm-12",
+                                    child: buildTextField(
+                                        'Referente',
+                                        "",
+                                        controller.basicValidator
+                                            .getController("referente"),
+                                        controller.basicValidator
+                                            .getValidation("referente"),
+                                        true,
+                                        24,
+                                        TextInputType.number),
+                                  ),
+                                  MyFlexItem(
                                     sizes: "md-6 sm-6",
                                     child: buildTextField(
                                         'Telefono',
@@ -881,9 +894,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                               MyButton.rounded(
                                 disabled: controller.documento.isEmpty,
                                 onPressed: () {
-                                  if (controller.documento.isNotEmpty) {
-                                    controller.inserisciCliente();
-                                  }
+                                  controller.inserisciCliente();
                                 },
                                 elevation: 0,
                                 padding: MySpacing.xy(20, 18),

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:foody/controller/ui/cart_controller.dart';
+import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/theme/app_themes.dart';
 import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/helpers/utils/show_message_dialogs.dart';
@@ -37,14 +38,37 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen>
     with SingleTickerProviderStateMixin, UIMixin {
   late CartController controller;
+  late PassaggioDatiOrdine? dati;
   late CustomerDetail? cliente;
 
   @override
   void initState() {
-    cliente = Get.arguments;
+    dati = Get.arguments;
+    clienteSelezionato = LocalStorage.getDettCli();
+    cliente = dati?.cliente;
     cliente ??= clienteSelezionato;
     controller = Get.put(CartController(context: context));
-    if (Get.arguments != null) {
+    if (dati?.carrello != [] && dati?.carrello != null) {
+      for (var element in dati!.carrello!) {
+        element.loading = true;
+      }
+      controller.carrello = dati!.carrello!;
+      controller.aggiungiArticoli(dati?.carrello ?? []);
+      controller.notaIncasso.text = LocalStorage.getNotaIncasso() ?? "";
+      controller.notaConsegna.text = LocalStorage.getNotaConsegna() ?? "";
+    } else {
+      if ((LocalStorage.getCarrelloGlobale() ?? []).length > 0) {
+        carrelloGlobale = LocalStorage.getCarrelloGlobale() ?? [];
+        for (var element in carrelloGlobale) {
+          element.loading = true;
+        }
+        controller.carrello = carrelloGlobale;
+        controller.aggiungiArticoli(carrelloGlobale);
+        controller.notaIncasso.text = LocalStorage.getNotaIncasso() ?? "";
+        controller.notaConsegna.text = LocalStorage.getNotaConsegna() ?? "";
+      }
+    }
+    if (cliente != null) {
       mostraNote();
     }
     controller.getData(cliente!);
@@ -115,7 +139,9 @@ class _CartScreenState extends State<CartScreen>
               height: MediaQuery.of(context).size.height,
               color: Colors.white,
               child: ModalListaStoricoArticolo(
-                codCliente: cliente?.codiceCliente ?? "",
+                codCliente: cliente?.codCliFattA == ""
+                    ? cliente?.codiceCliente ?? ""
+                    : cliente?.codCliFattA ?? "",
                 articolo: art,
               )),
         );
@@ -1049,6 +1075,39 @@ class _CartScreenState extends State<CartScreen>
                       fontWeight: 600,
                       muted: true,
                     ),
+                    MySpacing.height(8),
+                    Divider(),
+                    MySpacing.height(8),
+                    MyText.bodyLarge(
+                      'Giorni di consegna',
+                      fontWeight: 600,
+                    ),
+                    MySpacing.height(12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        MyText.bodyMedium("Giorno", fontWeight: 600),
+                        MyText.bodyMedium("Giro", fontWeight: 600),
+                        MyText.bodyMedium("Chiusura", fontWeight: 600)
+                      ],
+                    ),
+                    MySpacing.height(8),
+                    for (var i = 0;
+                        i <
+                            (controller.destinazione?.giorniConsegne?.length ??
+                                0);
+                        i++)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          MyText.bodyMedium(
+                              "${controller.destinazione?.giorniConsegne?[i].giorno}"),
+                          MyText.bodyMedium(
+                              "${controller.destinazione?.giorniConsegne?[i].giro}"),
+                          MyText.bodyMedium(
+                              "${controller.destinazione?.giorniConsegne?[i].chiusuraOrdini}")
+                        ],
+                      ),
                     MySpacing.height(8),
                     Divider(),
                   ],

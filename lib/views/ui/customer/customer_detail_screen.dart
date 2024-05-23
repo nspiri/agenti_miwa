@@ -113,9 +113,17 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen>
           Padding(
             padding: MySpacing.xy(8, 8),
             child: MyButton(
+                disabled: cliente?.attivo == false,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onPressed: () =>
-                    {controller.goToOrder(cliente?.codiceCliente ?? "")},
+                onPressed: () {
+                  if (controller.isOffline) {
+                    controller.goToList();
+                  } else {
+                    if (cliente?.attivo == true) {
+                      controller.goToOrder(cliente?.codiceCliente ?? "");
+                    }
+                  }
+                },
                 borderRadiusAll: AppStyle.buttonRadius.medium,
                 padding: MySpacing.xy(8, 4),
                 splashColor: contentTheme.danger.withAlpha(28),
@@ -123,7 +131,7 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen>
                 child: Row(
                   children: [
                     MyText.labelMedium(
-                      "Nuovo ordine",
+                      !controller.isOffline ? 'Nuovo ordine' : "Nuova lista",
                       fontWeight: 600,
                     ),
                   ],
@@ -220,14 +228,21 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen>
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         MyButton.rounded(
+          disabled: cliente?.attivo == false,
           onPressed: () {
-            controller.goToOrder(cliente?.codiceCliente ?? "");
+            if (controller.isOffline) {
+              controller.goToList();
+            } else {
+              if (cliente?.attivo == true) {
+                controller.goToOrder(cliente?.codiceCliente ?? "");
+              }
+            }
           },
           elevation: 0,
           padding: MySpacing.xy(20, 16),
           backgroundColor: contentTheme.primary,
           child: MyText.bodySmall(
-            'Nuovo ordine',
+            !controller.isOffline ? 'Nuovo ordine' : "Nuova lista",
             color: contentTheme.onPrimary,
           ),
         ),

@@ -24,6 +24,13 @@ class Listino extends IdentifierModel {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['mldes'] = descrizione;
+    data['mlnum'] = numero;
+    return data;
+  }
+
   static List<Listino> listFromJSON(List<dynamic> list) {
     return list.map((e) => Listino.fromJSON(e)).toList();
   }

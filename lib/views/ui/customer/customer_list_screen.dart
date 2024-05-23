@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:foody/controller/ui/customer/customer_list_controller.dart';
+import 'package:foody/helpers/theme/app_themes.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
 import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/helpers/widgets/my_breadcrumb.dart';
@@ -176,6 +179,10 @@ class _CustomerListScreenState extends State<CustomerListScreen>
                                             controller.orderByUltimaConsegna(),
                                         label: ordinamento("Ultima Consegna",
                                             controller.ultCons)),
+                                    if (!kIsWeb)
+                                      DataColumn(
+                                          numeric: true,
+                                          label: ordinamento("Offline", null)),
                                   ],
                                   showEmptyRows: false,
                                   columnSpacing: 10,
@@ -299,19 +306,72 @@ class _CustomerListScreenState extends State<CustomerListScreen>
                                                       TextOverflow.ellipsis,
                                                   data.descrizione ?? ""),
                                             ),
-                                            Flexible(
-                                              child: MyText.bodySmall(
-                                                  // fontWeight: 600,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  "${data.localita} (${data.provincia})"),
-                                            ),
-                                            Flexible(
-                                              child: MyText.bodySmall(
-                                                  // fontWeight: 600,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  "Ultima consegna: ${Utils.getFormattedDate(data.dataUltimaConsegna ?? "")}"),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Flexible(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      MyText.bodySmall(
+                                                          // fontWeight: 600,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          "${data.localita} (${data.provincia})"),
+                                                      MyText.bodySmall(
+                                                          // fontWeight: 600,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          "Ultima consegna: ${Utils.getFormattedDate(data.dataUltimaConsegna ?? "")}"),
+                                                    ],
+                                                  ),
+                                                ),
+                                                if (!kIsWeb)
+                                                  MyContainer(
+                                                    onTap: () {
+                                                      controller
+                                                          .scaricaDatiCliente(
+                                                              data);
+                                                    },
+                                                    paddingAll: 8,
+                                                    color:
+                                                        contentTheme.disabled,
+                                                    child: data.loadingDownloadOffline ==
+                                                            true
+                                                        ? SizedBox(
+                                                            height: 20,
+                                                            width: 20,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              color: theme
+                                                                  .colorScheme
+                                                                  .primary,
+                                                              strokeWidth: 1.2,
+                                                            ),
+                                                          )
+                                                        : data.loadingDownloadOffline ==
+                                                                null
+                                                            ? Icon(
+                                                                LucideIcons
+                                                                    .check,
+                                                                size: 20,
+                                                                color:
+                                                                    contentTheme
+                                                                        .primary,
+                                                              )
+                                                            : Icon(
+                                                                LucideIcons.pin,
+                                                                size: 20,
+                                                                color:
+                                                                    contentTheme
+                                                                        .primary,
+                                                              ),
+                                                  )
+                                              ],
                                             ),
                                           ],
                                         ))
@@ -425,6 +485,34 @@ class MyData extends DataTableSource with UIMixin {
             Utils.getFormattedDate(customer.dataUltimaConsegna ?? ""),
           ),
         ),
+        if (!kIsWeb)
+          DataCell(MyContainer(
+            onTap: () {
+              controller.scaricaDatiCliente(customer);
+            },
+            paddingAll: 8,
+            color: contentTheme.disabled,
+            child: customer.loadingDownloadOffline == true
+                ? SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      color: theme.colorScheme.primary,
+                      strokeWidth: 1.2,
+                    ),
+                  )
+                : customer.loadingDownloadOffline == null
+                    ? Icon(
+                        LucideIcons.check,
+                        size: 20,
+                        color: contentTheme.primary,
+                      )
+                    : Icon(
+                        LucideIcons.pin,
+                        size: 20,
+                        color: contentTheme.primary,
+                      ),
+          )),
       ],
       onSelectChanged: (value) {
         gotoDetail(customer.codice ?? "");

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:foody/helpers/services/json_decoder.dart';
+import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/model/identifier_model.dart';
 import 'package:foody/model/request.dart';
@@ -60,7 +61,9 @@ class Articolo extends IdentifierModel {
       this.esistenza,
       this.prezzoListini,
       this.nrVendite,
-      this.ultimaVendita);
+      this.ultimaVendita,
+      this.conf,
+      this.listinoSelezionato);
 
   static Articolo fromJSON(Map<String, dynamic> json) {
     JSONDecoder decoder = JSONDecoder(json);
@@ -81,6 +84,7 @@ class Articolo extends IdentifierModel {
     int codCatProvv = decoder.getInt('arpro');
     int esistenza = decoder.getInt('aqesi');
     int nrVendite = decoder.getInt('nr_vendite');
+    double conf = decoder.getDouble('conf');
     String ultimaVendita = decoder.getString('ultima_vendita');
     List<Arprz> prezzoListini = [];
     if (json['arprz'] != null) {
@@ -88,6 +92,10 @@ class Articolo extends IdentifierModel {
       json['arprz'].forEach((v) {
         prezzoListini.add(new Arprz.fromJson(v));
       });
+    }
+    Arprz? listinoSelezionato;
+    if (json['listino_sel'] != null) {
+      listinoSelezionato = Arprz.fromJson(json['listino_sel']);
     }
 
     return Articolo(
@@ -109,7 +117,34 @@ class Articolo extends IdentifierModel {
         esistenza,
         prezzoListini,
         nrVendite,
-        ultimaVendita);
+        ultimaVendita,
+        conf,
+        listinoSelezionato);
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['arcod'] = codArt;
+    data['ardsc'] = descrizione;
+    data['aralt'] = codAlt;
+    data['arsco'] = codCatSconti;
+    data['ariva'] = iva;
+    data['aqdin'] = disponibile;
+    data['arum1'] = um1;
+    data['arlis'] = codCatListini;
+    data['ardec'] = numDecArt;
+    data['aqesi'] = esistenza;
+    data['arpro'] = codCatProvv;
+    data['arcon'] = qtaArt;
+    data['mydes'] = catStatistica;
+    data['arnds'] = notaArt;
+    data['conf'] = conf;
+    if (prezzoListini != null) {
+      data['arprz'] = prezzoListini?.map((v) => v.toJson()).toList();
+    }
+    data['listino_sel'] = listinoSelezionato;
+    data['arscq'] = codCatScontiQta;
+    return data;
   }
 
   static List<Articolo> listFromJSON(List<dynamic> list) {
@@ -119,10 +154,15 @@ class Articolo extends IdentifierModel {
   static List<Articolo>? _dummyList;
 
   static Future<List<Articolo>> get dummyList async {
-    if (_dummyList == null) {
+    //if (_dummyList == null) {
+    bool offline = LocalStorage.getOffline();
+    if (offline) {
+      return LocalStorage.getArticoli() ?? [];
+    } else {
       dynamic data = json.decode(await getData());
       _dummyList = listFromJSON(data);
     }
+    //}
 
     return _dummyList!;
   }

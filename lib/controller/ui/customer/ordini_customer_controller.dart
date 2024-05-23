@@ -15,7 +15,7 @@ class OrdiniListCustomerController extends MyController {
   List<Ordine> ordini = [];
   DataTableSource? data;
   bool? dataAsc = true, doc, ragSoc, localita, totale;
-  CustomerDetail? clienteSelezionato;
+  //CustomerDetail? clienteSelezionato;
   bool isLoading = true;
 
   @override
@@ -30,33 +30,40 @@ class OrdiniListCustomerController extends MyController {
   }
 
   getOrdini(CustomerDetail cliente) async {
-    isLoading = true;
-    update();
+    bool isOffline = LocalStorage.getOffline();
     clienteSelezionato = cliente;
-    r.Response res = await DoRequest.doHttpRequest(
-        nomeCollage: "colsrdoc",
-        etichettaCollage: "OC_ELENCO",
-        dati: {
-          "agente": LocalStorage.getLoggedUser()?.codiceAgente,
-          "cliente": cliente.codCliFattA != ""
-              ? cliente.codCliFattA
-              : cliente.codiceCliente
-        });
-    isLoading = false;
-    update();
-    if (res.code == 200) {
-      var a = res.result as dynamic;
-      List<dynamic> dati = json.decode(jsonEncode(a));
-      if (dati != []) {
-        ordini = dati.map((e) => Ordine.fromJson(e)).toList();
-        ordini
-            .sort((a, b) => int.parse(b.ocdat!).compareTo(int.parse(a.ocdat!)));
-        data = MyDataDetailOrdiniCustomer(ordini, this);
-      }
+
+    if (isOffline) {
+      ordini = LocalStorage.getOrdini() ?? [];
+      ordini.sort((a, b) => int.parse(b.ocdat!).compareTo(int.parse(a.ocdat!)));
+      data = MyDataDetailOrdiniCustomer(ordini, this);
+      isLoading = false;
       update();
     } else {
-      //ERRORE
-      return null;
+      r.Response res = await DoRequest.doHttpRequest(
+          nomeCollage: "colsrdoc",
+          etichettaCollage: "OC_ELENCO",
+          dati: {
+            "agente": LocalStorage.getLoggedUser()?.codiceAgente,
+            "cliente": cliente.codCliFattA != ""
+                ? cliente.codCliFattA
+                : cliente.codiceCliente
+          });
+      isLoading = false;
+      if (res.code == 200) {
+        var a = res.result as dynamic;
+        List<dynamic> dati = json.decode(jsonEncode(a));
+        if (dati != []) {
+          ordini = dati.map((e) => Ordine.fromJson(e)).toList();
+          ordini.sort(
+              (a, b) => int.parse(b.ocdat!).compareTo(int.parse(a.ocdat!)));
+          data = MyDataDetailOrdiniCustomer(ordini, this);
+        }
+        update();
+      } else {
+        //ERRORE
+        return null;
+      }
     }
   }
 

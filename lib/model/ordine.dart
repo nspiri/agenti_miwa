@@ -67,6 +67,10 @@ class Ordine {
     }
   }
 
+  static List<Ordine> listFromJSON(List<dynamic> list) {
+    return list.map((e) => Ordine.fromJson(e)).toList();
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['ocnum'] = ocnum;

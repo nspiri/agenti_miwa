@@ -33,17 +33,21 @@ class ScadenziarioCliente {
     importo = json['pspim'];
   }
 
+  static List<ScadenziarioCliente> listFromJSON(List<dynamic> list) {
+    return list.map((e) => ScadenziarioCliente.fromJson(e)).toList();
+  }
+
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['pscau'] = documento;
-    data['pcdes'] = ragioneSociale;
-    data['psser'] = serie;
-    data['psnum'] = numero;
-    data['pspdt'] = dataScadenza;
-    data['psdat'] = data;
-    data['ctdes'] = tipoPagamento;
-    data['pscto'] = codCliente;
-    data['pspim'] = importo;
-    return data;
+    final Map<String, dynamic> d = <String, dynamic>{};
+    d['pscau'] = documento;
+    d['pcdes'] = ragioneSociale;
+    d['psser'] = serie;
+    d['psnum'] = numero;
+    d['pspdt'] = dataScadenza;
+    d['psdat'] = data;
+    d['ctdes'] = tipoPagamento;
+    d['pscto'] = codCliente;
+    d['pspim'] = importo;
+    return d;
   }
 }

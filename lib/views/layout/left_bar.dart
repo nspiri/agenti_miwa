@@ -1,3 +1,6 @@
+import 'dart:isolate';
+
+import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/global.dart';
 import 'package:get/route_manager.dart';
 import 'package:flutter/material.dart';
@@ -49,9 +52,13 @@ class _LeftBarState extends State<LeftBar>
   bool isCondensed = false;
   String path = UrlService.getCurrentUrl();
 
+  bool isOffline = false;
+  bool isHover = false;
+
   @override
   void initState() {
     super.initState();
+    isOffline = LocalStorage.getOffline();
   }
 
   @override
@@ -127,12 +134,21 @@ class _LeftBarState extends State<LeftBar>
                     isCondensed: isCondensed,
                     route: '/foods',
                   ),*/
-                  NavigationItem(
-                    iconData: LucideIcons.shoppingCart,
-                    title: "Ordine",
-                    isCondensed: isCondensed,
-                    route: '/cart',
-                  ),
+                  if (!isOffline)
+                    NavigationItem(
+                      iconData: LucideIcons.shoppingCart,
+                      title: "Ordine",
+                      isCondensed: isCondensed,
+                      route: '/cart',
+                    ),
+                  if ((LocalStorage.getCarrello()?.length ?? 0) > 0 ||
+                      LocalStorage.getOffline())
+                    NavigationItem(
+                      iconData: LucideIcons.shoppingCart,
+                      title: "Lista",
+                      isCondensed: isCondensed,
+                      route: '/list',
+                    ),
                   /*  NavigationItem(
                     iconData: LucideIcons.listOrdered,
                     title: "Order",
@@ -182,11 +198,12 @@ class _LeftBarState extends State<LeftBar>
                     isCondensed: isCondensed,
                     title: "Clienti",
                     children: [
-                      MenuItem(
-                        title: "Lista",
-                        isCondensed: isCondensed,
-                        route: '/admin/customers',
-                      ),
+                      if (!isOffline)
+                        MenuItem(
+                          title: "Lista",
+                          isCondensed: isCondensed,
+                          route: '/admin/customers',
+                        ),
                       MenuItem(
                         title: "Dettaglio",
                         isCondensed: isCondensed,
@@ -212,19 +229,21 @@ class _LeftBarState extends State<LeftBar>
                         isCondensed: isCondensed,
                         route: '/admin/customers/equipment',
                       ),
-                      MenuItem(
-                        title: "Nuovo Cliente",
-                        isCondensed: isCondensed,
-                        route: '/admin/customers/create',
-                      ),
+                      if (!isOffline)
+                        MenuItem(
+                          title: "Nuovo Cliente",
+                          isCondensed: isCondensed,
+                          route: '/admin/customers/create',
+                        ),
                     ],
                   ),
-                  NavigationItem(
-                    iconData: LucideIcons.listOrdered,
-                    title: "Ordini in corso",
-                    isCondensed: isCondensed,
-                    route: '/admin/orders',
-                  ),
+                  if (!isOffline)
+                    NavigationItem(
+                      iconData: LucideIcons.listOrdered,
+                      title: "Ordini in corso",
+                      isCondensed: isCondensed,
+                      route: '/admin/orders',
+                    ),
                   /* MenuWidget(
                     iconData: LucideIcons.users,
                     isCondensed: isCondensed,
@@ -242,18 +261,84 @@ class _LeftBarState extends State<LeftBar>
                       ),
                     ],
                   ),*/
-                  NavigationItem(
-                    iconData: LucideIcons.euro,
-                    title: "Scadenzario",
-                    isCondensed: isCondensed,
-                    route: '/admin/timetable',
-                  ),
-                  NavigationItem(
-                    iconData: LucideIcons.barChartBig,
-                    title: "Statistiche Vendite",
-                    isCondensed: isCondensed,
-                    route: '/admin/stats',
-                  ),
+                  if (!isOffline)
+                    NavigationItem(
+                      iconData: LucideIcons.euro,
+                      title: "Scadenzario",
+                      isCondensed: isCondensed,
+                      route: '/admin/timetable',
+                    ),
+                  if (!isOffline)
+                    NavigationItem(
+                      iconData: LucideIcons.barChartBig,
+                      title: "Statistiche Vendite",
+                      isCondensed: isCondensed,
+                      route: '/admin/stats',
+                    ),
+                  if (isOffline)
+                    MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      onHover: (event) {
+                        setState(() {
+                          isHover = true;
+                        });
+                      },
+                      onExit: (event) {
+                        setState(() {
+                          isHover = false;
+                        });
+                      },
+                      child: MyContainer(
+                        onTap: () {
+                          LocalStorage.setOffline(false);
+                          /*  LocalStorage.setArticoli([]);
+                          LocalStorage.setListini([]);
+                          LocalStorage.setDettCli(null);
+                          LocalStorage.setNote("");
+                          LocalStorage.setOrdini([]);
+                          LocalStorage.setScadenzario([]);
+                          LocalStorage.setStorico([]);*/
+
+                          isOffline = false;
+                          setState(() {});
+                          Get.toNamed('/home', arguments: clienteSelezionato);
+                        },
+                        margin: MySpacing.fromLTRB(16, 0, 16, 8),
+                        color: Colors.transparent,
+                        padding: MySpacing.xy(8, 8),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Icon(
+                                LucideIcons.wifi,
+                                color: (isHover /*|| isActive*/)
+                                    ? leftBarTheme.activeItemColor
+                                    : leftBarTheme.onBackground,
+                                size: 20,
+                              ),
+                            ),
+                            if (!widget.isCondensed)
+                              Flexible(
+                                fit: FlexFit.loose,
+                                child: MySpacing.width(16),
+                              ),
+                            if (!widget.isCondensed)
+                              Expanded(
+                                flex: 3,
+                                child: MyText.labelLarge(
+                                  "Ritorna online",
+                                  overflow: TextOverflow.clip,
+                                  maxLines: 1,
+                                  color: /* isActive || */ isHover
+                                      ? leftBarTheme.activeItemColor
+                                      : leftBarTheme.onBackground,
+                                ),
+                              )
+                          ],
+                        ),
+                      ),
+                    ),
                   /*MenuWidget(
                     iconData: LucideIcons.users,
                     isCondensed: isCondensed,
@@ -768,10 +853,12 @@ class _NavigationItemState extends State<NavigationItem> with UIMixin {
     return GestureDetector(
       onTap: () {
         if (widget.route != null) {
-          if (widget.route == "/cart") {
+          if (widget.route == "/cart" || widget.route == "/list") {
             if (clienteSelezionato != null) {
-              //isActive = UrlService.getCurrentUrl() == widget.route;
-              Get.toNamed(widget.route!);
+              if (clienteSelezionato?.attivo == true) {
+                Get.toNamed(widget.route!);
+              }
+              // Get.toNamed(widget.route!);
             } else {
               Get.toNamed("/admin/customers/list");
             }

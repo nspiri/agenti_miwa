@@ -38,6 +38,7 @@ class _EditCustomerScreenState extends State<EditCustomerScreen>
             : cliente?.codiceCliente) ??
         "";
     controller = Get.put(EditCustomerController(codCliente: codCli));
+    controller.isLoading = true;
     controller.getData(codCli);
     super.initState();
   }

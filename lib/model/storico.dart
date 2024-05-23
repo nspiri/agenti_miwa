@@ -44,21 +44,25 @@ class Storico {
     importo = json['mmruv'];
   }
 
+  static List<Storico> listFromJSON(List<dynamic> list) {
+    return list.map((e) => Storico.fromJson(e)).toList();
+  }
+
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['mmcol'] = colli;
-    data['mmdat'] = data;
-    data['mmprz'] = prezzo;
-    data['mmsig'] = documento;
-    data['mmart'] = codArt;
-    data['mmser'] = serie;
-    data['mmali'] = iva;
-    data['mmnum'] = numero;
-    data['mmumi'] = um;
-    data['mmdsc'] = desc;
-    data['mmqta'] = qta;
-    data['mmsco'] = sconto;
-    data['mmruv'] = importo;
-    return data;
+    final Map<String, dynamic> d = <String, dynamic>{};
+    d['mmcol'] = colli;
+    d['mmdat'] = data;
+    d['mmprz'] = prezzo;
+    d['mmsig'] = documento;
+    d['mmart'] = codArt;
+    d['mmser'] = serie;
+    d['mmali'] = iva;
+    d['mmnum'] = numero;
+    d['mmumi'] = um;
+    d['mmdsc'] = desc;
+    d['mmqta'] = qta;
+    d['mmsco'] = sconto;
+    d['mmruv'] = importo;
+    return d;
   }
 }

@@ -123,7 +123,7 @@ class CartController extends MyController {
 
   aggiungiArticoli(List<Articolo> articoli) async {
     loading = true;
-    update();
+    //update();
     for (var element in articoli) {
       element.icona ??= await getImmagineArticolo(element.codArt!);
       element.prezzoArticolo ??= await getPrezzoArticolo(element);
@@ -132,6 +132,12 @@ class CartController extends MyController {
         element.listinoSelezionato = element.prezzoListini?[0];
         element.textControllerListino.text =
             "€${Utils.formatStringDecimal(element.prezzoListini?[0].valore, 3)}";
+      } else {
+        for (Arprz l in element.prezzoListini ?? []) {
+          if (l.listino == element.listinoSelezionato?.listino) {
+            element.listinoSelezionato = l;
+          }
+        }
       }
       if (element.scontoSelezionato == null) {
         element.scontoSelezionato = element.prezzoArticolo?.scalaSconti?[0];
@@ -161,10 +167,12 @@ class CartController extends MyController {
       update();
     }
     carrello = articoli;
+    getTotali(null);
     if (carrello.isEmpty) {
       allTot.azzeraRighe();
     }
     carrelloGlobale = carrello;
+    LocalStorage.setCarrelloGlobale(carrello);
     loading = false;
     update();
   }
@@ -304,7 +312,7 @@ class CartController extends MyController {
         nomeCollage: "colsrart",
         etichettaCollage: "GET_CONDDOC",
         dati: {
-          "cliente": destinazione?.codiceCliente ?? "",
+          "cliente": fattA?.codiceCliente ?? destinazione?.codiceCliente ?? "",
           "agente": LocalStorage.getLoggedUser()?.codiceAgente,
           "articolo": art.codArt,
           "data": "",
@@ -335,7 +343,8 @@ class CartController extends MyController {
   }
 
   void increment(Articolo art) {
-    if (art.conf! + 1 <= art.disponibile!) {
+    if (((art.conf! + 1) * (art.qtaArt ?? 1)) <= art.disponibile!) {
+      // if (art.conf! + 1 <= art.disponibile!) {
       art.conf = art.conf! + 1;
       aggiornaPrezzoArticolo(art);
     }
@@ -466,8 +475,13 @@ class CartController extends MyController {
       dynamic data = json.decode(jsonEncode(res.result));
       CalcoloTotale tot = CalcoloTotale.fromJson(data[0]);
       allTot = tot;
+      carrelloGlobale = carrello;
+      LocalStorage.setCarrelloGlobale(carrello);
       applicaPrezzi(tot);
       update();
+    } else {
+      showErrorMessage(context, "Errore",
+          "Si è verificato un errore durante il calcolo dei prezzi.");
     }
     if (art != null) {
       art.loadingPrezzo = false;
@@ -488,17 +502,46 @@ class CartController extends MyController {
     articoliCancellati = [];
     carrello = [];
     carrelloGlobale = [];
+    LocalStorage.setCarrelloGlobale([]);
     fattA = null;
     destinazione = null;
     notaConsegna.text = "";
     notaIncasso.text = "";
     allTot.azzeraRighe();
+    LocalStorage.setCarrello([]);
+    LocalStorage.setDettCli(null);
+    LocalStorage.setFattA(null);
+    LocalStorage.setNotaConsegna("");
+    LocalStorage.setNotaIncasso("");
     update();
     Get.toNamed("/admin/customers/list");
   }
 
+  bool controlloOrdine() {
+    bool ok = true;
+    if (carrello.isEmpty) {
+      showErrorMessage(context, "Attenzione",
+          "Inserisci almeno un articolo nel tuo ordine per poterlo inviare.");
+      return false;
+    }
+    for (var element in carrello) {
+      if (element.importoTotale == 0) {
+        showErrorMessage(context, "Attenzione",
+            "L'articolo ${element.descrizione} non può essere inviato perchè il prezzo è 0 €.");
+        return false;
+      }
+    }
+    if (allTot.totaleMerceLordo == 0) {
+      showErrorMessage(context, "Attenzione",
+          "L'ordine non può essere inviato perchè il totale del documento è 0 €.");
+      return false;
+    }
+    return true;
+  }
+
   inviaOrdine() async {
-    if (carrello.isNotEmpty) {
+    //if (carrello.isNotEmpty) {
+    if (controlloOrdine()) {
       showDialog<void>(
         context: context,
         builder: (BuildContext context) {

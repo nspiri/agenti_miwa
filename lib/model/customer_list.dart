@@ -17,6 +17,7 @@ class CustomersList extends IdentifierModel {
   String? dataUltimaConsegna;
   String? pIva;
   String? fatturareA;
+  bool? loadingDownloadOffline = false;
 
   CustomersList(
       super.id,

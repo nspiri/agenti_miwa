@@ -1,8 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:foody/controller/ui/Articolo/articoli_list_controller.dart';
+import 'package:foody/helpers/storage/local_storage.dart';
+import 'package:foody/helpers/theme/app_themes.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/helpers/utils/show_message_dialogs.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
@@ -15,6 +20,7 @@ import 'package:foody/helpers/widgets/my_flex_item.dart';
 import 'package:foody/helpers/widgets/my_responsiv.dart';
 import 'package:foody/helpers/widgets/my_spacing.dart';
 import 'package:foody/helpers/widgets/my_text.dart';
+import 'package:foody/helpers/widgets/my_text_style.dart';
 import 'package:foody/helpers/widgets/responsive.dart';
 import 'package:foody/model/articolo.dart';
 import 'package:foody/views/layout/layout.dart';
@@ -90,10 +96,9 @@ class _FoodListScreenState extends State<FoodListScreen>
                               dataRowMaxHeight: 48,
                               columnSpacing: 10,
                               header: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Padding(
+                                  /*  Padding(
                                     padding: MySpacing.top(24),
                                     child: SizedBox(
                                       width: 250,
@@ -114,7 +119,7 @@ class _FoodListScreenState extends State<FoodListScreen>
                                         },
                                       ),
                                     ),
-                                  ),
+                                  ),*/
                                   Row(
                                     children: [
                                       MyContainer(
@@ -163,7 +168,33 @@ class _FoodListScreenState extends State<FoodListScreen>
                                             )
                                           ],
                                         ),
-                                      )
+                                      ),
+                                      /*  if (!kIsWeb) MySpacing.width(8),
+                                      if (!kIsWeb)
+                                        MyContainer(
+                                          onTap: () {
+                                            controller.scaricaArticoli();
+                                          },
+                                          paddingAll: 8,
+                                          color: contentTheme.primary,
+                                          child: controller
+                                                  .loadingDownloadOffline
+                                              ? SizedBox(
+                                                  height: 20,
+                                                  width: 20,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: theme
+                                                        .colorScheme.onPrimary,
+                                                    strokeWidth: 1.2,
+                                                  ),
+                                                )
+                                              : Icon(
+                                                  LucideIcons.download,
+                                                  size: 20,
+                                                  color: contentTheme.onPrimary,
+                                                ),
+                                        )*/
                                     ],
                                   )
                                 ],
@@ -175,23 +206,32 @@ class _FoodListScreenState extends State<FoodListScreen>
                                       controller.orderByCodArt();
                                     },
                                     label: ordinamento(
-                                        "Codice", controller.sortCodArt)),
+                                        "Codice",
+                                        controller.sortCodArt,
+                                        controller.codice,
+                                        true)),
                                 DataColumn(
                                     onSort: (columnIndex, ascending) {
                                       controller.orderByDesc();
                                     },
                                     label: ordinamento(
-                                        "Descrizione", controller.sortDesc)),
+                                        "Descrizione",
+                                        controller.sortDesc,
+                                        controller.desc,
+                                        true)),
                                 DataColumn(
                                     onSort: (columnIndex, ascending) {
                                       controller.orderByCodAlt();
                                     },
                                     label: ordinamento(
-                                        "Cod. Alt.", controller.sortCodAlt)),
+                                        "Cod. Alt.",
+                                        controller.sortCodAlt,
+                                        controller.codAlt,
+                                        true)),
                                 DataColumn(
                                     numeric: true,
-                                    label: MyText.bodyMedium('Q.tà',
-                                        fontWeight: 600)),
+                                    label:
+                                        ordinamento("Q.ta", null, null, false)),
                                 DataColumn(
                                     numeric: true,
                                     onSort: (columnIndex, ascending) {
@@ -201,7 +241,9 @@ class _FoodListScreenState extends State<FoodListScreen>
                                         controller.listini?[0].descrizione ??
                                             "",
                                         //"Prz. Listino 1",
-                                        controller.sortPrezzo1)),
+                                        controller.sortPrezzo1,
+                                        null,
+                                        false)),
                                 DataColumn(
                                     numeric: true,
                                     onSort: (columnIndex, ascending) {
@@ -219,23 +261,28 @@ class _FoodListScreenState extends State<FoodListScreen>
                                                 "",
                                         controller.isPromo
                                             ? controller.sortPrezzo2
-                                            : controller.sortPrezzo3)),
+                                            : controller.sortPrezzo3,
+                                        null,
+                                        false)),
                                 DataColumn(
                                     numeric: true,
                                     onSort: (columnIndex, ascending) {
                                       controller.orderByDispo();
                                     },
-                                    label: ordinamento(
-                                        'Disp', controller.sortDisp)),
+                                    label: ordinamento('Disp',
+                                        controller.sortDisp, null, false)),
                                 DataColumn(
-                                    label: MyText.bodyMedium('Nota Magazzino',
-                                        fontWeight: 600)),
+                                    label: ordinamento(
+                                        "Nota Magazzino", null, null, false)),
                                 DataColumn(
                                     onSort: (columnIndex, ascending) {
                                       controller.orderByCatArt();
                                     },
-                                    label: ordinamento("Categoria Articolo",
-                                        controller.sortCat)),
+                                    label: ordinamento(
+                                        "Categoria Articolo",
+                                        controller.sortCat,
+                                        controller.cat,
+                                        true)),
                               ],
                               showEmptyRows: false,
                               source: controller.data!,
@@ -280,27 +327,23 @@ class _FoodListScreenState extends State<FoodListScreen>
                     fontSize: 18,
                     fontWeight: 600,
                   ),
-                  pulsantiMobile(),
                 ],
               ),
               MySpacing.height(12),
-              SizedBox(
-                //width: 250,
-                child: TextField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(4),
-                        ),
-                      ),
-                      prefixIcon: Icon(LucideIcons.search, size: 20),
-                      hintText: 'Cerca',
-                      contentPadding: MySpacing.xy(12, 4)),
-                  onChanged: (value) {
-                    controller.filterByName(value);
-                  },
+              MySpacing.height(8),
+              MyContainer(
+                paddingAll: 0,
+                child: Theme(
+                  data: Theme.of(context)
+                      .copyWith(dividerColor: Colors.transparent),
+                  child: ExpansionTile(
+                    title: MyText.titleMedium("Filtri"),
+                    childrenPadding: EdgeInsets.only(
+                        top: 0, bottom: 10, left: 10, right: 10),
+                    children: [pulsantiMobile(), ...textInputFiltri()],
+                  ),
                 ),
-              ),
+              )
             ],
           ),
         ),
@@ -479,64 +522,203 @@ class _FoodListScreenState extends State<FoodListScreen>
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        MyContainer(
-          onTap: () {
-            controller.promo();
-          },
-          paddingAll: 8,
-          color:
-              controller.isPromo ? contentTheme.success : contentTheme.primary,
-          child: Row(
-            children: [
-              Icon(
-                LucideIcons.euro,
-                size: 20,
-                color: contentTheme.onPrimary,
-              ),
-              MySpacing.width(8),
-              MyText.bodyMedium(
-                "Promo",
-                color: contentTheme.onPrimary,
-              )
-            ],
+        Flexible(
+          child: MyContainer(
+            onTap: () {
+              controller.promo();
+            },
+            paddingAll: 8,
+            color: controller.isPromo
+                ? contentTheme.success
+                : contentTheme.primary,
+            child: Row(
+              children: [
+                Icon(
+                  LucideIcons.euro,
+                  size: 20,
+                  color: contentTheme.onPrimary,
+                ),
+                MySpacing.width(8),
+                MyText.bodyMedium(
+                  "Promo",
+                  color: contentTheme.onPrimary,
+                )
+              ],
+            ),
           ),
         ),
         MySpacing.width(8),
-        MyContainer(
-          onTap: () {
-            controller.tuttiGliArticoli();
-          },
-          paddingAll: 8,
-          color:
-              !controller.isPromo ? contentTheme.success : contentTheme.primary,
-          child: Row(
-            children: [
-              Icon(
-                LucideIcons.listPlus,
-                size: 20,
-                color: contentTheme.onPrimary,
-              ),
-              MySpacing.width(8),
-              MyText.bodyMedium(
-                "Tutti gli Articoli",
-                color: contentTheme.onPrimary,
-              )
-            ],
+        Flexible(
+          child: MyContainer(
+            onTap: () {
+              controller.tuttiGliArticoli();
+            },
+            paddingAll: 8,
+            color: !controller.isPromo
+                ? contentTheme.success
+                : contentTheme.primary,
+            child: Row(
+              children: [
+                Icon(
+                  LucideIcons.listPlus,
+                  size: 20,
+                  color: contentTheme.onPrimary,
+                ),
+                MySpacing.width(8),
+                MyText.bodyMedium(
+                  "Tutti gli Articoli",
+                  color: contentTheme.onPrimary,
+                )
+              ],
+            ),
           ),
         )
       ],
     );
   }
 
-  Widget ordinamento(String titolo, bool? valore) {
-    return Row(
+  textInputFiltri() {
+    return [
+      Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: TextFormField(
+          controller: controller.codice,
+          onChanged: (value) {
+            controller.filtro();
+          },
+          decoration: InputDecoration(
+            counterStyle: TextStyle(
+              height: double.minPositive,
+            ),
+            counterText: "",
+            hintText: "Filtra per codice",
+            hintStyle: MyTextStyle.bodySmall(xMuted: true),
+            border: outlineInputBorder,
+            enabledBorder: outlineInputBorder,
+            focusedBorder: focusedInputBorder,
+            contentPadding: MySpacing.all(10),
+            isCollapsed: true,
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: TextFormField(
+          controller: controller.desc,
+          onChanged: (value) {
+            controller.filtro();
+          },
+          decoration: InputDecoration(
+            counterStyle: TextStyle(
+              height: double.minPositive,
+            ),
+            counterText: "",
+            hintText: "Filtra per descrizione",
+            hintStyle: MyTextStyle.bodySmall(xMuted: true),
+            border: outlineInputBorder,
+            enabledBorder: outlineInputBorder,
+            focusedBorder: focusedInputBorder,
+            contentPadding: MySpacing.all(10),
+            isCollapsed: true,
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: TextFormField(
+          controller: controller.codAlt,
+          onChanged: (value) {
+            controller.filtro();
+          },
+          decoration: InputDecoration(
+            counterStyle: TextStyle(
+              height: double.minPositive,
+            ),
+            counterText: "",
+            hintText: "Filtra per Cod. Alt.",
+            hintStyle: MyTextStyle.bodySmall(xMuted: true),
+            border: outlineInputBorder,
+            enabledBorder: outlineInputBorder,
+            focusedBorder: focusedInputBorder,
+            contentPadding: MySpacing.all(10),
+            isCollapsed: true,
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: TextFormField(
+          controller: controller.cat,
+          onChanged: (value) {
+            controller.filtro();
+          },
+          decoration: InputDecoration(
+            counterStyle: TextStyle(
+              height: double.minPositive,
+            ),
+            counterText: "",
+            hintText: "Filtra per categoria",
+            hintStyle: MyTextStyle.bodySmall(xMuted: true),
+            border: outlineInputBorder,
+            enabledBorder: outlineInputBorder,
+            focusedBorder: focusedInputBorder,
+            contentPadding: MySpacing.all(10),
+            isCollapsed: true,
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+          ),
+        ),
+      )
+    ];
+  }
+
+  Widget ordinamento(String titolo, bool? valore,
+      TextEditingController? controller, bool visible) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MyText.bodyMedium(titolo, fontWeight: 600),
-        valore == null
-            ? Text("")
-            : valore
-                ? Icon(Icons.arrow_drop_down_outlined)
-                : Icon(Icons.arrow_drop_up_outlined)
+        Row(
+          children: [
+            MyText.bodyMedium(titolo, fontWeight: 600),
+            valore == null
+                ? Text("")
+                : valore
+                    ? Icon(Icons.arrow_drop_down_outlined)
+                    : Icon(Icons.arrow_drop_up_outlined)
+          ],
+        ),
+        MySpacing.height(3),
+        Visibility(
+          visible: visible,
+          child: Container(
+            width: 100,
+            child: TextFormField(
+              controller: controller,
+              /*keyboardType: keyboaardType,
+                maxLength: maxLength,
+                enabled: enabled,
+                controller: controller,
+                validator: validator,*/
+              onChanged: (value) {
+                this.controller.filtro();
+              },
+              decoration: InputDecoration(
+                counterStyle:
+                    TextStyle(height: double.minPositive, fontSize: 10),
+                counterText: "",
+                hintStyle: MyTextStyle.bodySmall(xMuted: true),
+                border: outlineInputBorder,
+                enabledBorder: outlineInputBorder,
+                focusedBorder: focusedInputBorder,
+                contentPadding: MySpacing.all(4),
+                isCollapsed: true,
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

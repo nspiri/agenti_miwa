@@ -133,7 +133,7 @@ class CustomerStateController extends MyController {
         dati.add({
           "cliente": element.pccod,
           "counter":
-              (element.riprovare == true || element.ferie == true) ? 1 : 2,
+              (element.riprovare == true || element.ferie == true) ? 1 : 3,
           "data": data,
           "stato": element.riprovare == true
               ? "R"

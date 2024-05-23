@@ -44,6 +44,11 @@ class ModalListaArtController extends MyController {
   final ScrollController controllerScroll = ScrollController();
   final FocusNode focusNode = FocusNode();
 
+  TextEditingController codice = TextEditingController();
+  TextEditingController desc = TextEditingController();
+  TextEditingController codAlt = TextEditingController();
+  TextEditingController cat = TextEditingController();
+
   ModalListaArtController(
       {required this.context,
       required this.articoliSelezionati,
@@ -76,6 +81,34 @@ class ModalListaArtController extends MyController {
       }
       update();
     }
+  }
+
+  void filtro() {
+    articoliFiltrati = articoli
+        .where((element) =>
+            element.codArt!.toLowerCase().contains(codice.text.toLowerCase()) &&
+            element.descrizione!
+                .toLowerCase()
+                .contains(desc.text.toLowerCase()) &&
+            element.codAlt!.toLowerCase().contains(codAlt.text.toLowerCase()) &&
+            element.catStatistica!
+                .toLowerCase()
+                .contains(cat.text.toLowerCase()))
+        .toList();
+
+    sortDesc = null;
+    sortCodAlt = null;
+    sortPrezzo1 = null;
+    sortPrezzo2 = null;
+    sortPrezzo3 = null;
+    sortDisp = null;
+    sortCat = null;
+    sortDesc = false;
+    sortCodArt = null;
+    caricaArticoli();
+    data = MyDataListArtModal(articoliFiltrati, context, this);
+
+    update();
   }
 
   void caricaArticoli() {
@@ -118,7 +151,12 @@ class ModalListaArtController extends MyController {
   }
 
   getData() async {
-    listini = await Utils.getNomeListini();
+    bool isOffline = LocalStorage.getOffline();
+    if (isOffline) {
+      listini = LocalStorage.getListini();
+    } else {
+      listini = await Utils.getNomeListini();
+    }
   }
 
   @override
@@ -188,6 +226,12 @@ class ModalListaArtController extends MyController {
     isTop10 = false;
     articoliSelezionati = artSel;
     articoliCancellati = artCanc;
+    isPromo = false;
+    loading = true;
+    codice.text = "";
+    desc.text = "";
+    codAlt.text = "";
+    cat.text = "";
     setLoading(true);
     Articolo.dummyList.then((value) {
       articoli = value;
@@ -206,35 +250,56 @@ class ModalListaArtController extends MyController {
     isPromo = false;
     isAll = false;
     isTop10 = true;
+    isPromo = false;
+    loading = true;
+    codice.text = "";
+    desc.text = "";
+    codAlt.text = "";
+    cat.text = "";
     setLoading(true);
-    r.Response res = await DoRequest.doHttpRequest(
-        nomeCollage: "colsrart",
-        etichettaCollage: "TOP_VENDITE",
-        dati: {
-          "magazzino": 1,
-          "cliente": codCli,
-          "top": 70,
-          "agente": LocalStorage.getLoggedUser()?.codiceAgente,
-        });
+    bool isOffline = LocalStorage.getOffline();
 
-    if (res.code == 200) {
-      var a = res.result as List<dynamic>;
-      if (a.isEmpty) {
-        articoliFiltrati = [];
-        setData();
-      }
-      dynamic dati = json.decode(jsonEncode(a));
-      articoli = Articolo.listFromJSON(dati);
+    if (isOffline) {
+      articoli = LocalStorage.getTopArticoli() ?? [];
       articoliFiltrati = articoli;
       sortArt();
       setData();
       modificaConfArt();
       caricaArticoli();
+      orderNrVendite();
       setLoading(false);
       update();
     } else {
-      setLoading(false);
-      return "";
+      r.Response res = await DoRequest.doHttpRequest(
+          nomeCollage: "colsrart",
+          etichettaCollage: "TOP_VENDITE",
+          dati: {
+            "magazzino": 1,
+            "cliente": codCli,
+            "top": 70,
+            "agente": LocalStorage.getLoggedUser()?.codiceAgente,
+          });
+
+      if (res.code == 200) {
+        var a = res.result as List<dynamic>;
+        if (a.isEmpty) {
+          articoliFiltrati = [];
+          setData();
+        }
+        dynamic dati = json.decode(jsonEncode(a));
+        articoli = Articolo.listFromJSON(dati);
+        articoliFiltrati = articoli;
+        sortArt();
+        setData();
+        modificaConfArt();
+        caricaArticoli();
+        orderNrVendite();
+        setLoading(false);
+        update();
+      } else {
+        setLoading(false);
+        return "";
+      }
     }
   }
 
@@ -306,6 +371,12 @@ class ModalListaArtController extends MyController {
     isPromo = true;
     isAll = false;
     isTop10 = false;
+    isPromo = false;
+    loading = true;
+    codice.text = "";
+    desc.text = "";
+    codAlt.text = "";
+    cat.text = "";
     setLoading(true);
     articoli = articoli
         .where((element) =>

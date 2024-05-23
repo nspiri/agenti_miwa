@@ -18,11 +18,12 @@ class ScadenziarioController extends MyController {
   String? codiceCliente;
   bool all = false, tutti = true, scaduti = false;
   bool isLoading = true;
+  bool isOffline = false;
 
   @override
   void onInit() {
     super.onInit();
-    getScadenziarioCliente();
+    // getScadenziarioCliente();
   }
 
   @override
@@ -34,35 +35,44 @@ class ScadenziarioController extends MyController {
   getScadenziarioCliente() async {
     scaduti = false;
     tutti = true;
-    isLoading = true;
-    update();
-    codiceCliente = clienteSelezionato?.codCliFattA != ""
-        ? clienteSelezionato?.codCliFattA
-        : clienteSelezionato?.codiceCliente;
-    r.Response res = await DoRequest.doHttpRequest(
-        nomeCollage: "colsrcli",
-        etichettaCollage: "GET_SCAD",
-        dati: {
-          "agente": LocalStorage.getLoggedUser()?.codiceAgente,
-          "cliente": codiceCliente
-        });
-    isLoading = false;
-    update();
-    if (res.code == 200) {
-      var a = res.result as dynamic;
-      List<dynamic> dati = json.decode(jsonEncode(a));
-      if (dati != []) {
-        scadenziario =
-            dati.map((e) => ScadenziarioCliente.fromJson(e)).toList();
-        scadenziario.sort((a, b) =>
-            int.parse(a.dataScadenza!).compareTo(int.parse(b.dataScadenza!)));
-        filterScadenziario = scadenziario;
-        data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
-      }
+    isOffline = LocalStorage.getOffline();
+    if (isOffline) {
+      scadenziario = LocalStorage.getScadenzario() ?? [];
+      scadenziario.sort((a, b) =>
+          int.parse(a.dataScadenza!).compareTo(int.parse(b.dataScadenza!)));
+      filterScadenziario = scadenziario;
+      data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
+      isLoading = false;
       update();
     } else {
-      //ERRORE
-      return null;
+      codiceCliente = clienteSelezionato?.codCliFattA != ""
+          ? clienteSelezionato?.codCliFattA
+          : clienteSelezionato?.codiceCliente;
+      r.Response res = await DoRequest.doHttpRequest(
+          nomeCollage: "colsrcli",
+          etichettaCollage: "GET_SCAD",
+          dati: {
+            "agente": LocalStorage.getLoggedUser()?.codiceAgente,
+            "cliente": codiceCliente
+          });
+      isLoading = false;
+      update();
+      if (res.code == 200) {
+        var a = res.result as dynamic;
+        List<dynamic> dati = json.decode(jsonEncode(a));
+        if (dati != []) {
+          scadenziario =
+              dati.map((e) => ScadenziarioCliente.fromJson(e)).toList();
+          scadenziario.sort((a, b) =>
+              int.parse(a.dataScadenza!).compareTo(int.parse(b.dataScadenza!)));
+          filterScadenziario = scadenziario;
+          data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
+        }
+        update();
+      } else {
+        //ERRORE
+        return null;
+      }
     }
   }
 
@@ -137,18 +147,14 @@ class ScadenziarioController extends MyController {
   }
 
   void filterByName(String value) {
-    if (value == "") {
-      data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
-    } else {
-      var filterCustomers = filterScadenziario
-          .where((element) =>
-              element.ragioneSociale!
-                  .toLowerCase()
-                  .contains(value.toLowerCase()) ||
-              element.documento!.toLowerCase().contains(value.toLowerCase()))
-          .toList();
-      data = MyDataDetailScadenziarioCliente(filterCustomers, this);
-    }
+    filterScadenziario = scadenziario
+        .where((element) =>
+            element.ragioneSociale!
+                .toLowerCase()
+                .contains(value.toLowerCase()) ||
+            element.documento!.toLowerCase().contains(value.toLowerCase()))
+        .toList();
+    data = MyDataDetailScadenziarioCliente(filterScadenziario, this);
     update();
   }
 

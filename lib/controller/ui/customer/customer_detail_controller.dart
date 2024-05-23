@@ -24,12 +24,14 @@ class CustomerDetailController extends MyController {
   BuildContext context;
   List<Nazionalita> nazionalita = [];
   List<Paesi> paesi = [];
+  bool isOffline = false;
 
   CustomerDetailController({required this.context});
 
   @override
   void onInit() {
     super.onInit();
+    isOffline = LocalStorage.getOffline();
     Nazionalita.dummyList.then((value) {
       nazionalita = value;
       nazionalita.sort((a, b) =>
@@ -69,11 +71,14 @@ class CustomerDetailController extends MyController {
   }
 
   getData(CustomerDetail? cliente) async {
+    bool isOffline = LocalStorage.getOffline();
     dettaglio = cliente;
-    //getDettaglioCliente(codCliente);
     if (dettaglio != null) {
-      getScadenziarioCliente(dettaglio!.codiceCliente!);
-      getNoteCliente(dettaglio!.codiceCliente!);
+      if (isOffline) {
+        note.text = LocalStorage.getNote();
+      } else {
+        getNoteCliente(dettaglio!.codiceCliente!);
+      }
     }
   }
 
@@ -95,11 +100,13 @@ class CustomerDetailController extends MyController {
   }
 
   goToOrder(String codCliente) async {
-    if (clienteSelezionato != null && carrelloGlobale.length > 0) {
+    if (clienteSelezionato != null &&
+        (LocalStorage.getCarrelloGlobale() ?? []).length > 0) {
       if (clienteSelezionato?.codiceCliente == codCliente) {
         CustomerDetail destinazione = await getCliente(codCliente);
         clienteSelezionato = destinazione;
-        Get.toNamed('/cart', arguments: destinazione);
+        Get.toNamed('/cart',
+            arguments: PassaggioDatiOrdine(cliente: destinazione));
       } else {
         showErrorMessage(context, "Attenzione",
             "Hai gia un ordine in corso su un'altro cliente.");
@@ -107,8 +114,13 @@ class CustomerDetailController extends MyController {
     } else {
       CustomerDetail destinazione = await getCliente(codCliente);
       clienteSelezionato = destinazione;
-      Get.toNamed('/cart', arguments: destinazione);
+      Get.toNamed('/cart',
+          arguments: PassaggioDatiOrdine(cliente: destinazione));
     }
+  }
+
+  goToList() {
+    Get.toNamed('/list');
   }
 
   getCliente(String codCliente) async {

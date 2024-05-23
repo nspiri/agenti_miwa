@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:foody/helpers/services/auth_services.dart';
+import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/views/auth/forgot_password_screen.dart';
 import 'package:foody/views/auth/login_screen.dart';
 import 'package:foody/views/auth/register_account_screen.dart';
 import 'package:foody/views/ui/Attrezzature/attrezzature_screen.dart';
+import 'package:foody/views/ui/Lista/lista_screen.dart';
 import 'package:foody/views/ui/Ordini/ordine_dettaglio_screen.dart';
 import 'package:foody/views/ui/Ordini/ordini_screen.dart';
 import 'package:foody/views/ui/Statistiche/statistiche_screen.dart';
@@ -41,14 +43,18 @@ import 'package:get/get.dart';
 class AuthMiddleware extends GetMiddleware {
   @override
   RouteSettings? redirect(String? route) {
-    Utils.controllaLogin();
+    bool isOffline = LocalStorage.getOffline();
+    if (!isOffline) {
+      Utils.controllaLogin();
+    }
     if (route == "/admin/customers/detail" ||
         route == "/admin/customers/orders" ||
         route == "/admin/customers/historical" ||
         route == "/admin/customers/timetable" ||
         route == "/admin/customers/equipment" ||
-        route == "/cart") {
-      if (clienteSelezionato == null) {
+        route == "/cart" ||
+        route == "/list") {
+      if (clienteSelezionato?.codiceCliente == "") {
         return const RouteSettings(name: '/admin/customers/list');
       }
     } else if (route == "/admin/orderdetail") {
@@ -195,6 +201,11 @@ getPageRoute() {
     GetPage(
         name: '/cart',
         page: () => const CartScreen(),
+        middlewares: [AuthMiddleware()]),
+
+    GetPage(
+        name: '/list',
+        page: () => const ListaScreen(),
         middlewares: [AuthMiddleware()]),
 
     GetPage(

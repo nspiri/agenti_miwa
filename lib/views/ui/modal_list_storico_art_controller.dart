@@ -37,32 +37,44 @@ class ModalListaStoricoArtController extends MyController {
 
   storicoArticolo(String codCli, String codArt) async {
     setLoading(true);
-    r.Response res = await DoRequest.doHttpRequest(
-        nomeCollage: "colsrcli",
-        etichettaCollage: "STORICO",
-        dati: {
-          "agente": LocalStorage.getLoggedUser()?.codiceAgente,
-          "cliente": codCliente,
-          "articolo": codArt
-        });
+    bool isOffline = LocalStorage.getOffline();
 
-    if (res.code == 200) {
-      var a = res.result as List<dynamic>;
-      if (a.isEmpty) {
-        MyDataListStoricoArtModal([]);
-      }
-      List<dynamic> dati = json.decode(jsonEncode(a));
-      if (dati != []) {
-        storico = dati.map((e) => Storico.fromJson(e)).toList();
-        storico
-            .sort((a, b) => int.parse(b.data!).compareTo(int.parse(a.data!)));
-      }
+    if (isOffline) {
+      storico = (LocalStorage.getStorico() ?? [])
+          .where((element) => element.codArt == codArt)
+          .toList();
+      storico.sort((a, b) => int.parse(b.data!).compareTo(int.parse(a.data!)));
       data = MyDataListStoricoArtModal(storico);
       setLoading(false);
       update();
     } else {
-      setLoading(false);
-      return "";
+      r.Response res = await DoRequest.doHttpRequest(
+          nomeCollage: "colsrcli",
+          etichettaCollage: "STORICO",
+          dati: {
+            "agente": LocalStorage.getLoggedUser()?.codiceAgente,
+            "cliente": codCliente,
+            "articolo": codArt
+          });
+
+      if (res.code == 200) {
+        var a = res.result as List<dynamic>;
+        if (a.isEmpty) {
+          MyDataListStoricoArtModal([]);
+        }
+        List<dynamic> dati = json.decode(jsonEncode(a));
+        if (dati != []) {
+          storico = dati.map((e) => Storico.fromJson(e)).toList();
+          storico
+              .sort((a, b) => int.parse(b.data!).compareTo(int.parse(a.data!)));
+        }
+        data = MyDataListStoricoArtModal(storico);
+        setLoading(false);
+        update();
+      } else {
+        setLoading(false);
+        return "";
+      }
     }
   }
 

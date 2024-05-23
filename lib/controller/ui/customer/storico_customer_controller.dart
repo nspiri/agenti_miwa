@@ -31,12 +31,20 @@ class EditCustomerController extends MyController {
   }
 
   getData(String codCliente) async {
-    getScadenziarioCliente(codCliente);
+    bool isOffline = LocalStorage.getOffline();
+
+    if (isOffline) {
+      storico = LocalStorage.getStorico() ?? [];
+      storico.sort((a, b) => int.parse(b.data!).compareTo(int.parse(a.data!)));
+      data = MyDataDetailStorico(storico);
+      isLoading = false;
+      update();
+    } else {
+      getStoricoCliente(codCliente);
+    }
   }
 
-  getScadenziarioCliente(String codCliente) async {
-    isLoading = true;
-    update();
+  getStoricoCliente(String codCliente) async {
     Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrcli",
         etichettaCollage: "STORICO",

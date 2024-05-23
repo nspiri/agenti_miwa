@@ -178,10 +178,9 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                   dataRowMaxHeight: 48,
                                   columnSpacing: 10,
                                   header: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Padding(
+                                      /* Padding(
                                         padding: MySpacing.top(24),
                                         child: SizedBox(
                                           width: 250,
@@ -204,7 +203,7 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                             },
                                           ),
                                         ),
-                                      ),
+                                      ),*/
                                       Row(
                                         children: [
                                           if (controller.isTop10)
@@ -332,19 +331,28 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                           controller.orderByCodArt();
                                         },
                                         label: ordinamento(
-                                            "Codice", controller.sortCodArt)),
+                                            "Codice",
+                                            controller.sortCodArt,
+                                            controller.codice,
+                                            true)),
                                     DataColumn(
                                         onSort: (columnIndex, ascending) {
                                           controller.orderByDesc();
                                         },
-                                        label: ordinamento("Descrizione",
-                                            controller.sortDesc)),
+                                        label: ordinamento(
+                                            "Descrizione",
+                                            controller.sortDesc,
+                                            controller.desc,
+                                            true)),
                                     DataColumn(
                                         onSort: (columnIndex, ascending) {
                                           controller.orderByCodAlt();
                                         },
-                                        label: ordinamento("Cod. Alt.",
-                                            controller.sortCodAlt)),
+                                        label: ordinamento(
+                                            "Cod. Alt.",
+                                            controller.sortCodAlt,
+                                            controller.codAlt,
+                                            true)),
                                     /* DataColumn(
                                                   label: MyText.bodyMedium(
                                                 'Um',
@@ -353,13 +361,12 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                         onSort: (columnIndex, ascending) {
                                           controller.orderByConf();
                                         },
-                                        label: ordinamento(
-                                            "Confezione", controller.sortConf)),
+                                        label: ordinamento("Confezione",
+                                            controller.sortConf, null, false)),
                                     DataColumn(
                                         numeric: true,
-                                        label: MyText.bodyMedium(
-                                          'Q.tà',
-                                        )),
+                                        label: ordinamento(
+                                            "Q.ta", null, null, false)),
                                     DataColumn(
                                         numeric: true,
                                         onSort: (columnIndex, ascending) {
@@ -370,7 +377,9 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                                     .listini?[0].descrizione ??
                                                 "",
                                             //"Prz. Listino 1",
-                                            controller.sortPrezzo1)),
+                                            controller.sortPrezzo1,
+                                            null,
+                                            false)),
                                     DataColumn(
                                         numeric: true,
                                         onSort: (columnIndex, ascending) {
@@ -388,24 +397,28 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                                     "",
                                             controller.isPromo
                                                 ? controller.sortPrezzo2
-                                                : controller.sortPrezzo3)),
+                                                : controller.sortPrezzo3,
+                                            null,
+                                            false)),
                                     DataColumn(
                                         numeric: true,
                                         onSort: (columnIndex, ascending) {
                                           controller.orderByDispo();
                                         },
-                                        label: ordinamento(
-                                            'Disp', controller.sortDisp)),
+                                        label: ordinamento('Disp',
+                                            controller.sortDisp, null, false)),
                                     DataColumn(
-                                        label: MyText.bodyMedium(
-                                      'Nota Magazzino',
-                                    )),
+                                        label: ordinamento("Nota Magazzino",
+                                            null, null, false)),
                                     DataColumn(
                                         onSort: (columnIndex, ascending) {
                                           controller.orderByCatArt();
                                         },
-                                        label: ordinamento("Categoria Articolo",
-                                            controller.sortCat)),
+                                        label: ordinamento(
+                                            "Categoria Articolo",
+                                            controller.sortCat,
+                                            controller.cat,
+                                            true)),
                                   ],
                                   showEmptyRows: false,
                                   source: controller.data!,
@@ -452,64 +465,61 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                     fontSize: 18,
                     fontWeight: 600,
                   ),
-                  MyContainer.bordered(
-                    paddingAll: 8,
-                    onTap: () {
-                      Navigator.pop(context, controller.articoliSelezionati);
-                    },
-                    child: Icon(LucideIcons.x, size: 20),
+                  Row(
+                    children: [
+                      MyContainer(
+                        onTap: () {
+                          Navigator.pop(
+                              context, controller.articoliSelezionati);
+                        },
+                        paddingAll: 12,
+                        color: contentTheme.primary,
+                        child: Row(
+                          children: [
+                            Icon(
+                              LucideIcons.plus,
+                              size: 15,
+                              color: contentTheme.onPrimary,
+                            ),
+                            MySpacing.width(8),
+                            MyText.bodySmall(
+                              "Aggiungi",
+                              color: contentTheme.onPrimary,
+                            )
+                          ],
+                        ),
+                      ),
+                      MySpacing.width(8),
+                      MyContainer.bordered(
+                        paddingAll: 8,
+                        onTap: () {
+                          Navigator.pop(
+                              context, controller.articoliSelezionati);
+                        },
+                        child: Icon(LucideIcons.x, size: 20),
+                      ),
+                    ],
                   ),
                 ],
               ),
               MySpacing.height(8),
-              pulsantiMobile(),
-              if (controller.isTop10) filtriMobile(),
-              Padding(
-                padding: MySpacing.top(12),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 250,
-                      child: TextField(
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4),
-                              ),
-                            ),
-                            prefixIcon: Icon(LucideIcons.search, size: 20),
-                            hintText: 'Cerca',
-                            contentPadding: MySpacing.xy(12, 4)),
-                        onChanged: (value) {
-                          controller.filterByName(value);
-                        },
-                      ),
-                    ),
-                    MySpacing.width(8),
-                    MyContainer(
-                      onTap: () {
-                        Navigator.pop(context, controller.articoliSelezionati);
-                      },
-                      paddingAll: 12,
-                      color: contentTheme.primary,
-                      child: Row(
-                        children: [
-                          Icon(
-                            LucideIcons.plus,
-                            size: 15,
-                            color: contentTheme.onPrimary,
-                          ),
-                          MySpacing.width(8),
-                          MyText.bodySmall(
-                            "Aggiungi",
-                            color: contentTheme.onPrimary,
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
+              MyContainer(
+                paddingAll: 0,
+                child: Theme(
+                  data: Theme.of(context)
+                      .copyWith(dividerColor: Colors.transparent),
+                  child: ExpansionTile(
+                    title: MyText.titleMedium("Filtri"),
+                    childrenPadding: EdgeInsets.only(
+                        top: 10, bottom: 10, left: 10, right: 10),
+                    children: [
+                      pulsantiMobile(),
+                      if (controller.isTop10) filtriMobile(),
+                      ...textInputFiltri()
+                    ],
+                  ),
                 ),
-              ),
+              )
             ],
           ),
         ),
@@ -564,7 +574,9 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                   Flexible(
                                     child: MyText.bodyMedium(
                                         fontWeight: 700,
-                                        color: data.disponibile! <= 0
+                                        color: data.disponibile! /
+                                                    (1 * (data.qtaArt ?? 1)) <
+                                                1
                                             ? Colors.red
                                             : null,
                                         overflow: TextOverflow.ellipsis,
@@ -580,14 +592,18 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                           "Cod. Art.",
                                           data.codArt ?? "",
                                           CrossAxisAlignment.start,
-                                          data.disponibile! <= 0
+                                          data.disponibile! /
+                                                      (1 * (data.qtaArt ?? 1)) <
+                                                  1
                                               ? Colors.red
                                               : null),
                                       buildProfileDetail(
                                           "Cod. Alt.",
                                           data.codAlt ?? "",
                                           CrossAxisAlignment.end,
-                                          data.disponibile! <= 0
+                                          data.disponibile! /
+                                                      (1 * (data.qtaArt ?? 1)) <
+                                                  1
                                               ? Colors.red
                                               : null),
                                     ],
@@ -601,14 +617,18 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                           "Cat. Stat.",
                                           data.catStatistica ?? "",
                                           CrossAxisAlignment.start,
-                                          data.disponibile! <= 0
+                                          data.disponibile! /
+                                                      (1 * (data.qtaArt ?? 1)) <
+                                                  1
                                               ? Colors.red
                                               : null),
                                       buildProfileDetail(
                                           "Disponibile",
                                           "${data.disponibile}",
                                           CrossAxisAlignment.end,
-                                          data.disponibile! <= 0
+                                          data.disponibile! /
+                                                      (1 * (data.qtaArt ?? 1)) <
+                                                  1
                                               ? Colors.red
                                               : null),
                                     ],
@@ -623,7 +643,9 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                               "",
                                           "€ ${Utils.formatStringDecimal(prz1, 3)}",
                                           CrossAxisAlignment.start,
-                                          data.disponibile! <= 0
+                                          data.disponibile! /
+                                                      (1 * (data.qtaArt ?? 1)) <
+                                                  1
                                               ? Colors.red
                                               : null),
                                       buildProfileDetail(
@@ -636,7 +658,9 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                                   "",
                                           "€ ${Utils.formatStringDecimal(prz2, 3)}",
                                           CrossAxisAlignment.end,
-                                          data.disponibile! <= 0
+                                          data.disponibile! /
+                                                      (1 * (data.qtaArt ?? 1)) <
+                                                  1
                                               ? Colors.red
                                               : null),
                                     ],
@@ -652,7 +676,11 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                                             "Nota Magazzino",
                                             "${data.notaArt}",
                                             CrossAxisAlignment.start,
-                                            data.disponibile! <= 0
+                                            data.disponibile! /
+                                                        (1 *
+                                                            (data.qtaArt ??
+                                                                1)) <
+                                                    1
                                                 ? Colors.red
                                                 : null),
                                       ),
@@ -689,7 +717,7 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
   Widget confPickerMobile(Articolo data, TextEditingController textController) {
     return Row(
       children: [
-        data.disponibile! <= 0
+        data.disponibile! / (1 * (data.qtaArt ?? 1)) < 1
             ? Container()
             : MyContainer.roundBordered(
                 onTap: () {
@@ -708,7 +736,7 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                 ),
               ),
         MySpacing.width(10),
-        data.disponibile! <= 0
+        data.disponibile! / (1 * (data.qtaArt ?? 1)) < 1
             ? Container()
             : Flexible(
                 child: TextField(
@@ -725,10 +753,16 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                       extentOffset: textController.value.text.length),
                   onChanged: (value) {
                     if (value != "" && value != " ") {
-                      if (int.parse(value) > data.disponibile!) {
-                        data.conf = data.disponibile!.toDouble();
+                      if ((int.parse(value) * (data.qtaArt ?? 1)) >
+                          data.disponibile!) {
+                        var qta =
+                            data.disponibile!.toDouble() / (data.qtaArt ?? 1);
+                        var qtaArr = qta.floor().toString();
+                        data.conf = double.parse(
+                            qtaArr); /*(articolo.disponibile!.toDouble() /
+                                (articolo.qtaArt ?? 1).toInt());*/
                         textController.text =
-                            Utils.formatStringDecimal(data.disponibile, 0);
+                            Utils.formatStringDecimal(double.parse(qtaArr), 0);
                         controller.modificaArticolo(data);
                       } else {
                         data.conf = double.parse(value);
@@ -739,11 +773,12 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                 ),
               ),
         MySpacing.width(10),
-        data.disponibile! <= 0
+        data.disponibile! / (1 * (data.qtaArt ?? 1)) < 1
             ? Container()
             : MyContainer.roundBordered(
                 onTap: () {
-                  if ((data.conf! + 1) <= data.disponibile!) {
+                  if (((data.conf! + 1) * (data.qtaArt ?? 1)) <=
+                      data.disponibile!) {
                     data.conf = data.conf! + 1;
                     textController.text =
                         Utils.formatStringDecimal(data.conf, 0);
@@ -788,60 +823,64 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             if (controller.isTop10)
-              MyContainer(
-                onTap: () {
-                  controller.orderUltimaVendita();
-                },
-                paddingAll: 8,
-                color: controller.isAll
-                    ? contentTheme.success
-                    : contentTheme.primary,
-                child: Row(
-                  children: [
-                    Icon(
-                      controller.isUltimaVendita == null
-                          ? LucideIcons.filter
-                          : controller.isUltimaVendita == true
-                              ? Icons.arrow_drop_down_outlined
-                              : Icons.arrow_drop_up_outlined,
-                      size: 20,
-                      color: contentTheme.onPrimary,
-                    ),
-                    MySpacing.width(8),
-                    MyText.bodyMedium(
-                      "Ultima vendita",
-                      color: contentTheme.onPrimary,
-                    )
-                  ],
+              Expanded(
+                child: MyContainer(
+                  onTap: () {
+                    controller.orderUltimaVendita();
+                  },
+                  paddingAll: 8,
+                  color: controller.isAll
+                      ? contentTheme.success
+                      : contentTheme.primary,
+                  child: Row(
+                    children: [
+                      Icon(
+                        controller.isUltimaVendita == null
+                            ? LucideIcons.filter
+                            : controller.isUltimaVendita == true
+                                ? Icons.arrow_drop_down_outlined
+                                : Icons.arrow_drop_up_outlined,
+                        size: 20,
+                        color: contentTheme.onPrimary,
+                      ),
+                      MySpacing.width(8),
+                      MyText.bodyMedium(
+                        "Ultima vendita",
+                        color: contentTheme.onPrimary,
+                      )
+                    ],
+                  ),
                 ),
               ),
-            MySpacing.width(8),
+            MySpacing.width(4),
             if (controller.isTop10)
-              MyContainer(
-                onTap: () {
-                  controller.orderNrVendite();
-                },
-                paddingAll: 8,
-                color: controller.isAll
-                    ? contentTheme.success
-                    : contentTheme.primary,
-                child: Row(
-                  children: [
-                    Icon(
-                      controller.isNrVendite == null
-                          ? LucideIcons.filter
-                          : controller.isNrVendite == true
-                              ? Icons.arrow_drop_down_outlined
-                              : Icons.arrow_drop_up_outlined,
-                      size: 20,
-                      color: contentTheme.onPrimary,
-                    ),
-                    MySpacing.width(8),
-                    MyText.bodyMedium(
-                      "Numero vendite",
-                      color: contentTheme.onPrimary,
-                    )
-                  ],
+              Expanded(
+                child: MyContainer(
+                  onTap: () {
+                    controller.orderNrVendite();
+                  },
+                  paddingAll: 8,
+                  color: controller.isAll
+                      ? contentTheme.success
+                      : contentTheme.primary,
+                  child: Row(
+                    children: [
+                      Icon(
+                        controller.isNrVendite == null
+                            ? LucideIcons.filter
+                            : controller.isNrVendite == true
+                                ? Icons.arrow_drop_down_outlined
+                                : Icons.arrow_drop_up_outlined,
+                        size: 20,
+                        color: contentTheme.onPrimary,
+                      ),
+                      MySpacing.width(8),
+                      MyText.bodyMedium(
+                        "Numero vendite",
+                        color: contentTheme.onPrimary,
+                      )
+                    ],
+                  ),
                 ),
               ),
           ],
@@ -854,80 +893,188 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        MyContainer(
-          onTap: () {
-            controller.promo();
-          },
-          paddingAll: 8,
-          color:
-              controller.isPromo ? contentTheme.success : contentTheme.primary,
-          child: Row(
-            children: [
-              Icon(
-                LucideIcons.euro,
-                size: 20,
-                color: contentTheme.onPrimary,
-              ),
-              MySpacing.width(8),
-              MyText.bodyMedium(
-                "Promo",
-                color: contentTheme.onPrimary,
-              )
-            ],
+        Flexible(
+          flex: 0,
+          child: MyContainer(
+            onTap: () {
+              controller.promo();
+            },
+            paddingAll: 8,
+            color: controller.isPromo
+                ? contentTheme.success
+                : contentTheme.primary,
+            child: Row(
+              children: [
+                Icon(
+                  LucideIcons.euro,
+                  size: 20,
+                  color: contentTheme.onPrimary,
+                ),
+                MySpacing.width(8),
+                MyText.bodyMedium(
+                  "Promo",
+                  color: contentTheme.onPrimary,
+                )
+              ],
+            ),
           ),
         ),
-        MySpacing.width(8),
-        MyContainer(
-          onTap: () {
-            controller.top10(widget.codCliente);
-            controller.caricaArticoli();
-          },
-          paddingAll: 8,
-          color:
-              controller.isTop10 ? contentTheme.success : contentTheme.primary,
-          child: Row(
-            children: [
-              Icon(
-                LucideIcons.listFilter,
-                size: 20,
-                color: contentTheme.onPrimary,
-              ),
-              MySpacing.width(8),
-              MyText.bodyMedium(
-                "Top 70",
-                color: contentTheme.onPrimary,
-              )
-            ],
+        MySpacing.width(4),
+        Flexible(
+          flex: 0,
+          child: MyContainer(
+            onTap: () {
+              controller.top10(widget.codCliente);
+              controller.caricaArticoli();
+            },
+            paddingAll: 8,
+            color: controller.isTop10
+                ? contentTheme.success
+                : contentTheme.primary,
+            child: Row(
+              children: [
+                Icon(
+                  LucideIcons.listFilter,
+                  size: 20,
+                  color: contentTheme.onPrimary,
+                ),
+                MySpacing.width(8),
+                MyText.bodyMedium(
+                  "Top 70",
+                  color: contentTheme.onPrimary,
+                )
+              ],
+            ),
           ),
         ),
-        MySpacing.width(8),
-        MyContainer(
-          onTap: () {
-            controller.tuttiGliArticoli(
-                controller.articoliSelezionati, controller.articoliCancellati);
-          },
-          paddingAll: 8,
-          color: controller.isAll ? contentTheme.success : contentTheme.primary,
-          child: Row(
-            children: [
-              Icon(
-                LucideIcons.listPlus,
-                size: 20,
-                color: contentTheme.onPrimary,
-              ),
-              MySpacing.width(8),
-              MyText.bodyMedium(
-                "Tutti gli Articoli",
-                color: contentTheme.onPrimary,
-              )
-            ],
+        MySpacing.width(4),
+        Flexible(
+          flex: 1,
+          child: MyContainer(
+            onTap: () {
+              controller.tuttiGliArticoli(controller.articoliSelezionati,
+                  controller.articoliCancellati);
+            },
+            paddingAll: 8,
+            color:
+                controller.isAll ? contentTheme.success : contentTheme.primary,
+            child: Row(
+              children: [
+                Icon(
+                  LucideIcons.listPlus,
+                  size: 20,
+                  color: contentTheme.onPrimary,
+                ),
+                MySpacing.width(8),
+                MyText.bodyMedium(
+                  "Tutti gli Articoli",
+                  color: contentTheme.onPrimary,
+                )
+              ],
+            ),
           ),
         )
       ],
     );
   }
 
-  Widget ordinamento(String titolo, bool? valore) {
+  textInputFiltri() {
+    return [
+      Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: TextFormField(
+          controller: controller.codice,
+          onChanged: (value) {
+            controller.filtro();
+          },
+          decoration: InputDecoration(
+            counterStyle: TextStyle(
+              height: double.minPositive,
+            ),
+            counterText: "",
+            hintText: "Filtra per codice",
+            hintStyle: MyTextStyle.bodySmall(xMuted: true),
+            border: outlineInputBorder,
+            enabledBorder: outlineInputBorder,
+            focusedBorder: focusedInputBorder,
+            contentPadding: MySpacing.all(10),
+            isCollapsed: true,
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: TextFormField(
+          controller: controller.desc,
+          onChanged: (value) {
+            controller.filtro();
+          },
+          decoration: InputDecoration(
+            counterStyle: TextStyle(
+              height: double.minPositive,
+            ),
+            counterText: "",
+            hintText: "Filtra per descrizione",
+            hintStyle: MyTextStyle.bodySmall(xMuted: true),
+            border: outlineInputBorder,
+            enabledBorder: outlineInputBorder,
+            focusedBorder: focusedInputBorder,
+            contentPadding: MySpacing.all(10),
+            isCollapsed: true,
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: TextFormField(
+          controller: controller.codAlt,
+          onChanged: (value) {
+            controller.filtro();
+          },
+          decoration: InputDecoration(
+            counterStyle: TextStyle(
+              height: double.minPositive,
+            ),
+            counterText: "",
+            hintText: "Filtra per Cod. Alt.",
+            hintStyle: MyTextStyle.bodySmall(xMuted: true),
+            border: outlineInputBorder,
+            enabledBorder: outlineInputBorder,
+            focusedBorder: focusedInputBorder,
+            contentPadding: MySpacing.all(10),
+            isCollapsed: true,
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: TextFormField(
+          controller: controller.cat,
+          onChanged: (value) {
+            controller.filtro();
+          },
+          decoration: InputDecoration(
+            counterStyle: TextStyle(
+              height: double.minPositive,
+            ),
+            counterText: "",
+            hintText: "Filtra per categoria",
+            hintStyle: MyTextStyle.bodySmall(xMuted: true),
+            border: outlineInputBorder,
+            enabledBorder: outlineInputBorder,
+            focusedBorder: focusedInputBorder,
+            contentPadding: MySpacing.all(10),
+            isCollapsed: true,
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+          ),
+        ),
+      )
+    ];
+  }
+  /* Widget ordinamento(String titolo, bool? valore) {
     return Row(
       children: [
         MyText.bodyMedium(titolo, fontWeight: 600),
@@ -936,6 +1083,55 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
             : valore
                 ? Icon(Icons.arrow_drop_down_outlined)
                 : Icon(Icons.arrow_drop_up_outlined)
+      ],
+    );
+  }*/
+
+  Widget ordinamento(String titolo, bool? valore,
+      TextEditingController? controller, bool visible) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            MyText.bodyMedium(titolo, fontWeight: 600),
+            valore == null
+                ? Text("")
+                : valore
+                    ? Icon(Icons.arrow_drop_down_outlined)
+                    : Icon(Icons.arrow_drop_up_outlined)
+          ],
+        ),
+        MySpacing.height(3),
+        Visibility(
+          visible: visible,
+          child: Container(
+            width: 100,
+            child: TextFormField(
+              controller: controller,
+              /*keyboardType: keyboaardType,
+                maxLength: maxLength,
+                enabled: enabled,
+                controller: controller,
+                validator: validator,*/
+              onChanged: (value) {
+                this.controller.filtro();
+              },
+              decoration: InputDecoration(
+                counterStyle:
+                    TextStyle(height: double.minPositive, fontSize: 10),
+                counterText: "",
+                hintStyle: MyTextStyle.bodySmall(xMuted: true),
+                border: outlineInputBorder,
+                enabledBorder: outlineInputBorder,
+                focusedBorder: focusedInputBorder,
+                contentPadding: MySpacing.all(4),
+                isCollapsed: true,
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -993,20 +1189,26 @@ class MyDataListArtModal extends DataTableSource with UIMixin {
       cells: [
         DataCell(MyText.bodySmall(
           articolo.codArt ?? "",
-          color: articolo.disponibile! <= 0 ? Colors.red : null,
+          color: articolo.disponibile! / (1 * (articolo.qtaArt ?? 1)) < 1
+              ? Colors.red
+              : null,
         )),
         DataCell(MyText.bodySmall(
           "${articolo.descrizione}",
-          color: articolo.disponibile! <= 0 ? Colors.red : null,
+          color: articolo.disponibile! / (1 * (articolo.qtaArt ?? 1)) < 1
+              ? Colors.red
+              : null,
         )),
         DataCell(MyText.bodySmall(
           "${articolo.codAlt}",
-          color: articolo.disponibile! <= 0 ? Colors.red : null,
+          color: articolo.disponibile! / (1 * (articolo.qtaArt ?? 1)) < 1
+              ? Colors.red
+              : null,
         )),
         //DataCell(MyText.bodySmall("${articolo.um1}")),
         DataCell(Row(
           children: [
-            articolo.disponibile! <= 0
+            articolo.disponibile! / (1 * (articolo.qtaArt ?? 1)) < 1
                 ? Container()
                 : MyContainer.roundBordered(
                     onTap: () {
@@ -1025,7 +1227,7 @@ class MyDataListArtModal extends DataTableSource with UIMixin {
                     ),
                   ),
             MySpacing.width(10),
-            articolo.disponibile! <= 0
+            articolo.disponibile! / (1 * (articolo.qtaArt ?? 1)) < 1
                 ? Container()
                 : Flexible(
                     child: TextField(
@@ -1041,10 +1243,16 @@ class MyDataListArtModal extends DataTableSource with UIMixin {
                           extentOffset: textController.value.text.length),
                       onChanged: (value) {
                         if (value != "" && value != " ") {
-                          if (int.parse(value) > articolo.disponibile!) {
-                            articolo.conf = articolo.disponibile!.toDouble();
+                          if ((int.parse(value) * (articolo.qtaArt ?? 1)) >
+                              articolo.disponibile!) {
+                            var qta = articolo.disponibile!.toDouble() /
+                                (articolo.qtaArt ?? 1);
+                            var qtaArr = qta.floor().toString();
+                            articolo.conf = double.parse(
+                                qtaArr); /*(articolo.disponibile!.toDouble() /
+                                (articolo.qtaArt ?? 1).toInt());*/
                             textController.text = Utils.formatStringDecimal(
-                                articolo.disponibile, 0);
+                                double.parse(qtaArr), 0);
                             controller.modificaArticolo(articolo);
                           } else {
                             articolo.conf = double.parse(value);
@@ -1055,11 +1263,12 @@ class MyDataListArtModal extends DataTableSource with UIMixin {
                     ),
                   ),
             MySpacing.width(10),
-            articolo.disponibile! <= 0
+            articolo.disponibile! / (1 * (articolo.qtaArt ?? 1)) < 1
                 ? Container()
                 : MyContainer.roundBordered(
                     onTap: () {
-                      if ((articolo.conf! + 1) <= articolo.disponibile!) {
+                      if (((articolo.conf! + 1) * (articolo.qtaArt ?? 1)) <=
+                          articolo.disponibile!) {
                         articolo.conf = articolo.conf! + 1;
                         textController.text =
                             Utils.formatStringDecimal(articolo.conf, 0);
@@ -1077,28 +1286,40 @@ class MyDataListArtModal extends DataTableSource with UIMixin {
         )),
         DataCell(MyText.bodySmall(
           "${Utils.formatStringDecimal(articolo.qtaArt, articolo.numDecArt ?? 2)} ${articolo.um1}",
-          color: articolo.disponibile! <= 0 ? Colors.red : null,
+          color: articolo.disponibile! / (1 * (articolo.qtaArt ?? 1)) < 1
+              ? Colors.red
+              : null,
         )),
         DataCell(MyText.bodySmall(
           "€ ${Utils.formatStringDecimal(prz1, 3)}",
-          color: articolo.disponibile! <= 0 ? Colors.red : null,
+          color: articolo.disponibile! / (1 * (articolo.qtaArt ?? 1)) < 1
+              ? Colors.red
+              : null,
         )),
         DataCell(MyText.bodySmall(
           "€ ${Utils.formatStringDecimal(prz2, 3)}",
-          color: articolo.disponibile! <= 0 ? Colors.red : null,
+          color: articolo.disponibile! / (1 * (articolo.qtaArt ?? 1)) < 1
+              ? Colors.red
+              : null,
         )),
         DataCell(MyText.bodySmall(
           Utils.formatStringDecimal(
               articolo.disponibile, articolo.numDecArt ?? 2),
-          color: articolo.disponibile! <= 0 ? Colors.red : null,
+          color: articolo.disponibile! / (1 * (articolo.qtaArt ?? 1)) < 1
+              ? Colors.red
+              : null,
         )),
         DataCell(MyText.bodySmall(
           "${articolo.notaArt}",
-          color: articolo.disponibile! <= 0 ? Colors.red : null,
+          color: articolo.disponibile! / (1 * (articolo.qtaArt ?? 1)) < 1
+              ? Colors.red
+              : null,
         )),
         DataCell(MyText.bodySmall(
           "${articolo.catStatistica}",
-          color: articolo.disponibile! <= 0 ? Colors.red : null,
+          color: articolo.disponibile! / (1 * (articolo.qtaArt ?? 1)) < 1
+              ? Colors.red
+              : null,
         )),
       ],
     );

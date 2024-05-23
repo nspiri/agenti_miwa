@@ -1,3 +1,4 @@
+import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/global.dart';
 import 'package:foody/model/customer_detail.dart';
 import 'package:foody/model/customer_list.dart';
@@ -77,32 +78,41 @@ class HomeController extends MyController {
   ];
 
   getDati() {
-    StatoCliente.dummyList.then((value) {
-      statoClienti = value;
-      numStatoCli = value.length;
-      update();
-    });
-    Attrezzatura.dummyList.then((value) {
-      attrezzature = value;
-      numAttrezz = value.length;
-      update();
-    });
+    clienteSelezionato = LocalStorage.getDettCli();
+    carrelloGlobale = LocalStorage.getCarrello() ?? [];
+    bool isOffline = LocalStorage.getOffline();
+
+    if (!isOffline) {
+      StatoCliente.dummyList.then((value) {
+        statoClienti = value;
+        numStatoCli = value.length;
+        update();
+      });
+      Attrezzatura.dummyList.then((value) {
+        attrezzature = value;
+        numAttrezz = value.length;
+        update();
+      });
+    }
   }
 
   void onSelectPulsante(int index) async {
-    if (listaPulsanti[index]["url"] == "/cart" && clienteSelezionato == null) {
-      Get.toNamed("/admin/customers");
-    } else {
-      if (listaPulsanti[index]["url"] == "/admin/equipment") {
-        Get.toNamed(listaPulsanti[index]["url"], arguments: attrezzature);
-      } else if (listaPulsanti[index]["url"] == "/admin/customers/state") {
-        Get.toNamed(listaPulsanti[index]["url"], arguments: statoClienti);
+    bool isOffline = LocalStorage.getOffline();
+    if (!isOffline) {
+      if (listaPulsanti[index]["url"] == "/cart" &&
+          clienteSelezionato == null) {
+        Get.toNamed("/admin/customers");
       } else {
-        Get.toNamed(listaPulsanti[index]["url"]);
+        if (listaPulsanti[index]["url"] == "/admin/equipment") {
+          Get.toNamed(listaPulsanti[index]["url"], arguments: attrezzature);
+        } else if (listaPulsanti[index]["url"] == "/admin/customers/state") {
+          Get.toNamed(listaPulsanti[index]["url"], arguments: statoClienti);
+        } else {
+          Get.toNamed(listaPulsanti[index]["url"]);
+        }
       }
+      update();
     }
-
-    update();
   }
 
   void onSelectLink(int index) async {

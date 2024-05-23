@@ -61,19 +61,19 @@ class DoRequest {
 
       var a = request.toJson();
       if (kIsWeb) {
-        /* final response = await dio.post(env.base_url,
+        final response = await dio.post(env.base_url,
             data: jsonEncode(a),
             options: Options(
               headers: env.headers,
-            ));*/
-        final response = await http
+            ));
+        /*final response = await http
             //.post(Uri.https("mxl1.hostcsi.com:9008", "/webapi/servizi"),
             .post(Uri.https(env.base_url, "/api/mexal/proxy"),
                 headers: env.passHeaders, body: jsonEncode(request))
-            .timeout(Duration(seconds: 120));
-        //Map<String, dynamic> res = response.data;
-        var jsonDecoded = jsonDecode(response.body);
-        Map<String, dynamic> res = jsonDecoded;
+            .timeout(Duration(seconds: 120));*/
+        Map<String, dynamic> res = response.data;
+        /*var jsonDecoded = jsonDecode(response.body);
+        Map<String, dynamic> res = jsonDecoded;*/
         String errore = "";
         if (response.statusCode == 200) {
           if ((res["error"] as List).isNotEmpty) {

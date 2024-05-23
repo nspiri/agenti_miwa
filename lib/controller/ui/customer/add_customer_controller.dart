@@ -7,6 +7,7 @@ import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/helpers/utils/show_message_dialogs.dart';
 import 'package:foody/helpers/utils/utils.dart';
 import 'package:foody/helpers/widgets/my_form_validator.dart';
+import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/model/customer_category.dart';
 import 'package:foody/model/customers_fa.dart';
 import 'package:foody/model/nazionalita.dart';
@@ -349,6 +350,11 @@ class AddCustomerController extends MyController {
         label: "",
         validators: [],
         controller: TextEditingController());
+    basicValidator.addField('referente',
+        required: true,
+        label: "",
+        validators: [],
+        controller: TextEditingController());
     basicValidator.addField('telefono',
         required: false,
         label: "",
@@ -561,7 +567,69 @@ class AddCustomerController extends MyController {
     update();
     if (basicValidator.validateForm()) {
       if (controlloCampiInserimento()) {
-        sendRequest();
+        if (documento.isEmpty) {
+          showDialog<bool>(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Row(
+                  children: [
+                    Icon(
+                      size: 50,
+                      Icons.error,
+                      color: Colors.orange,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Row(
+                        children: [
+                          MyText.titleSmall(
+                            "Attenzione",
+                            maxLines: 3,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                content: Container(
+                    constraints: BoxConstraints(minWidth: 100, maxWidth: 500),
+                    child: MyText.labelSmall(
+                        "Il documento non è stato firmato, vuoi continuare senza firma?",
+                        maxLines: 10)),
+                actions: <Widget>[
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    child: MyText.labelSmall("No"),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    child: MyText.labelSmall("Si"),
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                  ),
+                ],
+              );
+            },
+          ).then((value) {
+            if (value == true) {
+              sendRequest();
+            } else {
+              loading = false;
+              update();
+            }
+          });
+        } else {
+          sendRequest();
+        }
       }
     } else {
       controlloCampiInserimento();
@@ -593,6 +661,10 @@ class AddCustomerController extends MyController {
     }
     if (basicValidator.getController("provincia")?.text == "") {
       basicValidator.addError("provincia", "Inserisci la provincia");
+      valido = false;
+    }
+    if (basicValidator.getController("referente")?.text == "") {
+      basicValidator.addError("referente", "Inserisci il referente");
       valido = false;
     }
     if (basicValidator.getController("fax")?.text == "") {
@@ -743,6 +815,11 @@ class AddCustomerController extends MyController {
           .text
           .toString()
           .toUpperCase(),
+      "pfnom": basicValidator
+          .getController("referente")
+          .text
+          .toString()
+          .toUpperCase(),
       "pcnaz": nazionalitaSelezionata?.codice ?? "",
       "pcpae": paeseSelezionato?.codice ?? "",
       "pcind": basicValidator
@@ -789,7 +866,8 @@ class AddCustomerController extends MyController {
       "pcona": zonaClienteSelezionata?.idC ?? 0,
       "tipo_attivita": tipoAttivita,
       "note": basicValidator.getController("nota2").text ?? "",
-      "privacy": documentoEncode(base64.encode(documento)),
+      "privacy":
+          documento.isEmpty ? null : documentoEncode(base64.encode(documento)),
       if (isCheckedDest)
         "destinazione": {
           "pcdes": basicValidator
@@ -823,6 +901,7 @@ class AddCustomerController extends MyController {
           "pctps": tiposocietaSelezionataDest?.numero,
         }
     };
+    print(dati);
     Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrcli", etichettaCollage: "CLIENTE_NUOVO", dati: dati);
 
@@ -862,6 +941,7 @@ class AddCustomerController extends MyController {
     basicValidator.getController("fax").text = "";
     basicValidator.getController("codFisc").text = "";
     basicValidator.getController("partIva").text = "";
+    basicValidator.getController("referente").text = "";
     basicValidator.getController("internet").text = "";
     basicValidator.getController("nota2").text = "";
     nazionalitaSelezionata =
@@ -876,7 +956,7 @@ class AddCustomerController extends MyController {
     tiposocietaSelezionata = null;
     basicValidator.getController("pec").text = "";
     basicValidator.getController("codSDI").text = "";
-    tipoAttivita = [];
+    //tipoAttivita = [];
     controllerTipoAttivita.clearAllSelection();
     giorniSelezionati = [];
     controllerGiorni.clearAllSelection();

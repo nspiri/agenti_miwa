@@ -37,6 +37,7 @@ class _OrdiniListCustomerScreenState extends State<OrdiniListCustomerScreen>
     cliente = Get.arguments;
     cliente ??= clienteSelezionato;
     controller = Get.put(OrdiniListCustomerController());
+    controller.isLoading = true;
     controller.getOrdini(cliente!);
   }
 

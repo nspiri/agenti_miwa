@@ -40,192 +40,209 @@ class _LoginScreenState extends State<LoginScreen>
       child: GetBuilder(
         init: controller,
         builder: (controller) {
-          return MyFlex(
-            contentPadding: false,
-            runAlignment: WrapAlignment.center,
-            wrapCrossAlignment: WrapCrossAlignment.center,
-            wrapAlignment: WrapAlignment.center,
+          return Stack(
             children: [
-              MyFlexItem(
-                sizes: "lg-6",
-                child: MyResponsive(
-                  builder: (_, __, type) {
-                    return type == MyScreenMediaType.xxl
-                        ? buildAuthSideBar()
-                        : type == MyScreenMediaType.xl
+              MyFlex(
+                contentPadding: false,
+                runAlignment: WrapAlignment.center,
+                wrapCrossAlignment: WrapCrossAlignment.center,
+                wrapAlignment: WrapAlignment.center,
+                children: [
+                  MyFlexItem(
+                    sizes: "lg-6",
+                    child: MyResponsive(
+                      builder: (_, __, type) {
+                        return type == MyScreenMediaType.xxl
                             ? buildAuthSideBar()
-                            : type == MyScreenMediaType.lg
+                            : type == MyScreenMediaType.xl
                                 ? buildAuthSideBar()
-                                : const SizedBox();
-                  },
-                ),
-              ),
-              MyFlexItem(
-                sizes: "lg-6",
-                child: Padding(
-                  padding: MySpacing.only(left: 30, right: 30),
-                  child: Form(
-                    key: controller.basicValidator.formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Center(
-                          child: Image.asset(
-                            height: 200,
-                            Images.logoMiwa,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        MyText.displaySmall(
-                          "LogIn",
-                          fontWeight: 600,
-                        ),
-                        MySpacing.height(32),
-                        TextFormField(
-                          validator:
-                              controller.basicValidator.getValidation('email'),
-                          controller:
-                              controller.basicValidator.getController('email'),
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                              labelText: "Indirizzo Email",
-                              labelStyle: MyTextStyle.bodySmall(xMuted: true),
-                              border: outlineInputBorder,
-                              enabledBorder: outlineInputBorder,
-                              focusedBorder: focusedInputBorder,
-                              prefixIcon: const Icon(
-                                LucideIcons.mail,
-                                size: 20,
+                                : type == MyScreenMediaType.lg
+                                    ? buildAuthSideBar()
+                                    : const SizedBox();
+                      },
+                    ),
+                  ),
+                  MyFlexItem(
+                    sizes: "lg-6",
+                    child: Padding(
+                      padding: MySpacing.only(left: 30, right: 30),
+                      child: Form(
+                        key: controller.basicValidator.formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Center(
+                              child: Image.asset(
+                                height: 200,
+                                Images.logoMiwa,
+                                fit: BoxFit.cover,
                               ),
-                              contentPadding: MySpacing.all(16),
-                              isCollapsed: true,
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.never),
-                        ),
-                        MySpacing.height(20),
-                        TextFormField(
-                          validator: controller.basicValidator
-                              .getValidation('password'),
-                          controller: controller.basicValidator
-                              .getController('password'),
-                          keyboardType: TextInputType.visiblePassword,
-                          obscureText: !controller.showPassword,
-                          decoration: InputDecoration(
-                              labelText: "Password",
-                              labelStyle: MyTextStyle.bodySmall(xMuted: true),
-                              border: outlineInputBorder,
-                              enabledBorder: outlineInputBorder,
-                              focusedBorder: focusedInputBorder,
-                              prefixIcon: const Icon(
-                                LucideIcons.lock,
-                                size: 20,
-                              ),
-                              suffixIcon: InkWell(
-                                onTap: controller.onChangeShowPassword,
-                                child: Icon(
-                                  controller.showPassword
-                                      ? LucideIcons.eye
-                                      : LucideIcons.eyeOff,
-                                  size: 20,
+                            ),
+                            MyText.displaySmall(
+                              "LogIn",
+                              fontWeight: 600,
+                            ),
+                            MySpacing.height(32),
+                            TextFormField(
+                              validator: controller.basicValidator
+                                  .getValidation('email'),
+                              controller: controller.basicValidator
+                                  .getController('email'),
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                  labelText: "Indirizzo Email",
+                                  labelStyle:
+                                      MyTextStyle.bodySmall(xMuted: true),
+                                  border: outlineInputBorder,
+                                  enabledBorder: outlineInputBorder,
+                                  focusedBorder: focusedInputBorder,
+                                  prefixIcon: const Icon(
+                                    LucideIcons.mail,
+                                    size: 20,
+                                  ),
+                                  contentPadding: MySpacing.all(16),
+                                  isCollapsed: true,
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never),
+                            ),
+                            MySpacing.height(20),
+                            TextFormField(
+                              validator: controller.basicValidator
+                                  .getValidation('password'),
+                              controller: controller.basicValidator
+                                  .getController('password'),
+                              keyboardType: TextInputType.visiblePassword,
+                              obscureText: !controller.showPassword,
+                              decoration: InputDecoration(
+                                  labelText: "Password",
+                                  labelStyle:
+                                      MyTextStyle.bodySmall(xMuted: true),
+                                  border: outlineInputBorder,
+                                  enabledBorder: outlineInputBorder,
+                                  focusedBorder: focusedInputBorder,
+                                  prefixIcon: const Icon(
+                                    LucideIcons.lock,
+                                    size: 20,
+                                  ),
+                                  suffixIcon: InkWell(
+                                    onTap: controller.onChangeShowPassword,
+                                    child: Icon(
+                                      controller.showPassword
+                                          ? LucideIcons.eye
+                                          : LucideIcons.eyeOff,
+                                      size: 20,
+                                    ),
+                                  ),
+                                  contentPadding: MySpacing.all(16),
+                                  isCollapsed: true,
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                /*Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Row(
+                                    children: [
+                                      Checkbox(
+                                        onChanged: controller.onChangeCheckBox,
+                                        value: controller.isChecked,
+                                        fillC olor:
+                                            MaterialStatePropertyAll(Colors.white),
+                                        activeColor: theme.colorScheme.primary,
+                                        checkColor: contentTheme.primary,
+                                        materialTapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                        visualDensity: getCompactDensity,
+                                      ),
+                                      MySpacing.width(8),
+                                      MyText.bodyMedium(
+                                        "Ricordami",
+                                      ),
+                                    ],
+                                  ),
+                                ),*/
+                                /*  MyButton.text(
+                                  onPressed: controller.goToForgotPassword,
+                                  elevation: 0,
+                                  padding: MySpacing.xy(8, 0),
+                                  splashColor:
+                                      contentTheme.secondary.withOpacity(0.1),
+                                  child: MyText.labelSmall(
+                                    'Password dimenticata?',
+                                    color: contentTheme.secondary,
+                                  ),
+                                ),*/
+                              ],
+                            ),
+                            MySpacing.height(28),
+                            Center(
+                              child: MyButton.rounded(
+                                onPressed: () {
+                                  controller.onLogin(context);
+                                },
+                                elevation: 0,
+                                padding: MySpacing.xy(20, 16),
+                                backgroundColor: contentTheme.primary,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    controller.loading
+                                        ? SizedBox(
+                                            height: 14,
+                                            width: 14,
+                                            child: CircularProgressIndicator(
+                                              color:
+                                                  theme.colorScheme.onPrimary,
+                                              strokeWidth: 1.2,
+                                            ),
+                                          )
+                                        : Container(),
+                                    if (controller.loading) MySpacing.width(16),
+                                    MyText.bodySmall(
+                                      'Login',
+                                      color: contentTheme.onPrimary,
+                                    ),
+                                  ],
                                 ),
                               ),
-                              contentPadding: MySpacing.all(16),
-                              isCollapsed: true,
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.never),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            /*Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Row(
-                                children: [
-                                  Checkbox(
-                                    onChanged: controller.onChangeCheckBox,
-                                    value: controller.isChecked,
-                                    fillC olor:
-                                        MaterialStatePropertyAll(Colors.white),
-                                    activeColor: theme.colorScheme.primary,
-                                    checkColor: contentTheme.primary,
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    visualDensity: getCompactDensity,
-                                  ),
-                                  MySpacing.width(8),
-                                  MyText.bodyMedium(
-                                    "Ricordami",
-                                  ),
-                                ],
-                              ),
-                            ),*/
-                            /*  MyButton.text(
-                              onPressed: controller.goToForgotPassword,
-                              elevation: 0,
-                              padding: MySpacing.xy(8, 0),
-                              splashColor:
-                                  contentTheme.secondary.withOpacity(0.1),
-                              child: MyText.labelSmall(
-                                'Password dimenticata?',
-                                color: contentTheme.secondary,
+                            ),
+                            controller.errore != ""
+                                ? MyText.bodySmall(
+                                    controller.errore,
+                                    color: contentTheme.red,
+                                  )
+                                : Text(""),
+                            /*Center(
+                              child: MyButton.text(
+                                onPressed: controller.gotoRegister,
+                                elevation: 0,
+                                padding: MySpacing.x(16),
+                                splashColor:
+                                    contentTheme.secondary.withOpacity(0.1),
+                                child: MyText.labelMedium(
+                                  'I haven\'t account',
+                                  color: contentTheme.secondary,
+                                ),
                               ),
                             ),*/
                           ],
                         ),
-                        MySpacing.height(28),
-                        Center(
-                          child: MyButton.rounded(
-                            onPressed: () {
-                              controller.onLogin(context);
-                            },
-                            elevation: 0,
-                            padding: MySpacing.xy(20, 16),
-                            backgroundColor: contentTheme.primary,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                controller.loading
-                                    ? SizedBox(
-                                        height: 14,
-                                        width: 14,
-                                        child: CircularProgressIndicator(
-                                          color: theme.colorScheme.onPrimary,
-                                          strokeWidth: 1.2,
-                                        ),
-                                      )
-                                    : Container(),
-                                if (controller.loading) MySpacing.width(16),
-                                MyText.bodySmall(
-                                  'Login',
-                                  color: contentTheme.onPrimary,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        controller.errore != ""
-                            ? MyText.bodySmall(
-                                controller.errore,
-                                color: contentTheme.red,
-                              )
-                            : Text(""),
-                        /*Center(
-                          child: MyButton.text(
-                            onPressed: controller.gotoRegister,
-                            elevation: 0,
-                            padding: MySpacing.x(16),
-                            splashColor:
-                                contentTheme.secondary.withOpacity(0.1),
-                            child: MyText.labelMedium(
-                              'I haven\'t account',
-                              color: contentTheme.secondary,
-                            ),
-                          ),
-                        ),*/
-                      ],
+                      ),
                     ),
+                  ),
+                ],
+              ),
+              Positioned(
+                bottom: 10,
+                right: 10,
+                child: Center(
+                  child: Text(
+                    "Version: ${controller.version} (${controller.code})",
+                    style: TextStyle(fontSize: 10),
                   ),
                 ),
               ),

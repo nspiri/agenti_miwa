@@ -134,18 +134,15 @@ class ScadenziarioListController extends MyController {
   }
 
   void filterByName(String value) {
-    if (value == "") {
-      data = MyDataDetailScadenziario(filterScadenziario, this);
-    } else {
-      var filterCustomers = filterScadenziario
-          .where((element) =>
-              element.ragioneSociale!
-                  .toLowerCase()
-                  .contains(value.toLowerCase()) ||
-              element.documento!.toLowerCase().contains(value.toLowerCase()))
-          .toList();
-      data = MyDataDetailScadenziario(filterCustomers, this);
-    }
+    filterScadenziario = scadenziario
+        .where((element) =>
+            element.ragioneSociale!
+                .toLowerCase()
+                .contains(value.toLowerCase()) ||
+            element.documento!.toLowerCase().contains(value.toLowerCase()))
+        .toList();
+    data = MyDataDetailScadenziario(filterScadenziario, this);
+
     update();
   }
 

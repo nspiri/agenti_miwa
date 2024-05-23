@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:foody/helpers/localizations/app_localization_delegate.dart';
@@ -13,9 +14,25 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
-Future<void> main() async {
+import 'package:windows_single_instance/windows_single_instance.dart';
+import 'package:auto_updater/auto_updater.dart';
+
+Future<void> main(List<String> args) async {
   //HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
+
+  String feedURL = 'http://localhost:5002/appcast.xml';
+  await autoUpdater.setFeedURL(feedURL);
+  await autoUpdater.checkForUpdates();
+  await autoUpdater.setScheduledCheckInterval(3600);
+
+  if (!kIsWeb) {
+    await WindowsSingleInstance.ensureSingleInstance(args, "identifier",
+        onSecondWindow: (args) {
+      print(args);
+    });
+  }
+
   setPathUrlStrategy();
 
   await LocalStorage.init();

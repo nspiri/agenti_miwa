@@ -30,9 +30,10 @@ class _ScadenziarioScreenState extends State<ScadenziarioScreen>
   @override
   void initState() {
     controller = Get.put(ScadenziarioController());
-    if (controller.codiceCliente != clienteSelezionato?.codiceCliente) {
-      controller.getScadenziarioCliente();
-    }
+    controller.isLoading = true;
+    // if (controller.codiceCliente != clienteSelezionato?.codiceCliente) {
+    controller.getScadenziarioCliente();
+    // }
     super.initState();
   }
 
@@ -189,20 +190,25 @@ class _ScadenziarioScreenState extends State<ScadenziarioScreen>
                                             ),
                                             MySpacing.width(8),
                                             if (screenMT.isMobile == true)
-                                              IconButton(
-                                                  onPressed: () {
-                                                    for (var element in controller
-                                                        .filterScadenziario) {
-                                                      if (element.selected) {
-                                                        controller.generaPdf();
-                                                        break;
+                                              Visibility(
+                                                visible: !controller.isOffline,
+                                                child: IconButton(
+                                                    onPressed: () {
+                                                      for (var element in controller
+                                                          .filterScadenziario) {
+                                                        if (element.selected) {
+                                                          controller
+                                                              .generaPdf();
+                                                          break;
+                                                        }
                                                       }
-                                                    }
-                                                  },
-                                                  icon: Icon(
-                                                    LucideIcons.fileDown,
-                                                    color: contentTheme.primary,
-                                                  ))
+                                                    },
+                                                    icon: Icon(
+                                                      LucideIcons.fileDown,
+                                                      color:
+                                                          contentTheme.primary,
+                                                    )),
+                                              )
                                           ],
                                         ),
                                       ),
@@ -273,20 +279,23 @@ class _ScadenziarioScreenState extends State<ScadenziarioScreen>
                                               )),
                                             ),
                                             MySpacing.width(8),
-                                            IconButton(
-                                                onPressed: () {
-                                                  for (var element in controller
-                                                      .filterScadenziario) {
-                                                    if (element.selected) {
-                                                      controller.generaPdf();
-                                                      break;
+                                            Visibility(
+                                              visible: !controller.isOffline,
+                                              child: IconButton(
+                                                  onPressed: () {
+                                                    for (var element in controller
+                                                        .filterScadenziario) {
+                                                      if (element.selected) {
+                                                        controller.generaPdf();
+                                                        break;
+                                                      }
                                                     }
-                                                  }
-                                                },
-                                                icon: Icon(
-                                                  LucideIcons.fileDown,
-                                                  color: contentTheme.primary,
-                                                ))
+                                                  },
+                                                  icon: Icon(
+                                                    LucideIcons.fileDown,
+                                                    color: contentTheme.primary,
+                                                  )),
+                                            )
                                           ],
                                         )
                                     ],

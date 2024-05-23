@@ -3,6 +3,7 @@ import 'package:foody/helpers/services/auth_services.dart';
 import 'package:foody/helpers/widgets/my_form_validator.dart';
 import 'package:foody/views/my_controller.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class LoginController extends MyController {
   MyFormValidator basicValidator = MyFormValidator();
@@ -11,6 +12,8 @@ class LoginController extends MyController {
 
   var greeting = "Buon giorno";
   late int currentTime = DateTime.now().hour;
+
+  String version = "", code = "";
 
   @override
   void onInit() {
@@ -37,7 +40,15 @@ class LoginController extends MyController {
     } else if (currentTime < 22) {
       greeting = 'Buona sera';
     }
+    getVersion();
     super.onInit();
+  }
+
+  getVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    version = packageInfo.version;
+    code = packageInfo.buildNumber;
+    update();
   }
 
   void onChangeCheckBox(bool? value) {

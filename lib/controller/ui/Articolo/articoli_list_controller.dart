@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:isolate';
 
 import 'package:flutter/material.dart';
+import 'package:foody/helpers/storage/local_storage.dart';
 import 'package:foody/helpers/utils/do_http_request.dart';
 import 'package:foody/helpers/utils/show_message_dialogs.dart';
 import 'package:foody/helpers/utils/utils.dart';
@@ -31,6 +33,13 @@ class FoodController extends MyController {
   int currentPage = 1;
   int articlesPerPage = 20;
 
+  bool loadingDownloadOffline = false;
+
+  TextEditingController codice = TextEditingController();
+  TextEditingController desc = TextEditingController();
+  TextEditingController codAlt = TextEditingController();
+  TextEditingController cat = TextEditingController();
+
   FoodController({required this.context});
 
   @override
@@ -48,6 +57,19 @@ class FoodController extends MyController {
     });
     getData();
     super.onInit();
+  }
+
+  void scaricaArticoli() {
+    loadingDownloadOffline = true;
+    update();
+    Articolo.dummyList.then((value) {
+      articoli = value;
+      LocalStorage.setArticoli(articoli);
+      showSuccessMessage(context, "Articoli scaricati!", "");
+      loadingDownloadOffline = false;
+      update();
+      update();
+    });
   }
 
   void caricaArticoli() {
@@ -90,7 +112,12 @@ class FoodController extends MyController {
   }
 
   getData() async {
-    listini = await Utils.getNomeListini();
+    bool isOffline = LocalStorage.getOffline();
+    if (isOffline) {
+      listini = LocalStorage.getListini();
+    } else {
+      listini = await Utils.getNomeListini();
+    }
   }
 
   @override
@@ -120,6 +147,34 @@ class FoodController extends MyController {
       caricaArticoli();
       data = MyData(articoliFiltrati, context, this);
     }
+    update();
+  }
+
+  void filtro() {
+    articoliFiltrati = articoli
+        .where((element) =>
+            element.codArt!.toLowerCase().contains(codice.text.toLowerCase()) &&
+            element.descrizione!
+                .toLowerCase()
+                .contains(desc.text.toLowerCase()) &&
+            element.codAlt!.toLowerCase().contains(codAlt.text.toLowerCase()) &&
+            element.catStatistica!
+                .toLowerCase()
+                .contains(cat.text.toLowerCase()))
+        .toList();
+
+    sortDesc = null;
+    sortCodAlt = null;
+    sortPrezzo1 = null;
+    sortPrezzo2 = null;
+    sortPrezzo3 = null;
+    sortDisp = null;
+    sortCat = null;
+    sortDesc = false;
+    sortCodArt = null;
+    caricaArticoli();
+    data = MyData(articoliFiltrati, context, this);
+
     update();
   }
 
@@ -173,6 +228,10 @@ class FoodController extends MyController {
   tuttiGliArticoli() {
     isPromo = false;
     loading = true;
+    codice.text = "";
+    desc.text = "";
+    codAlt.text = "";
+    cat.text = "";
     update();
     Articolo.dummyList.then((value) {
       articoli = value;
@@ -188,6 +247,12 @@ class FoodController extends MyController {
   promo() async {
     isPromo = true;
     loading = true;
+    isPromo = false;
+    loading = true;
+    codice.text = "";
+    desc.text = "";
+    codAlt.text = "";
+    cat.text = "";
     update();
     articoli = articoli
         .where((element) =>
