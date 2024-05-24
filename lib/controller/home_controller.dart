@@ -5,6 +5,7 @@ import 'package:foody/model/customer_list.dart';
 import 'package:foody/views/my_controller.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/dialog/dialog_route.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeController extends MyController {
@@ -13,6 +14,8 @@ class HomeController extends MyController {
   String selectedDailyTask = 'Today';
   List<StatoCliente> statoClienti = [];
   List<Attrezzatura> attrezzature = [];
+
+  String version = "", code = "";
 
   List listaPulsanti = [
     {
@@ -78,6 +81,7 @@ class HomeController extends MyController {
   ];
 
   getDati() {
+    getVersion();
     clienteSelezionato = LocalStorage.getDettCli();
     carrelloGlobale = LocalStorage.getCarrello() ?? [];
     bool isOffline = LocalStorage.getOffline();
@@ -94,6 +98,13 @@ class HomeController extends MyController {
         update();
       });
     }
+  }
+
+  getVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    version = packageInfo.version;
+    code = packageInfo.buildNumber;
+    update();
   }
 
   void onSelectPulsante(int index) async {

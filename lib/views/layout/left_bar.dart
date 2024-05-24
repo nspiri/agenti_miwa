@@ -15,6 +15,7 @@ import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/images.dart';
 import 'package:foody/widgets/custom_pop_menu.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 typedef LeftbarMenuFunction = void Function(String key);
 
@@ -55,10 +56,20 @@ class _LeftBarState extends State<LeftBar>
   bool isOffline = false;
   bool isHover = false;
 
+  String version = "", code = "";
+
   @override
   void initState() {
     super.initState();
     isOffline = LocalStorage.getOffline();
+    getVersion();
+  }
+
+  getVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    version = packageInfo.version;
+    code = packageInfo.buildNumber;
+    setState(() {});
   }
 
   @override
@@ -72,430 +83,445 @@ class _LeftBarState extends State<LeftBar>
         width: isCondensed ? 70 : 254,
         curve: Curves.easeInOut,
         duration: const Duration(milliseconds: 200),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
-            SizedBox(
-              height: 53,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                      onTap: () {
-                        Get.toNamed('/home');
-                      },
-                      child: Image.asset(
-                        Images.logoMiwa,
-                        height: widget.isCondensed ? 96 : 128,
-                        // color: contentTheme.primary,
-                      )),
-                  /* if (!widget.isCondensed)
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: MySpacing.width(16),
-                    ),
-                  if (!widget.isCondensed)
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: MyText.labelLarge(
-                        "Miwa",
-                        style: GoogleFonts.raleway(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w800,
-                          color: theme.colorScheme.primary,
-                          letterSpacing: 1,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 53,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            Get.toNamed('/home');
+                          },
+                          child: Image.asset(
+                            Images.logoMiwa,
+                            height: widget.isCondensed ? 96 : 128,
+                            // color: contentTheme.primary,
+                          )),
+                      /* if (!widget.isCondensed)
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: MySpacing.width(16),
                         ),
-                        maxLines: 1,
-                      ),
-                    )*/
-                ],
-              ),
-            ),
-            Divider(
-              color: contentTheme.secondary.withAlpha(40),
-            ),
-            Expanded(
-                child: SingleChildScrollView(
-              physics: const PageScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MySpacing.height(16),
-                  //LabelWidget(isCondensed: isCondensed, label: "Client App"),
-                  NavigationItem(
-                    iconData: LucideIcons.home,
-                    title: "Home",
-                    isCondensed: isCondensed,
-                    route: '/home',
-                  ),
-                  /* NavigationItem(
-                    iconData: LucideIcons.shoppingBag,
-                    title: "Foods",
-                    isCondensed: isCondensed,
-                    route: '/foods',
-                  ),*/
-                  if (!isOffline)
-                    NavigationItem(
-                      iconData: LucideIcons.shoppingCart,
-                      title: "Ordine",
-                      isCondensed: isCondensed,
-                      route: '/cart',
-                    ),
-                  if ((LocalStorage.getCarrello()?.length ?? 0) > 0 ||
-                      LocalStorage.getOffline())
-                    NavigationItem(
-                      iconData: LucideIcons.shoppingCart,
-                      title: "Lista",
-                      isCondensed: isCondensed,
-                      route: '/list',
-                    ),
-                  /*  NavigationItem(
-                    iconData: LucideIcons.listOrdered,
-                    title: "Order",
-                    isCondensed: isCondensed,
-                    route: '/orders',
-                  ),
-                  NavigationItem(
-                    iconData: LucideIcons.messagesSquare,
-                    title: "Chat",
-                    isCondensed: isCondensed,
-                    route: '/chat',
-                  ),
-                  LabelWidget(isCondensed: isCondensed, label: "Admin Panel"),
-                  NavigationItem(
-                    iconData: LucideIcons.layoutDashboard,
-                    title: "Dashboard",
-                    isCondensed: isCondensed,
-                    route: '/dashboard',
-                  ),
-                  MenuWidget(
-                    iconData: LucideIcons.store,
-                    isCondensed: isCondensed,
-                    title: "Orders",
-                    children: [
-                      MenuItem(
-                        title: "List",
-                        isCondensed: isCondensed,
-                        route: '/admin/orders',
-                        iconData: LucideIcons.scrollText,
-                      ),
-                      MenuItem(
-                        title: "Detail",
-                        isCondensed: isCondensed,
-                        route: '/admin/orders/detail',
-                        iconData: LucideIcons.listOrdered,
-                      ),
+                      if (!widget.isCondensed)
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: MyText.labelLarge(
+                            "Miwa",
+                            style: GoogleFonts.raleway(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w800,
+                              color: theme.colorScheme.primary,
+                              letterSpacing: 1,
+                            ),
+                            maxLines: 1,
+                          ),
+                        )*/
                     ],
-                  ),*/
-                  NavigationItem(
-                    iconData: LucideIcons.dessert,
-                    title: "Articoli",
-                    isCondensed: isCondensed,
-                    route: '/admin/food',
                   ),
-                  MenuWidget(
-                    iconData: LucideIcons.users,
-                    isCondensed: isCondensed,
-                    title: "Clienti",
+                ),
+                Divider(
+                  color: contentTheme.secondary.withAlpha(40),
+                ),
+                Expanded(
+                    child: SingleChildScrollView(
+                  physics: const PageScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      MySpacing.height(16),
+                      //LabelWidget(isCondensed: isCondensed, label: "Client App"),
+                      NavigationItem(
+                        iconData: LucideIcons.home,
+                        title: "Home",
+                        isCondensed: isCondensed,
+                        route: '/home',
+                      ),
+                      /* NavigationItem(
+                        iconData: LucideIcons.shoppingBag,
+                        title: "Foods",
+                        isCondensed: isCondensed,
+                        route: '/foods',
+                      ),*/
                       if (!isOffline)
-                        MenuItem(
+                        NavigationItem(
+                          iconData: LucideIcons.shoppingCart,
+                          title: "Ordine",
+                          isCondensed: isCondensed,
+                          route: '/cart',
+                        ),
+                      if ((LocalStorage.getCarrello()?.length ?? 0) > 0 ||
+                          LocalStorage.getOffline())
+                        NavigationItem(
+                          iconData: LucideIcons.shoppingCart,
                           title: "Lista",
                           isCondensed: isCondensed,
-                          route: '/admin/customers',
+                          route: '/list',
                         ),
-                      MenuItem(
-                        title: "Dettaglio",
+                      /*  NavigationItem(
+                        iconData: LucideIcons.listOrdered,
+                        title: "Order",
                         isCondensed: isCondensed,
-                        route: '/admin/customers/detail',
+                        route: '/orders',
                       ),
-                      MenuItem(
-                        title: "Ordini in corso",
+                      NavigationItem(
+                        iconData: LucideIcons.messagesSquare,
+                        title: "Chat",
                         isCondensed: isCondensed,
-                        route: '/admin/customers/orders',
+                        route: '/chat',
                       ),
-                      MenuItem(
-                        title: "Scadenzario",
+                      LabelWidget(isCondensed: isCondensed, label: "Admin Panel"),
+                      NavigationItem(
+                        iconData: LucideIcons.layoutDashboard,
+                        title: "Dashboard",
                         isCondensed: isCondensed,
-                        route: '/admin/customers/timetable',
+                        route: '/dashboard',
                       ),
-                      MenuItem(
-                        title: "Storico",
+                      MenuWidget(
+                        iconData: LucideIcons.store,
                         isCondensed: isCondensed,
-                        route: '/admin/customers/historical',
-                      ),
-                      MenuItem(
-                        title: "Attrezzature",
-                        isCondensed: isCondensed,
-                        route: '/admin/customers/equipment',
-                      ),
-                      if (!isOffline)
-                        MenuItem(
-                          title: "Nuovo Cliente",
-                          isCondensed: isCondensed,
-                          route: '/admin/customers/create',
-                        ),
-                    ],
-                  ),
-                  if (!isOffline)
-                    NavigationItem(
-                      iconData: LucideIcons.listOrdered,
-                      title: "Ordini in corso",
-                      isCondensed: isCondensed,
-                      route: '/admin/orders',
-                    ),
-                  /* MenuWidget(
-                    iconData: LucideIcons.users,
-                    isCondensed: isCondensed,
-                    title: "Ordini in corso",
-                    children: [
-                      MenuItem(
-                        title: "Lista",
-                        isCondensed: isCondensed,
-                        route: '/admin/orders',
-                      ),
-                      MenuItem(
-                        title: "Dettaglio",
-                        isCondensed: isCondensed,
-                        route: '/admin/customers/detail',
-                      ),
-                    ],
-                  ),*/
-                  if (!isOffline)
-                    NavigationItem(
-                      iconData: LucideIcons.euro,
-                      title: "Scadenzario",
-                      isCondensed: isCondensed,
-                      route: '/admin/timetable',
-                    ),
-                  if (!isOffline)
-                    NavigationItem(
-                      iconData: LucideIcons.barChartBig,
-                      title: "Statistiche Vendite",
-                      isCondensed: isCondensed,
-                      route: '/admin/stats',
-                    ),
-                  if (isOffline)
-                    MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      onHover: (event) {
-                        setState(() {
-                          isHover = true;
-                        });
-                      },
-                      onExit: (event) {
-                        setState(() {
-                          isHover = false;
-                        });
-                      },
-                      child: MyContainer(
-                        onTap: () {
-                          LocalStorage.setOffline(false);
-                          /*  LocalStorage.setArticoli([]);
-                          LocalStorage.setListini([]);
-                          LocalStorage.setDettCli(null);
-                          LocalStorage.setNote("");
-                          LocalStorage.setOrdini([]);
-                          LocalStorage.setScadenzario([]);
-                          LocalStorage.setStorico([]);*/
-
-                          isOffline = false;
-                          setState(() {});
-                          Get.toNamed('/home', arguments: clienteSelezionato);
-                        },
-                        margin: MySpacing.fromLTRB(16, 0, 16, 8),
-                        color: Colors.transparent,
-                        padding: MySpacing.xy(8, 8),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: Icon(
-                                LucideIcons.wifi,
-                                color: (isHover /*|| isActive*/)
-                                    ? leftBarTheme.activeItemColor
-                                    : leftBarTheme.onBackground,
-                                size: 20,
-                              ),
-                            ),
-                            if (!widget.isCondensed)
-                              Flexible(
-                                fit: FlexFit.loose,
-                                child: MySpacing.width(16),
-                              ),
-                            if (!widget.isCondensed)
-                              Expanded(
-                                flex: 3,
-                                child: MyText.labelLarge(
-                                  "Ritorna online",
-                                  overflow: TextOverflow.clip,
-                                  maxLines: 1,
-                                  color: /* isActive || */ isHover
-                                      ? leftBarTheme.activeItemColor
-                                      : leftBarTheme.onBackground,
-                                ),
-                              )
-                          ],
-                        ),
-                      ),
-                    ),
-                  /*MenuWidget(
-                    iconData: LucideIcons.users,
-                    isCondensed: isCondensed,
-                    title: "Sellers",
-                    children: [
-                      MenuItem(
-                        title: "List",
-                        isCondensed: isCondensed,
-                        route: '/admin/sellers',
-                      ),
-                      MenuItem(
-                        title: "Detail",
-                        isCondensed: isCondensed,
-                        route: '/admin/sellers/detail',
-                      ),
-                      MenuItem(
-                        title: "Add",
-                        isCondensed: isCondensed,
-                        route: '/admin/sellers/create',
-                      ),
-                      MenuItem(
-                        title: "Edit",
-                        isCondensed: isCondensed,
-                        route: '/admin/sellers/edit',
-                      ),
-                    ],
-                  ),
-                  MenuWidget(
-                    iconData: LucideIcons.soup,
-                    isCondensed: isCondensed,
-                    title: "Restaurant",
-                    children: [
-                      MenuItem(
-                        title: "List",
-                        isCondensed: isCondensed,
-                        route: '/admin/restaurants',
-                      ),
-                      MenuItem(
-                        title: "Detail",
-                        isCondensed: isCondensed,
-                        route: '/admin/restaurants/detail',
-                      ),
-                      MenuItem(
-                        title: "Add",
-                        isCondensed: isCondensed,
-                        route: '/admin/restaurants/create',
-                      ),
-                      MenuItem(
-                        title: "Edit",
-                        isCondensed: isCondensed,
-                        route: '/admin/restaurants/edit',
-                      ),
-                    ],
-                  ),*/
-                  /*MenuWidget(
-                    iconData: LucideIcons.dessert,
-                    isCondensed: isCondensed,
-                    title: "Food",
-                    children: [
-                      MenuItem(
-                        title: "List",
+                        title: "Orders",
+                        children: [
+                          MenuItem(
+                            title: "List",
+                            isCondensed: isCondensed,
+                            route: '/admin/orders',
+                            iconData: LucideIcons.scrollText,
+                          ),
+                          MenuItem(
+                            title: "Detail",
+                            isCondensed: isCondensed,
+                            route: '/admin/orders/detail',
+                            iconData: LucideIcons.listOrdered,
+                          ),
+                        ],
+                      ),*/
+                      NavigationItem(
+                        iconData: LucideIcons.dessert,
+                        title: "Articoli",
                         isCondensed: isCondensed,
                         route: '/admin/food',
                       ),
-                      MenuItem(
-                        title: "Detail",
+                      MenuWidget(
+                        iconData: LucideIcons.users,
                         isCondensed: isCondensed,
-                        route: '/admin/food/detail',
+                        title: "Clienti",
+                        children: [
+                          if (!isOffline)
+                            MenuItem(
+                              title: "Lista",
+                              isCondensed: isCondensed,
+                              route: '/admin/customers',
+                            ),
+                          MenuItem(
+                            title: "Dettaglio",
+                            isCondensed: isCondensed,
+                            route: '/admin/customers/detail',
+                          ),
+                          MenuItem(
+                            title: "Ordini in corso",
+                            isCondensed: isCondensed,
+                            route: '/admin/customers/orders',
+                          ),
+                          MenuItem(
+                            title: "Scadenzario",
+                            isCondensed: isCondensed,
+                            route: '/admin/customers/timetable',
+                          ),
+                          MenuItem(
+                            title: "Storico",
+                            isCondensed: isCondensed,
+                            route: '/admin/customers/historical',
+                          ),
+                          MenuItem(
+                            title: "Attrezzature",
+                            isCondensed: isCondensed,
+                            route: '/admin/customers/equipment',
+                          ),
+                          if (!isOffline)
+                            MenuItem(
+                              title: "Nuovo Cliente",
+                              isCondensed: isCondensed,
+                              route: '/admin/customers/create',
+                            ),
+                        ],
                       ),
-                      MenuItem(
-                        title: "Add",
+                      if (!isOffline)
+                        NavigationItem(
+                          iconData: LucideIcons.listOrdered,
+                          title: "Ordini in corso",
+                          isCondensed: isCondensed,
+                          route: '/admin/orders',
+                        ),
+                      /* MenuWidget(
+                        iconData: LucideIcons.users,
                         isCondensed: isCondensed,
-                        route: '/admin/food/create',
-                      ),
-                      MenuItem(
-                        title: "Edit",
+                        title: "Ordini in corso",
+                        children: [
+                          MenuItem(
+                            title: "Lista",
+                            isCondensed: isCondensed,
+                            route: '/admin/orders',
+                          ),
+                          MenuItem(
+                            title: "Dettaglio",
+                            isCondensed: isCondensed,
+                            route: '/admin/customers/detail',
+                          ),
+                        ],
+                      ),*/
+                      if (!isOffline)
+                        NavigationItem(
+                          iconData: LucideIcons.euro,
+                          title: "Scadenzario",
+                          isCondensed: isCondensed,
+                          route: '/admin/timetable',
+                        ),
+                      if (!isOffline)
+                        NavigationItem(
+                          iconData: LucideIcons.barChartBig,
+                          title: "Statistiche Vendite",
+                          isCondensed: isCondensed,
+                          route: '/admin/stats',
+                        ),
+                      if (isOffline)
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          onHover: (event) {
+                            setState(() {
+                              isHover = true;
+                            });
+                          },
+                          onExit: (event) {
+                            setState(() {
+                              isHover = false;
+                            });
+                          },
+                          child: MyContainer(
+                            onTap: () {
+                              LocalStorage.setOffline(false);
+                              /*  LocalStorage.setArticoli([]);
+                              LocalStorage.setListini([]);
+                              LocalStorage.setDettCli(null);
+                              LocalStorage.setNote("");
+                              LocalStorage.setOrdini([]);
+                              LocalStorage.setScadenzario([]);
+                              LocalStorage.setStorico([]);*/
+
+                              isOffline = false;
+                              setState(() {});
+                              Get.toNamed('/home',
+                                  arguments: clienteSelezionato);
+                            },
+                            margin: MySpacing.fromLTRB(16, 0, 16, 8),
+                            color: Colors.transparent,
+                            padding: MySpacing.xy(8, 8),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Icon(
+                                    LucideIcons.wifi,
+                                    color: (isHover /*|| isActive*/)
+                                        ? leftBarTheme.activeItemColor
+                                        : leftBarTheme.onBackground,
+                                    size: 20,
+                                  ),
+                                ),
+                                if (!widget.isCondensed)
+                                  Flexible(
+                                    fit: FlexFit.loose,
+                                    child: MySpacing.width(16),
+                                  ),
+                                if (!widget.isCondensed)
+                                  Expanded(
+                                    flex: 3,
+                                    child: MyText.labelLarge(
+                                      "Ritorna online",
+                                      overflow: TextOverflow.clip,
+                                      maxLines: 1,
+                                      color: /* isActive || */ isHover
+                                          ? leftBarTheme.activeItemColor
+                                          : leftBarTheme.onBackground,
+                                    ),
+                                  )
+                              ],
+                            ),
+                          ),
+                        ),
+                      /*MenuWidget(
+                        iconData: LucideIcons.users,
                         isCondensed: isCondensed,
-                        route: '/admin/food/edit',
+                        title: "Sellers",
+                        children: [
+                          MenuItem(
+                            title: "List",
+                            isCondensed: isCondensed,
+                            route: '/admin/sellers',
+                          ),
+                          MenuItem(
+                            title: "Detail",
+                            isCondensed: isCondensed,
+                            route: '/admin/sellers/detail',
+                          ),
+                          MenuItem(
+                            title: "Add",
+                            isCondensed: isCondensed,
+                            route: '/admin/sellers/create',
+                          ),
+                          MenuItem(
+                            title: "Edit",
+                            isCondensed: isCondensed,
+                            route: '/admin/sellers/edit',
+                          ),
+                        ],
                       ),
+                      MenuWidget(
+                        iconData: LucideIcons.soup,
+                        isCondensed: isCondensed,
+                        title: "Restaurant",
+                        children: [
+                          MenuItem(
+                            title: "List",
+                            isCondensed: isCondensed,
+                            route: '/admin/restaurants',
+                          ),
+                          MenuItem(
+                            title: "Detail",
+                            isCondensed: isCondensed,
+                            route: '/admin/restaurants/detail',
+                          ),
+                          MenuItem(
+                            title: "Add",
+                            isCondensed: isCondensed,
+                            route: '/admin/restaurants/create',
+                          ),
+                          MenuItem(
+                            title: "Edit",
+                            isCondensed: isCondensed,
+                            route: '/admin/restaurants/edit',
+                          ),
+                        ],
+                      ),*/
+                      /*MenuWidget(
+                        iconData: LucideIcons.dessert,
+                        isCondensed: isCondensed,
+                        title: "Food",
+                        children: [
+                          MenuItem(
+                            title: "List",
+                            isCondensed: isCondensed,
+                            route: '/admin/food',
+                          ),
+                          MenuItem(
+                            title: "Detail",
+                            isCondensed: isCondensed,
+                            route: '/admin/food/detail',
+                          ),
+                          MenuItem(
+                            title: "Add",
+                            isCondensed: isCondensed,
+                            route: '/admin/food/create',
+                          ),
+                          MenuItem(
+                            title: "Edit",
+                            isCondensed: isCondensed,
+                            route: '/admin/food/edit',
+                          ),
+                        ],
+                      ),
+            
+                      NavigationItem(
+                        iconData: LucideIcons.wallet2,
+                        title: "Wallet",
+                        isCondensed: isCondensed,
+                        route: '/admin/wallet',
+                      ),
+                      NavigationItem(
+                        iconData: LucideIcons.settings,
+                        title: "Setting",
+                        isCondensed: isCondensed,
+                        route: '/admin/setting',
+                      ),
+            
+                      MySpacing.height(20),
+                      if (!isCondensed)
+                        Padding(
+                            padding: MySpacing.x(12),
+                            child: MyContainer(
+                              height: 220,
+                              color: contentTheme.primary.withAlpha(40),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(
+                                    LucideIcons.utensilsCrossed,
+                                  ),
+                                  MyText.bodyLarge(
+                                    "Unbox Delight, Savor Every Bite: Your Culinary Adventure Awaits!",
+                                    fontWeight: 600,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  MyContainer(
+                                    onTap: () {},
+                                    paddingAll: 8,
+                                    color: contentTheme.primary,
+                                    child: MyText.bodyMedium(
+                                      "Contact Support",
+                                      color: contentTheme.onPrimary,
+                                      fontWeight: 600,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )),*/
+                      // MySpacing.height(16),
+
+                      // NavigationItem(
+                      //   iconData:  LucideIcons.logOut,
+                      //   title: "Logout",
+                      //   isCondensed: isCondensed,
+                      //   route: '/setting',
+                      // ),
+                      // Padding(
+                      //   padding: MySpacing.fromLTRB(24, 0, 16, 8),
+                      //   child: Row(
+                      //     children: [
+                      //       Icon(
+                      //         LucideIcons.logOut,
+                      //         size: 20,
+                      //         color: contentTheme.danger,
+                      //       ),
+                      //       MySpacing.width(16),
+                      //       !isCondensed
+                      //           ? MyText.bodyMedium(
+                      //               "Logout",
+                      //               fontWeight: 600,
+                      //               color: contentTheme.danger,
+                      //             )
+                      //           : SizedBox(),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
-
-                  NavigationItem(
-                    iconData: LucideIcons.wallet2,
-                    title: "Wallet",
-                    isCondensed: isCondensed,
-                    route: '/admin/wallet',
-                  ),
-                  NavigationItem(
-                    iconData: LucideIcons.settings,
-                    title: "Setting",
-                    isCondensed: isCondensed,
-                    route: '/admin/setting',
-                  ),
-
-                  MySpacing.height(20),
-                  if (!isCondensed)
-                    Padding(
-                        padding: MySpacing.x(12),
-                        child: MyContainer(
-                          height: 220,
-                          color: contentTheme.primary.withAlpha(40),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Icon(
-                                LucideIcons.utensilsCrossed,
-                              ),
-                              MyText.bodyLarge(
-                                "Unbox Delight, Savor Every Bite: Your Culinary Adventure Awaits!",
-                                fontWeight: 600,
-                                textAlign: TextAlign.center,
-                              ),
-                              MyContainer(
-                                onTap: () {},
-                                paddingAll: 8,
-                                color: contentTheme.primary,
-                                child: MyText.bodyMedium(
-                                  "Contact Support",
-                                  color: contentTheme.onPrimary,
-                                  fontWeight: 600,
-                                ),
-                              )
-                            ],
-                          ),
-                        )),*/
-                  // MySpacing.height(16),
-
-                  // NavigationItem(
-                  //   iconData:  LucideIcons.logOut,
-                  //   title: "Logout",
-                  //   isCondensed: isCondensed,
-                  //   route: '/setting',
-                  // ),
-                  // Padding(
-                  //   padding: MySpacing.fromLTRB(24, 0, 16, 8),
-                  //   child: Row(
-                  //     children: [
-                  //       Icon(
-                  //         LucideIcons.logOut,
-                  //         size: 20,
-                  //         color: contentTheme.danger,
-                  //       ),
-                  //       MySpacing.width(16),
-                  //       !isCondensed
-                  //           ? MyText.bodyMedium(
-                  //               "Logout",
-                  //               fontWeight: 600,
-                  //               color: contentTheme.danger,
-                  //             )
-                  //           : SizedBox(),
-                  //     ],
-                  //   ),
-                  // ),
-                ],
+                ))
+              ],
+            ),
+            Positioned(
+              bottom: 5,
+              right: 5,
+              child: Center(
+                child: Text(
+                  "Versione: $version ($code)",
+                  style: TextStyle(fontSize: 10),
+                ),
               ),
-            ))
+            )
           ],
         ),
       ),

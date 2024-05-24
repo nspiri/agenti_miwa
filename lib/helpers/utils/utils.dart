@@ -19,6 +19,9 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:open_file/open_file.dart' as open_file;
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:developer' as developer;
 
 class Utils {
   static getDateStringFromDateTime(DateTime dateTime,
@@ -160,11 +163,23 @@ class Utils {
   }
 
   static controllaLogin() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    String token = "";
+
+    if (kIsWeb) {
+      token = LocalStorage.getToken() ?? "";
+    } else {
+      if (Platform.isWindows) {
+        WindowsDeviceInfo info = await deviceInfo.windowsInfo;
+        token = info.deviceId.replaceAll("{", "").replaceAll("}", "");
+      }
+    }
+
     r.Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrute",
         etichettaCollage: "UTENTE",
         dati: {
-          "Token": LocalStorage.getToken() ?? "",
+          "Token": token,
           "IdUtente": LocalStorage.getLoggedUser()?.idUtente ?? 0
         });
 

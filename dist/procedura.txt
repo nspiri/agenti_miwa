@@ -1,0 +1,3 @@
+flutter_distributor release --name prod --jobs windows-exe
+
+dart run auto_updater:sign_update dist/1.0.7+8/foody-1.0.7+8-windows-setup.exe

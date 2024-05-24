@@ -15,16 +15,10 @@ import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'package:windows_single_instance/windows_single_instance.dart';
-import 'package:auto_updater/auto_updater.dart';
 
 Future<void> main(List<String> args) async {
   //HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
-
-  String feedURL = 'http://localhost:5002/appcast.xml';
-  await autoUpdater.setFeedURL(feedURL);
-  await autoUpdater.checkForUpdates();
-  await autoUpdater.setScheduledCheckInterval(3600);
 
   if (!kIsWeb) {
     await WindowsSingleInstance.ensureSingleInstance(args, "identifier",

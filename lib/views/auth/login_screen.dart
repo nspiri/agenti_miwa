@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:foody/controller/auth/login_controller.dart';
 import 'package:foody/helpers/theme/app_themes.dart';
 import 'package:foody/helpers/utils/ui_mixins.dart';
@@ -16,6 +18,8 @@ import 'package:foody/images.dart';
 import 'package:foody/views/layout/auth_layout.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:auto_updater/auto_updater.dart';
+import 'package:http/http.dart' as hp;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,13 +29,44 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen>
-    with SingleTickerProviderStateMixin, UIMixin {
+    with SingleTickerProviderStateMixin, UIMixin, UpdaterListener {
   late LoginController controller;
 
   @override
   void initState() {
     controller = Get.put(LoginController());
+    autoUpdater.addListener(this);
+    update();
     super.initState();
+  }
+
+  void update() async {
+    //Chiamata check
+    checkVersion();
+  }
+
+  checkVersion() async {
+    var url = Uri.parse(
+        "https://download.datasistemi.cloud/apk/poolpack/dist/version.txt");
+    hp.Response response = await hp.get(url);
+
+    if (response.body != "") {
+      try {
+        int version =
+            int.parse(response.body.replaceAll(".", "").replaceAll("+", ""));
+        int curVer = int.parse(
+            "${controller.version.replaceAll(".", "")}${controller.code}");
+        if (version > curVer) {
+          String feedURL =
+              'https://download.datasistemi.cloud/apk/poolpack/dist/appcast.xml';
+          await autoUpdater.setFeedURL(feedURL);
+          await autoUpdater.checkForUpdates(inBackground: false);
+          await autoUpdater.setScheduledCheckInterval(3600);
+        }
+      } catch (e) {
+        print('Failed to make OTA update. Details: $e');
+      }
+    }
   }
 
   @override
@@ -288,5 +323,47 @@ class _LoginScreenState extends State<LoginScreen>
         ),
       ],
     );
+  }
+
+  @override
+  void onUpdaterBeforeQuitForUpdate(AppcastItem? appcastItem) {
+    print("onUpdaterBeforeQuitForUpdate");
+    // TODO: implement onUpdaterBeforeQuitForUpdate
+  }
+
+  @override
+  void onUpdaterCheckingForUpdate(Appcast? appcast) {
+    print("onUpdaterCheckingForUpdate");
+    // TODO: implement onUpdaterCheckingForUpdate
+  }
+
+  @override
+  void onUpdaterError(UpdaterError? error) {
+    print("onUpdaterError");
+    exit(0);
+    // TODO: implement onUpdaterError
+  }
+
+  @override
+  void onUpdaterUpdateAvailable(AppcastItem? appcastItem) async {
+    print("onUpdaterUpdateAvailable");
+    // TODO: implement onUpdaterUpdateAvailable
+  }
+
+  @override
+  void onUpdaterUpdateDownloaded(AppcastItem? appcastItem) {
+    print("onUpdaterUpdateDownloaded");
+    // TODO: implement onUpdaterUpdateDownloaded
+  }
+
+  @override
+  void onUpdaterUpdateNotAvailable(UpdaterError? error) {
+    print("onUpdaterUpdateNotAvailable");
+    // TODO: implement onUpdaterUpdateNotAvailable
+  }
+
+  @override
+  void onUpdaterCancelled(AppcastItem? appcastItem) {
+    exit(0);
   }
 }

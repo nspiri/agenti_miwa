@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -14,6 +16,8 @@ import 'package:foody/helpers/widgets/my_text.dart';
 import 'package:foody/helpers/widgets/responsive.dart';
 import 'package:foody/views/layout/layout.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as hp;
+import 'package:auto_updater/auto_updater.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,14 +27,44 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin, UIMixin {
+    with SingleTickerProviderStateMixin, UIMixin, UpdaterListener {
   late HomeController controller;
 
   @override
   void initState() {
     controller = Get.put(HomeController());
+    autoUpdater.addListener(this);
     controller.getDati();
     super.initState();
+  }
+
+  void update() async {
+    //Chiamata check
+    checkVersion();
+  }
+
+  checkVersion() async {
+    var url = Uri.parse(
+        "https://download.datasistemi.cloud/apk/poolpack/dist/version.txt");
+    hp.Response response = await hp.get(url);
+
+    if (response.body != "") {
+      try {
+        int version =
+            int.parse(response.body.replaceAll(".", "").replaceAll("+", ""));
+        int curVer = int.parse(
+            "${controller.version.replaceAll(".", "")}${controller.code}");
+        if (version > curVer) {
+          String feedURL =
+              'https://download.datasistemi.cloud/apk/poolpack/dist/appcast.xml';
+          await autoUpdater.setFeedURL(feedURL);
+          await autoUpdater.checkForUpdates(inBackground: false);
+          await autoUpdater.setScheduledCheckInterval(3600);
+        }
+      } catch (e) {
+        print('Failed to make OTA update. Details: $e');
+      }
+    }
   }
 
   @override
@@ -324,5 +358,47 @@ class _HomeScreenState extends State<HomeScreen>
         ],
       ),
     );
+  }
+
+  @override
+  void onUpdaterBeforeQuitForUpdate(AppcastItem? appcastItem) {
+    print("onUpdaterBeforeQuitForUpdate");
+    // TODO: implement onUpdaterBeforeQuitForUpdate
+  }
+
+  @override
+  void onUpdaterCheckingForUpdate(Appcast? appcast) {
+    print("onUpdaterCheckingForUpdate");
+    // TODO: implement onUpdaterCheckingForUpdate
+  }
+
+  @override
+  void onUpdaterError(UpdaterError? error) {
+    print("onUpdaterError");
+    exit(0);
+    // TODO: implement onUpdaterError
+  }
+
+  @override
+  void onUpdaterUpdateAvailable(AppcastItem? appcastItem) async {
+    print("onUpdaterUpdateAvailable");
+    // TODO: implement onUpdaterUpdateAvailable
+  }
+
+  @override
+  void onUpdaterUpdateDownloaded(AppcastItem? appcastItem) {
+    print("onUpdaterUpdateDownloaded");
+    // TODO: implement onUpdaterUpdateDownloaded
+  }
+
+  @override
+  void onUpdaterUpdateNotAvailable(UpdaterError? error) {
+    print("onUpdaterUpdateNotAvailable");
+    // TODO: implement onUpdaterUpdateNotAvailable
+  }
+
+  @override
+  void onUpdaterCancelled(AppcastItem? appcastItem) {
+    exit(0);
   }
 }

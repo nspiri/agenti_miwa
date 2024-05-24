@@ -5,7 +5,9 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   auto_updater_windows
   file_selector_windows
+  screen_retriever
   url_launcher_windows
+  window_manager
   windows_single_instance
 )
 
