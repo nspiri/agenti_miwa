@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/utils/global.dart';
-import 'package:foody/model/customer_detail.dart';
-import 'package:foody/views/my_controller.dart';
-import 'package:foody/views/ui/customer/attrezzature_customer.dart';
+import 'package:mexalorder/helpers/utils/global.dart';
+import 'package:mexalorder/model/customer_detail.dart';
+import 'package:mexalorder/views/my_controller.dart';
+import 'package:mexalorder/views/ui/customer/attrezzature_customer.dart';
 
 class AttrezzatureController extends MyController {
   DataTableSource? data;

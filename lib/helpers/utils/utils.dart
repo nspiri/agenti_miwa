@@ -1,17 +1,19 @@
 import 'dart:convert';
+import 'package:package_info_plus/package_info_plus.dart';
+
 import 'pdf_mobile.dart' if (dart.library.html) 'pdf_web.dart' as web;
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
-import 'package:foody/helpers/extention/date_time_extention.dart';
-import 'package:foody/helpers/storage/local_storage.dart';
-import 'package:foody/helpers/utils/do_http_request.dart';
-import 'package:foody/model/customer_detail.dart';
-import 'package:foody/model/customer_list.dart';
-import 'package:foody/model/listino.dart';
-import 'package:foody/model/request.dart' as r;
-import 'package:foody/model/user.dart';
+import 'package:mexalorder/helpers/extention/date_time_extention.dart';
+import 'package:mexalorder/helpers/storage/local_storage.dart';
+import 'package:mexalorder/helpers/utils/do_http_request.dart';
+import 'package:mexalorder/model/customer_detail.dart';
+import 'package:mexalorder/model/customer_list.dart';
+import 'package:mexalorder/model/listino.dart';
+import 'package:mexalorder/model/request.dart' as r;
+import 'package:mexalorder/model/user.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -22,6 +24,7 @@ import 'package:path_provider_platform_interface/path_provider_platform_interfac
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:developer' as developer;
+import 'package:http/http.dart' as hp;
 
 class Utils {
   static getDateStringFromDateTime(DateTime dateTime,
@@ -165,6 +168,27 @@ class Utils {
   static controllaLogin() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     String token = "";
+
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String v = packageInfo.version;
+    String c = packageInfo.buildNumber;
+
+    var url = Uri.parse(
+        "https://download.datasistemi.cloud/apk/poolpack/dist/version.txt");
+    hp.Response response = await hp.get(url);
+
+    if (response.body != "") {
+      try {
+        int version =
+            int.parse(response.body.replaceAll(".", "").replaceAll("+", ""));
+        int curVer = int.parse("${v.replaceAll(".", "")}${c}");
+        if (version > curVer) {
+          Get.toNamed("/auth/login");
+        }
+      } catch (e) {
+        print('Failed to make OTA update. Details: $e');
+      }
+    }
 
     if (kIsWeb) {
       token = LocalStorage.getToken() ?? "";

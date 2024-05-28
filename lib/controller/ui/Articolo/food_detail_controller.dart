@@ -1,6 +1,6 @@
-import 'package:foody/helpers/utils/my_utils.dart';
-import 'package:foody/model/product_data.dart';
-import 'package:foody/views/my_controller.dart';
+import 'package:mexalorder/helpers/utils/my_utils.dart';
+import 'package:mexalorder/model/product_data.dart';
+import 'package:mexalorder/views/my_controller.dart';
 
 class FoodDetailController extends MyController {
   List<ProductData> products = [];

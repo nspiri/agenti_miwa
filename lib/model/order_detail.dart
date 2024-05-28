@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:foody/helpers/services/json_decoder.dart';
-import 'package:foody/model/identifier_model.dart';
+import 'package:mexalorder/helpers/services/json_decoder.dart';
+import 'package:mexalorder/model/identifier_model.dart';
 
 class OrderDetail extends IdentifierModel {
   final String name, transaction, deliveryStatus;

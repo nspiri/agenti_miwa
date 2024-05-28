@@ -1,5 +1,4 @@
-
-import 'package:foody/helpers/widgets/my_screen_media.dart';
+import 'package:mexalorder/helpers/widgets/my_screen_media.dart';
 
 export 'my_display_type.dart';
 export 'my_screen_media.dart';

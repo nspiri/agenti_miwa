@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/localizations/language.dart';
-import 'package:foody/helpers/localizations/translator.dart';
-import 'package:foody/helpers/services/json_decoder.dart';
-import 'package:foody/helpers/services/navigation_service.dart';
-import 'package:foody/helpers/theme/admin_theme.dart';
-import 'package:foody/helpers/theme/app_notifire.dart';
-import 'package:foody/helpers/theme/app_style.dart';
+import 'package:mexalorder/helpers/localizations/language.dart';
+import 'package:mexalorder/helpers/localizations/translator.dart';
+import 'package:mexalorder/helpers/services/json_decoder.dart';
+import 'package:mexalorder/helpers/services/navigation_service.dart';
+import 'package:mexalorder/helpers/theme/admin_theme.dart';
+import 'package:mexalorder/helpers/theme/app_notifire.dart';
+import 'package:mexalorder/helpers/theme/app_style.dart';
 import 'package:provider/provider.dart';
 
 typedef ThemeChangeCallback = void Function(

@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/widgets/my_page_indicator.dart';
+import 'package:mexalorder/helpers/widgets/my_page_indicator.dart';
 
 class MyPageDragger extends StatefulWidget {
   final canDragLeftToRight;

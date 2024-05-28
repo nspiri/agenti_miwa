@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:foody/model/request.dart' as r;
+import 'package:mexalorder/model/request.dart' as r;
 import 'package:http/http.dart' as http;
-import 'package:foody/helpers/utils/env.dart' as env;
+import 'package:mexalorder/helpers/utils/env.dart' as env;
 import 'package:dio/dio.dart';
 
 class DoRequest {
@@ -90,9 +90,37 @@ class DoRequest {
             error: errore);
         return resp;
       } else {
-        var a = request.getMxalBody();
+        final response = await dio.post(env.base_url,
+            data: jsonEncode(a),
+            options: Options(
+              headers: env.headers,
+            ));
+        /*final response = await http
+            //.post(Uri.https("mxl1.hostcsi.com:9008", "/webapi/servizi"),
+            .post(Uri.https(env.base_url, "/api/mexal/proxy"),
+                headers: env.passHeaders, body: jsonEncode(request))
+            .timeout(Duration(seconds: 120));*/
+        Map<String, dynamic> res = response.data;
+        /*var jsonDecoded = jsonDecode(response.body);
+        Map<String, dynamic> res = jsonDecoded;*/
+        String errore = "";
+        if (response.statusCode == 200) {
+          if ((res["error"] as List).isNotEmpty) {
+            errore = res["error"][0]["response-message"];
+          }
+        } else {
+          if (res["error"].isNotEmpty) {
+            errore = res["error"]["response-message"];
+          }
+        }
+        r.Response resp = r.Response(
+            code: response.statusCode ?? 400,
+            result: res["result"],
+            error: errore);
+        return resp;
+        /* var a = request.getMxalBody();
         final response = await http
-            .post(Uri.https("mxl1.hostcsi.com:9008", "/webapi/servizi"),
+            .post(Uri.https("mxl2.hostcsi.com:9005", "/webapi/servizi"),
                 headers: env.passHeaders, body: jsonEncode(a))
             .timeout(Duration(seconds: 120));
 
@@ -110,7 +138,7 @@ class DoRequest {
         }
         r.Response resp = r.Response(
             code: response.statusCode, result: res["result"], error: errore);
-        return resp;
+        return resp;*/
       }
     } on TimeoutException {
       return "404";

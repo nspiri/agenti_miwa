@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/storage/local_storage.dart';
-import 'package:foody/helpers/utils/do_http_request.dart';
-import 'package:foody/helpers/utils/global.dart';
-import 'package:foody/helpers/utils/show_message_dialogs.dart';
-import 'package:foody/model/customer_detail.dart';
-import 'package:foody/model/nazionalita.dart';
-import 'package:foody/model/nota.dart';
-import 'package:foody/model/order_detail.dart';
-import 'package:foody/model/request.dart' as r;
-import 'package:foody/model/scadenziario_cliente.dart';
-import 'package:foody/views/my_controller.dart';
-import 'package:foody/views/ui/customer/customer_detail_screen.dart';
+import 'package:mexalorder/helpers/storage/local_storage.dart';
+import 'package:mexalorder/helpers/utils/do_http_request.dart';
+import 'package:mexalorder/helpers/utils/global.dart';
+import 'package:mexalorder/helpers/utils/show_message_dialogs.dart';
+import 'package:mexalorder/model/customer_detail.dart';
+import 'package:mexalorder/model/nazionalita.dart';
+import 'package:mexalorder/model/nota.dart';
+import 'package:mexalorder/model/order_detail.dart';
+import 'package:mexalorder/model/request.dart' as r;
+import 'package:mexalorder/model/scadenziario_cliente.dart';
+import 'package:mexalorder/views/my_controller.dart';
+import 'package:mexalorder/views/ui/customer/customer_detail_screen.dart';
 import 'package:get/get.dart';
 
 class CustomerDetailController extends MyController {

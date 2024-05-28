@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/widgets/my_screen_media.dart';
-import 'package:foody/helpers/widgets/my_screen_media_type.dart';
+import 'package:mexalorder/helpers/widgets/my_screen_media.dart';
+import 'package:mexalorder/helpers/widgets/my_screen_media_type.dart';
 
 class MyResponsive extends StatelessWidget {
   final Widget Function(BuildContext, BoxConstraints, MyScreenMediaType)

@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/storage/local_storage.dart';
-import 'package:foody/helpers/utils/do_http_request.dart';
-import 'package:foody/helpers/utils/global.dart';
-import 'package:foody/model/ordine.dart';
-import 'package:foody/views/my_controller.dart';
-import 'package:foody/views/ui/Ordini/ordini_screen.dart';
+import 'package:mexalorder/helpers/storage/local_storage.dart';
+import 'package:mexalorder/helpers/utils/do_http_request.dart';
+import 'package:mexalorder/helpers/utils/global.dart';
+import 'package:mexalorder/model/ordine.dart';
+import 'package:mexalorder/views/my_controller.dart';
+import 'package:mexalorder/views/ui/Ordini/ordini_screen.dart';
 import 'package:get/get.dart';
-import 'package:foody/model/request.dart' as r;
+import 'package:mexalorder/model/request.dart' as r;
 
 class OrdiniListController extends MyController {
   List<Ordine> ordini = [];

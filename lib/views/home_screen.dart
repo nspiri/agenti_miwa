@@ -3,21 +3,22 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:foody/controller/home_controller.dart';
-import 'package:foody/helpers/utils/ui_mixins.dart';
-import 'package:foody/helpers/widgets/my_breadcrumb.dart';
-import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
-import 'package:foody/helpers/widgets/my_button.dart';
-import 'package:foody/helpers/widgets/my_container.dart';
-import 'package:foody/helpers/widgets/my_flex.dart';
-import 'package:foody/helpers/widgets/my_flex_item.dart';
-import 'package:foody/helpers/widgets/my_spacing.dart';
-import 'package:foody/helpers/widgets/my_text.dart';
-import 'package:foody/helpers/widgets/responsive.dart';
-import 'package:foody/views/layout/layout.dart';
+import 'package:mexalorder/controller/home_controller.dart';
+import 'package:mexalorder/helpers/utils/ui_mixins.dart';
+import 'package:mexalorder/helpers/widgets/my_breadcrumb.dart';
+import 'package:mexalorder/helpers/widgets/my_breadcrumb_item.dart';
+import 'package:mexalorder/helpers/widgets/my_button.dart';
+import 'package:mexalorder/helpers/widgets/my_container.dart';
+import 'package:mexalorder/helpers/widgets/my_flex.dart';
+import 'package:mexalorder/helpers/widgets/my_flex_item.dart';
+import 'package:mexalorder/helpers/widgets/my_spacing.dart';
+import 'package:mexalorder/helpers/widgets/my_text.dart';
+import 'package:mexalorder/helpers/widgets/responsive.dart';
+import 'package:mexalorder/views/layout/layout.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as hp;
 import 'package:auto_updater/auto_updater.dart';
+import 'package:ota_update/ota_update.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,13 +30,50 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin, UIMixin, UpdaterListener {
   late HomeController controller;
+  OtaEvent? currentEvent;
 
   @override
   void initState() {
     controller = Get.put(HomeController());
-    autoUpdater.addListener(this);
+    if (Platform.isWindows) {
+      autoUpdater.addListener(this);
+      update();
+    }
     controller.getDati();
     super.initState();
+  }
+
+  Future<void> tryOtaUpdate() async {
+    var currentVersion =
+        "${controller.version.replaceAll(".", "")}${controller.code}";
+    var url =
+        Uri.parse("https://download.datasistemi.cloud/apk/miwa/version.txt");
+    hp.Response response = await hp.get(url);
+
+    if (response.body != "") {
+      try {
+        int version =
+            int.parse(response.body.replaceAll(".", "").replaceAll("+", ""));
+        int curVer = int.parse(currentVersion);
+        if (version > curVer) {
+          print('ABI Platform: ${await OtaUpdate().getAbi()}');
+          OtaUpdate()
+              .execute(
+            'https://download.datasistemi.cloud/apk/miwa/app-release.apk',
+            destinationFilename: 'app-release-temp.apk',
+          )
+              .listen(
+            (OtaEvent event) {
+              setState(() {
+                currentEvent = event;
+              });
+            },
+          );
+        }
+      } catch (e) {
+        print('Failed to make OTA update. Details: $e');
+      }
+    }
   }
 
   void update() async {
@@ -44,8 +82,8 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   checkVersion() async {
-    var url = Uri.parse(
-        "https://download.datasistemi.cloud/apk/poolpack/dist/version.txt");
+    var url =
+        Uri.parse("https://download.datasistemi.cloud/apk/miwa/version.txt");
     hp.Response response = await hp.get(url);
 
     if (response.body != "") {
@@ -56,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen>
             "${controller.version.replaceAll(".", "")}${controller.code}");
         if (version > curVer) {
           String feedURL =
-              'https://download.datasistemi.cloud/apk/poolpack/dist/appcast.xml';
+              'https://download.datasistemi.cloud/apk/miwa/appcast.xml';
           await autoUpdater.setFeedURL(feedURL);
           await autoUpdater.checkForUpdates(inBackground: false);
           await autoUpdater.setScheduledCheckInterval(3600);

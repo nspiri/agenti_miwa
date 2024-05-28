@@ -1,4 +1,4 @@
-import 'package:foody/helpers/theme/theme_customizer.dart';
+import 'package:mexalorder/helpers/theme/theme_customizer.dart';
 import 'package:get/get.dart';
 
 abstract class MyController extends GetxController {
@@ -15,7 +15,5 @@ abstract class MyController extends GetxController {
     });
   }
 
-  void onThemeChanged(){
-
-  }
+  void onThemeChanged() {}
 }

@@ -1,8 +1,8 @@
-import 'package:foody/helpers/storage/local_storage.dart';
-import 'package:foody/helpers/utils/global.dart';
-import 'package:foody/model/customer_detail.dart';
-import 'package:foody/model/customer_list.dart';
-import 'package:foody/views/my_controller.dart';
+import 'package:mexalorder/helpers/storage/local_storage.dart';
+import 'package:mexalorder/helpers/utils/global.dart';
+import 'package:mexalorder/model/customer_detail.dart';
+import 'package:mexalorder/model/customer_list.dart';
+import 'package:mexalorder/views/my_controller.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/dialog/dialog_route.dart';
 import 'package:package_info_plus/package_info_plus.dart';

@@ -3,23 +3,25 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:foody/controller/auth/login_controller.dart';
-import 'package:foody/helpers/theme/app_themes.dart';
-import 'package:foody/helpers/utils/ui_mixins.dart';
-import 'package:foody/helpers/widgets/my_button.dart';
-import 'package:foody/helpers/widgets/my_flex.dart';
-import 'package:foody/helpers/widgets/my_flex_item.dart';
-import 'package:foody/helpers/widgets/my_responsiv.dart';
-import 'package:foody/helpers/widgets/my_screen_media_type.dart';
-import 'package:foody/helpers/widgets/my_spacing.dart';
-import 'package:foody/helpers/widgets/my_text.dart';
-import 'package:foody/helpers/widgets/my_text_style.dart';
-import 'package:foody/images.dart';
-import 'package:foody/views/layout/auth_layout.dart';
+import 'package:mexalorder/controller/auth/login_controller.dart';
+import 'package:mexalorder/helpers/theme/app_themes.dart';
+import 'package:mexalorder/helpers/utils/ui_mixins.dart';
+import 'package:mexalorder/helpers/widgets/my_button.dart';
+import 'package:mexalorder/helpers/widgets/my_flex.dart';
+import 'package:mexalorder/helpers/widgets/my_flex_item.dart';
+import 'package:mexalorder/helpers/widgets/my_responsiv.dart';
+import 'package:mexalorder/helpers/widgets/my_screen_media_type.dart';
+import 'package:mexalorder/helpers/widgets/my_spacing.dart';
+import 'package:mexalorder/helpers/widgets/my_text.dart';
+import 'package:mexalorder/helpers/widgets/my_text_style.dart';
+import 'package:mexalorder/images.dart';
+import 'package:mexalorder/views/layout/auth_layout.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:auto_updater/auto_updater.dart';
 import 'package:http/http.dart' as hp;
+import 'package:ota_update/ota_update.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,12 +33,19 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin, UIMixin, UpdaterListener {
   late LoginController controller;
+  var focusNode = FocusNode();
+  OtaEvent? currentEvent;
 
   @override
   void initState() {
     controller = Get.put(LoginController());
-    autoUpdater.addListener(this);
-    update();
+    if (Platform.isWindows) {
+      autoUpdater.addListener(this);
+      update();
+    }
+    if (Platform.isAndroid) {
+      tryOtaUpdate();
+    }
     super.initState();
   }
 
@@ -45,9 +54,42 @@ class _LoginScreenState extends State<LoginScreen>
     checkVersion();
   }
 
+  Future<void> tryOtaUpdate() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    var currentVersion = "${packageInfo.version}${packageInfo.buildNumber}";
+    var url =
+        Uri.parse("https://download.datasistemi.cloud/apk/miwa/version.txt");
+    hp.Response response = await hp.get(url);
+
+    if (response.body != "") {
+      try {
+        int version =
+            int.parse(response.body.replaceAll(".", "").replaceAll("+", ""));
+        int curVer = int.parse(currentVersion.replaceAll(".", ""));
+        if (version > curVer) {
+          print('ABI Platform: ${await OtaUpdate().getAbi()}');
+          OtaUpdate()
+              .execute(
+            'https://download.datasistemi.cloud/apk/miwa/app-release.apk',
+            destinationFilename: 'app-release-temp.apk',
+          )
+              .listen(
+            (OtaEvent event) {
+              setState(() {
+                currentEvent = event;
+              });
+            },
+          );
+        }
+      } catch (e) {
+        print('Failed to make OTA update. Details: $e');
+      }
+    }
+  }
+
   checkVersion() async {
-    var url = Uri.parse(
-        "https://download.datasistemi.cloud/apk/poolpack/dist/version.txt");
+    var url =
+        Uri.parse("https://download.datasistemi.cloud/apk/miwa/version.txt");
     hp.Response response = await hp.get(url);
 
     if (response.body != "") {
@@ -58,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen>
             "${controller.version.replaceAll(".", "")}${controller.code}");
         if (version > curVer) {
           String feedURL =
-              'https://download.datasistemi.cloud/apk/poolpack/dist/appcast.xml';
+              'https://download.datasistemi.cloud/apk/miwa/appcast.xml';
           await autoUpdater.setFeedURL(feedURL);
           await autoUpdater.checkForUpdates(inBackground: false);
           await autoUpdater.setScheduledCheckInterval(3600);
@@ -121,6 +163,9 @@ class _LoginScreenState extends State<LoginScreen>
                             ),
                             MySpacing.height(32),
                             TextFormField(
+                              onFieldSubmitted: (value) {
+                                controller.onLogin(context);
+                              },
                               validator: controller.basicValidator
                                   .getValidation('email'),
                               controller: controller.basicValidator
@@ -144,6 +189,9 @@ class _LoginScreenState extends State<LoginScreen>
                             ),
                             MySpacing.height(20),
                             TextFormField(
+                              onFieldSubmitted: (value) {
+                                controller.onLogin(context);
+                              },
                               validator: controller.basicValidator
                                   .getValidation('password'),
                               controller: controller.basicValidator
@@ -281,9 +329,34 @@ class _LoginScreenState extends State<LoginScreen>
                   ),
                 ),
               ),
+              Positioned.fill(child: loadingDownload())
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget loadingDownload() {
+    return Visibility(
+      visible: true, //currentEvent?.status.name == "DOWNLOADING",
+      child: Container(
+        decoration: BoxDecoration(color: Colors.grey.withOpacity(0.5)),
+        child: Center(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CircularProgressIndicator(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(
+                      '${currentEvent?.status.name} : ${currentEvent?.value}%'),
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

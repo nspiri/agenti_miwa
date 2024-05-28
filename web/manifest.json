@@ -1,6 +1,6 @@
 {
-    "name": "foody",
-    "short_name": "foody",
+    "name": "mexalorder",
+    "short_name": "mexalorder",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

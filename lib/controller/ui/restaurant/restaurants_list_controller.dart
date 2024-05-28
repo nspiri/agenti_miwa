@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/storage/local_storage.dart';
-import 'package:foody/helpers/utils/do_http_request.dart';
-import 'package:foody/helpers/utils/utils.dart';
-import 'package:foody/model/scadenziario_cliente.dart';
-import 'package:foody/views/my_controller.dart';
-import 'package:foody/views/ui/Scadenziario/scadenziario_list.dart';
-import 'package:foody/model/request.dart' as r;
+import 'package:mexalorder/helpers/storage/local_storage.dart';
+import 'package:mexalorder/helpers/utils/do_http_request.dart';
+import 'package:mexalorder/helpers/utils/utils.dart';
+import 'package:mexalorder/model/scadenziario_cliente.dart';
+import 'package:mexalorder/views/my_controller.dart';
+import 'package:mexalorder/views/ui/Scadenziario/scadenziario_list.dart';
+import 'package:mexalorder/model/request.dart' as r;
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class ScadenziarioListController extends MyController {
@@ -139,7 +139,9 @@ class ScadenziarioListController extends MyController {
             element.ragioneSociale!
                 .toLowerCase()
                 .contains(value.toLowerCase()) ||
-            element.documento!.toLowerCase().contains(value.toLowerCase()))
+            ("${element.documento} ${element.serie}/${element.numero}")
+                .toLowerCase()
+                .contains(value.toLowerCase()))
         .toList();
     data = MyDataDetailScadenziario(filterScadenziario, this);
 

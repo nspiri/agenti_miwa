@@ -3,11 +3,11 @@ import 'dart:typed_data';
 
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/services/json_decoder.dart';
-import 'package:foody/helpers/storage/local_storage.dart';
-import 'package:foody/helpers/utils/do_http_request.dart';
-import 'package:foody/model/identifier_model.dart';
-import 'package:foody/model/request.dart';
+import 'package:mexalorder/helpers/services/json_decoder.dart';
+import 'package:mexalorder/helpers/storage/local_storage.dart';
+import 'package:mexalorder/helpers/utils/do_http_request.dart';
+import 'package:mexalorder/model/identifier_model.dart';
+import 'package:mexalorder/model/request.dart';
 
 class Articolo extends IdentifierModel {
   String? codArt;

@@ -1,4 +1,4 @@
-import 'package:foody/helpers/utils/env.dart' as env;
+import 'package:mexalorder/helpers/utils/env.dart' as env;
 
 class Request {
   late String cmd;

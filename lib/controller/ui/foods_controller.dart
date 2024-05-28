@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foody/model/product_data.dart';
-import 'package:foody/views/my_controller.dart';
+import 'package:mexalorder/model/product_data.dart';
+import 'package:mexalorder/views/my_controller.dart';
 
 class FoodsController extends MyController {
   RangeValues rangeSlider = RangeValues(10, 100);

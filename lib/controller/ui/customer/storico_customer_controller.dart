@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/storage/local_storage.dart';
-import 'package:foody/helpers/utils/do_http_request.dart';
-import 'package:foody/helpers/utils/utils.dart';
-import 'package:foody/model/request.dart';
-import 'package:foody/model/storico.dart';
-import 'package:foody/views/my_controller.dart';
-import 'package:foody/views/ui/customer/storico_customer_screen.dart';
+import 'package:mexalorder/helpers/storage/local_storage.dart';
+import 'package:mexalorder/helpers/utils/do_http_request.dart';
+import 'package:mexalorder/helpers/utils/utils.dart';
+import 'package:mexalorder/model/request.dart';
+import 'package:mexalorder/model/storico.dart';
+import 'package:mexalorder/views/my_controller.dart';
+import 'package:mexalorder/views/ui/customer/storico_customer_screen.dart';
 
 class EditCustomerController extends MyController {
   List<Storico> storico = [];

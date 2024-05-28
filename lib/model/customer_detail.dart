@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:foody/helpers/services/json_decoder.dart';
-import 'package:foody/helpers/storage/local_storage.dart';
-import 'package:foody/helpers/utils/do_http_request.dart';
-import 'package:foody/model/articolo.dart';
-import 'package:foody/model/identifier_model.dart';
-import 'package:foody/model/request.dart';
+import 'package:mexalorder/helpers/services/json_decoder.dart';
+import 'package:mexalorder/helpers/storage/local_storage.dart';
+import 'package:mexalorder/helpers/utils/do_http_request.dart';
+import 'package:mexalorder/model/articolo.dart';
+import 'package:mexalorder/model/identifier_model.dart';
+import 'package:mexalorder/model/request.dart';
 
 class CustomerDetail extends IdentifierModel {
   String? codiceCliente;

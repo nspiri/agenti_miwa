@@ -1,19 +1,19 @@
 import 'dart:isolate';
 
-import 'package:foody/helpers/storage/local_storage.dart';
-import 'package:foody/helpers/utils/global.dart';
+import 'package:mexalorder/helpers/storage/local_storage.dart';
+import 'package:mexalorder/helpers/utils/global.dart';
 import 'package:get/route_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/services/url_service.dart';
-import 'package:foody/helpers/theme/theme_customizer.dart';
-import 'package:foody/helpers/utils/my_shadow.dart';
-import 'package:foody/helpers/utils/ui_mixins.dart';
-import 'package:foody/helpers/widgets/my_card.dart';
-import 'package:foody/helpers/widgets/my_container.dart';
-import 'package:foody/helpers/widgets/my_spacing.dart';
-import 'package:foody/helpers/widgets/my_text.dart';
-import 'package:foody/images.dart';
-import 'package:foody/widgets/custom_pop_menu.dart';
+import 'package:mexalorder/helpers/services/url_service.dart';
+import 'package:mexalorder/helpers/theme/theme_customizer.dart';
+import 'package:mexalorder/helpers/utils/my_shadow.dart';
+import 'package:mexalorder/helpers/utils/ui_mixins.dart';
+import 'package:mexalorder/helpers/widgets/my_card.dart';
+import 'package:mexalorder/helpers/widgets/my_container.dart';
+import 'package:mexalorder/helpers/widgets/my_spacing.dart';
+import 'package:mexalorder/helpers/widgets/my_text.dart';
+import 'package:mexalorder/images.dart';
+import 'package:mexalorder/widgets/custom_pop_menu.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 

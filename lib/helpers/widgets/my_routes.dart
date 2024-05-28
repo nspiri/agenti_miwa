@@ -1,5 +1,4 @@
-
-import 'package:foody/helpers/widgets/my_route.dart';
+import 'package:mexalorder/helpers/widgets/my_route.dart';
 
 class MyRoutes {
   static List<MyRoute> _routes = [];

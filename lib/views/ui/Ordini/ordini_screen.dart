@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:foody/controller/ui/Ordini/ordini_controller.dart';
-import 'package:foody/helpers/utils/ui_mixins.dart';
-import 'package:foody/helpers/utils/utils.dart';
-import 'package:foody/helpers/widgets/my_breadcrumb.dart';
-import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
-import 'package:foody/helpers/widgets/my_spacing.dart';
-import 'package:foody/helpers/widgets/my_text.dart';
-import 'package:foody/helpers/widgets/responsive.dart';
-import 'package:foody/model/ordine.dart';
-import 'package:foody/views/layout/layout.dart';
+import 'package:mexalorder/controller/ui/Ordini/ordini_controller.dart';
+import 'package:mexalorder/helpers/utils/ui_mixins.dart';
+import 'package:mexalorder/helpers/utils/utils.dart';
+import 'package:mexalorder/helpers/widgets/my_breadcrumb.dart';
+import 'package:mexalorder/helpers/widgets/my_breadcrumb_item.dart';
+import 'package:mexalorder/helpers/widgets/my_spacing.dart';
+import 'package:mexalorder/helpers/widgets/my_text.dart';
+import 'package:mexalorder/helpers/widgets/responsive.dart';
+import 'package:mexalorder/model/ordine.dart';
+import 'package:mexalorder/views/layout/layout.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 

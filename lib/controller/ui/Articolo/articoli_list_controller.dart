@@ -2,15 +2,15 @@ import 'dart:convert';
 import 'dart:isolate';
 
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/storage/local_storage.dart';
-import 'package:foody/helpers/utils/do_http_request.dart';
-import 'package:foody/helpers/utils/show_message_dialogs.dart';
-import 'package:foody/helpers/utils/utils.dart';
-import 'package:foody/model/articolo.dart';
-import 'package:foody/model/listino.dart';
-import 'package:foody/model/request.dart' as r;
-import 'package:foody/views/my_controller.dart';
-import 'package:foody/views/ui/Articolo/articoli_list_screen.dart';
+import 'package:mexalorder/helpers/storage/local_storage.dart';
+import 'package:mexalorder/helpers/utils/do_http_request.dart';
+import 'package:mexalorder/helpers/utils/show_message_dialogs.dart';
+import 'package:mexalorder/helpers/utils/utils.dart';
+import 'package:mexalorder/model/articolo.dart';
+import 'package:mexalorder/model/listino.dart';
+import 'package:mexalorder/model/request.dart' as r;
+import 'package:mexalorder/views/my_controller.dart';
+import 'package:mexalorder/views/ui/Articolo/articoli_list_screen.dart';
 import 'package:get/get.dart';
 
 class FoodController extends MyController {

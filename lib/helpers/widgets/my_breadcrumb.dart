@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/theme/app_themes.dart';
-import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
-import 'package:foody/helpers/widgets/my_constant.dart';
-import 'package:foody/helpers/widgets/my_responsiv.dart';
-import 'package:foody/helpers/widgets/my_spacing.dart';
-import 'package:foody/helpers/widgets/my_text.dart';
+import 'package:mexalorder/helpers/theme/app_themes.dart';
+import 'package:mexalorder/helpers/widgets/my_breadcrumb_item.dart';
+import 'package:mexalorder/helpers/widgets/my_constant.dart';
+import 'package:mexalorder/helpers/widgets/my_responsiv.dart';
+import 'package:mexalorder/helpers/widgets/my_spacing.dart';
+import 'package:mexalorder/helpers/widgets/my_text.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 

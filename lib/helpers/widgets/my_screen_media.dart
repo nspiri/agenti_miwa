@@ -1,6 +1,5 @@
-
-import 'package:foody/helpers/widgets/my_display_type.dart';
-import 'package:foody/helpers/widgets/my_screen_media_type.dart';
+import 'package:mexalorder/helpers/widgets/my_display_type.dart';
+import 'package:mexalorder/helpers/widgets/my_screen_media_type.dart';
 
 class MyScreenMedia {
   static int flexColumns = 12;

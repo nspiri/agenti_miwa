@@ -3,9 +3,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/theme/app_themes.dart';
+import 'package:mexalorder/helpers/theme/app_themes.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 
 enum MyTextType {
   displayLarge,

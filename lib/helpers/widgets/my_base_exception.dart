@@ -1,7 +1,6 @@
 import 'dart:developer';
 
-import 'package:foody/helpers/widgets/my_exception.dart';
-
+import 'package:mexalorder/helpers/widgets/my_exception.dart';
 
 class BaseException extends MyException {
   StackTrace? stackTrace;

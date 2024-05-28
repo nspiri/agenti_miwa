@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:foody/controller/ui/customer/add_customer_controller.dart';
-import 'package:foody/helpers/theme/app_themes.dart';
-import 'package:foody/helpers/utils/ui_mixins.dart';
-import 'package:foody/helpers/widgets/my_breadcrumb.dart';
-import 'package:foody/helpers/widgets/my_breadcrumb_item.dart';
-import 'package:foody/helpers/widgets/my_button.dart';
-import 'package:foody/helpers/widgets/my_container.dart';
-import 'package:foody/helpers/widgets/my_flex.dart';
-import 'package:foody/helpers/widgets/my_flex_item.dart';
-import 'package:foody/helpers/widgets/my_spacing.dart';
-import 'package:foody/helpers/widgets/my_text.dart';
-import 'package:foody/helpers/widgets/my_text_style.dart';
-import 'package:foody/helpers/widgets/responsive.dart';
-import 'package:foody/model/customer_category.dart';
-import 'package:foody/model/nazionalita.dart';
-import 'package:foody/model/tipo_attivita.dart';
-import 'package:foody/model/tipo_soc.dart';
-import 'package:foody/model/zone_clienti.dart';
-import 'package:foody/views/layout/layout.dart';
+import 'package:mexalorder/controller/ui/customer/add_customer_controller.dart';
+import 'package:mexalorder/helpers/theme/app_themes.dart';
+import 'package:mexalorder/helpers/utils/ui_mixins.dart';
+import 'package:mexalorder/helpers/widgets/my_breadcrumb.dart';
+import 'package:mexalorder/helpers/widgets/my_breadcrumb_item.dart';
+import 'package:mexalorder/helpers/widgets/my_button.dart';
+import 'package:mexalorder/helpers/widgets/my_container.dart';
+import 'package:mexalorder/helpers/widgets/my_flex.dart';
+import 'package:mexalorder/helpers/widgets/my_flex_item.dart';
+import 'package:mexalorder/helpers/widgets/my_spacing.dart';
+import 'package:mexalorder/helpers/widgets/my_text.dart';
+import 'package:mexalorder/helpers/widgets/my_text_style.dart';
+import 'package:mexalorder/helpers/widgets/responsive.dart';
+import 'package:mexalorder/model/customer_category.dart';
+import 'package:mexalorder/model/nazionalita.dart';
+import 'package:mexalorder/model/tipo_attivita.dart';
+import 'package:mexalorder/model/tipo_soc.dart';
+import 'package:mexalorder/model/zone_clienti.dart';
+import 'package:mexalorder/views/layout/layout.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:signature/signature.dart';
@@ -408,7 +408,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                             MySpacing.height(4),
                                             MultiSelectDropDown(
                                               hint: "",
-                                              showClearIcon: false,
+                                              //showClearIcon: false,
                                               controller: controller
                                                   .controllerTipoAttivita,
                                               onOptionSelected: (options) {},
@@ -460,7 +460,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                                             MySpacing.height(4),
                                             MultiSelectDropDown(
                                               hint: "",
-                                              showClearIcon: false,
+                                              //showClearIcon: false,
                                               controller:
                                                   controller.controllerGiorni,
                                               onOptionSelected: (options) {},

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/theme/app_themes.dart';
-import 'package:foody/helpers/utils/ui_mixins.dart';
-import 'package:foody/helpers/widgets/my_spacing.dart';
+import 'package:mexalorder/helpers/theme/app_themes.dart';
+import 'package:mexalorder/helpers/utils/ui_mixins.dart';
+import 'package:mexalorder/helpers/widgets/my_spacing.dart';
 
 class CustomSwitch extends StatefulWidget {
   final bool value;

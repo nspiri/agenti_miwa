@@ -1,4 +1,4 @@
-import 'package:foody/helpers/widgets/my_text.dart';
+import 'package:mexalorder/helpers/widgets/my_text.dart';
 import 'package:flutter/material.dart';
 
 showErrorMessage(BuildContext context, String titolo, String messaggio) {

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/theme/theme_customizer.dart';
-import 'package:foody/views/my_controller.dart';
+import 'package:mexalorder/helpers/theme/theme_customizer.dart';
+import 'package:mexalorder/views/my_controller.dart';
 
 class LayoutController extends MyController {
   ThemeCustomizer themeCustomizer = ThemeCustomizer();
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   final GlobalKey<State<StatefulWidget>> scrollKey = GlobalKey();
-  
+
   @override
   void onReady() {
     super.onReady();

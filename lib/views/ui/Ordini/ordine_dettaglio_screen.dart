@@ -1,21 +1,21 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:foody/controller/ui/Ordini/ordine_dettaglio_controller.dart';
-import 'package:foody/helpers/utils/global.dart';
-import 'package:foody/helpers/utils/ui_mixins.dart';
-import 'package:foody/helpers/utils/utils.dart';
-import 'package:foody/helpers/widgets/my_container.dart';
-import 'package:foody/helpers/widgets/my_flex.dart';
-import 'package:foody/helpers/widgets/my_flex_item.dart';
-import 'package:foody/helpers/widgets/my_responsiv.dart';
-import 'package:foody/helpers/widgets/my_spacing.dart';
-import 'package:foody/helpers/widgets/my_text.dart';
-import 'package:foody/helpers/widgets/my_text_style.dart';
-import 'package:foody/helpers/widgets/responsive.dart';
-import 'package:foody/images.dart';
-import 'package:foody/model/ordine.dart';
-import 'package:foody/views/layout/layout.dart';
+import 'package:mexalorder/controller/ui/Ordini/ordine_dettaglio_controller.dart';
+import 'package:mexalorder/helpers/utils/global.dart';
+import 'package:mexalorder/helpers/utils/ui_mixins.dart';
+import 'package:mexalorder/helpers/utils/utils.dart';
+import 'package:mexalorder/helpers/widgets/my_container.dart';
+import 'package:mexalorder/helpers/widgets/my_flex.dart';
+import 'package:mexalorder/helpers/widgets/my_flex_item.dart';
+import 'package:mexalorder/helpers/widgets/my_responsiv.dart';
+import 'package:mexalorder/helpers/widgets/my_spacing.dart';
+import 'package:mexalorder/helpers/widgets/my_text.dart';
+import 'package:mexalorder/helpers/widgets/my_text_style.dart';
+import 'package:mexalorder/helpers/widgets/responsive.dart';
+import 'package:mexalorder/images.dart';
+import 'package:mexalorder/model/ordine.dart';
+import 'package:mexalorder/views/layout/layout.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 

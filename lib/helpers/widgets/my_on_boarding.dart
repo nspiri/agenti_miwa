@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/widgets/my_page_dragger.dart';
-import 'package:foody/helpers/widgets/my_page_indicator.dart';
-import 'package:foody/helpers/widgets/my_page_reveal.dart';
-import 'package:foody/helpers/widgets/my_pages.dart';
+import 'package:mexalorder/helpers/widgets/my_page_dragger.dart';
+import 'package:mexalorder/helpers/widgets/my_page_indicator.dart';
+import 'package:mexalorder/helpers/widgets/my_page_reveal.dart';
+import 'package:mexalorder/helpers/widgets/my_pages.dart';
 
 class MyOnBoarding extends StatefulWidget {
   final List<PageViewModel> pages;

@@ -1,6 +1,6 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:foody/helpers/widgets/my_form_validator.dart';
-import 'package:foody/views/my_controller.dart';
+import 'package:mexalorder/helpers/widgets/my_form_validator.dart';
+import 'package:mexalorder/views/my_controller.dart';
 
 enum Category {
   Fruits,

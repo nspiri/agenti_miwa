@@ -1,17 +1,31 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/utils/do_http_request.dart';
-import 'package:foody/model/request.dart';
-import 'package:foody/model/user.dart';
+import 'package:mexalorder/helpers/utils/do_http_request.dart';
+import 'package:mexalorder/model/request.dart';
+import 'package:mexalorder/model/user.dart';
 import '../storage/local_storage.dart';
 
 class AuthService {
   static bool isLoggedIn = false;
 
   /* static User get dummyUser =>
-      User(-1, "foody@getappui.com", "Denish", "Navadiya");*/
+      User(-1, "mexalorder@getappui.com", "Denish", "Navadiya");*/
   static Future<String?> loginUser(
       Map<String, dynamic> data, BuildContext? context) async {
-    String? token = LocalStorage.getToken();
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    String? token = "";
+
+    if (kIsWeb) {
+      token = LocalStorage.getToken() ?? "";
+    } else {
+      if (Platform.isWindows) {
+        WindowsDeviceInfo info = await deviceInfo.windowsInfo;
+        token = info.deviceId.replaceAll("{", "").replaceAll("}", "");
+      }
+    }
 
     Response res = await DoRequest.doHttpRequest(
         nomeCollage: "colsrute",

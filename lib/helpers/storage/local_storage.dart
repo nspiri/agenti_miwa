@@ -1,15 +1,15 @@
 import 'dart:convert';
 
-import 'package:foody/helpers/localizations/language.dart';
-import 'package:foody/helpers/services/auth_services.dart';
-import 'package:foody/helpers/theme/theme_customizer.dart';
-import 'package:foody/model/articolo.dart';
-import 'package:foody/model/customer_detail.dart';
-import 'package:foody/model/listino.dart';
-import 'package:foody/model/ordine.dart';
-import 'package:foody/model/scadenziario_cliente.dart';
-import 'package:foody/model/storico.dart';
-import 'package:foody/model/user.dart';
+import 'package:mexalorder/helpers/localizations/language.dart';
+import 'package:mexalorder/helpers/services/auth_services.dart';
+import 'package:mexalorder/helpers/theme/theme_customizer.dart';
+import 'package:mexalorder/model/articolo.dart';
+import 'package:mexalorder/model/customer_detail.dart';
+import 'package:mexalorder/model/listino.dart';
+import 'package:mexalorder/model/ordine.dart';
+import 'package:mexalorder/model/scadenziario_cliente.dart';
+import 'package:mexalorder/model/storico.dart';
+import 'package:mexalorder/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorage {

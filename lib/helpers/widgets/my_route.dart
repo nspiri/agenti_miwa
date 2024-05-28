@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/widgets/my_middleware.dart';
+import 'package:mexalorder/helpers/widgets/my_middleware.dart';
 
 class MyRoute {
   String name;

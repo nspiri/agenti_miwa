@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/theme/app_themes.dart';
-import 'package:foody/helpers/widgets/my_constant.dart';
-import 'package:foody/helpers/widgets/my_screen_media.dart';
-import 'package:foody/helpers/widgets/my_text_style.dart';
+import 'package:mexalorder/helpers/theme/app_themes.dart';
+import 'package:mexalorder/helpers/widgets/my_constant.dart';
+import 'package:mexalorder/helpers/widgets/my_screen_media.dart';
+import 'package:mexalorder/helpers/widgets/my_text_style.dart';
 
 class My {
   // entry point of the package

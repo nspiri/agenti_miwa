@@ -3,28 +3,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:foody/controller/ui/cart_controller.dart';
-import 'package:foody/helpers/storage/local_storage.dart';
-import 'package:foody/helpers/theme/app_themes.dart';
-import 'package:foody/helpers/utils/global.dart';
-import 'package:foody/helpers/utils/show_message_dialogs.dart';
-import 'package:foody/helpers/utils/ui_mixins.dart';
-import 'package:foody/helpers/utils/utils.dart';
-import 'package:foody/helpers/widgets/my_button.dart';
-import 'package:foody/helpers/widgets/my_container.dart';
-import 'package:foody/helpers/widgets/my_flex.dart';
-import 'package:foody/helpers/widgets/my_flex_item.dart';
-import 'package:foody/helpers/widgets/my_responsiv.dart';
-import 'package:foody/helpers/widgets/my_spacing.dart';
-import 'package:foody/helpers/widgets/my_text.dart';
-import 'package:foody/helpers/widgets/my_text_style.dart';
-import 'package:foody/helpers/widgets/responsive.dart';
-import 'package:foody/images.dart';
-import 'package:foody/model/articolo.dart';
-import 'package:foody/model/customer_detail.dart';
-import 'package:foody/views/layout/layout.dart';
-import 'package:foody/views/ui/lista_storico_articolo.dart';
-import 'package:foody/views/ui/modal_list_art.dart';
+import 'package:mexalorder/controller/ui/cart_controller.dart';
+import 'package:mexalorder/helpers/storage/local_storage.dart';
+import 'package:mexalorder/helpers/theme/app_themes.dart';
+import 'package:mexalorder/helpers/utils/global.dart';
+import 'package:mexalorder/helpers/utils/show_message_dialogs.dart';
+import 'package:mexalorder/helpers/utils/ui_mixins.dart';
+import 'package:mexalorder/helpers/utils/utils.dart';
+import 'package:mexalorder/helpers/widgets/my_button.dart';
+import 'package:mexalorder/helpers/widgets/my_container.dart';
+import 'package:mexalorder/helpers/widgets/my_flex.dart';
+import 'package:mexalorder/helpers/widgets/my_flex_item.dart';
+import 'package:mexalorder/helpers/widgets/my_responsiv.dart';
+import 'package:mexalorder/helpers/widgets/my_spacing.dart';
+import 'package:mexalorder/helpers/widgets/my_text.dart';
+import 'package:mexalorder/helpers/widgets/my_text_style.dart';
+import 'package:mexalorder/helpers/widgets/responsive.dart';
+import 'package:mexalorder/images.dart';
+import 'package:mexalorder/model/articolo.dart';
+import 'package:mexalorder/model/customer_detail.dart';
+import 'package:mexalorder/views/layout/layout.dart';
+import 'package:mexalorder/views/ui/lista_storico_articolo.dart';
+import 'package:mexalorder/views/ui/modal_list_art.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -57,8 +57,8 @@ class _CartScreenState extends State<CartScreen>
       controller.notaIncasso.text = LocalStorage.getNotaIncasso() ?? "";
       controller.notaConsegna.text = LocalStorage.getNotaConsegna() ?? "";
     } else {
-      if ((LocalStorage.getCarrelloGlobale() ?? []).length > 0) {
-        carrelloGlobale = LocalStorage.getCarrelloGlobale() ?? [];
+      if ((LocalStorage.getCarrello() ?? []).length > 0) {
+        carrelloGlobale = LocalStorage.getCarrello() ?? [];
         for (var element in carrelloGlobale) {
           element.loading = true;
         }

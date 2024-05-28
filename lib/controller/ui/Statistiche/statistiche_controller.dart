@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/storage/local_storage.dart';
-import 'package:foody/helpers/utils/do_http_request.dart';
-import 'package:foody/helpers/utils/utils.dart';
-import 'package:foody/model/agente.dart';
-import 'package:foody/model/statistiche.dart';
-import 'package:foody/views/my_controller.dart';
-import 'package:foody/views/ui/Statistiche/statistiche_screen.dart';
-import 'package:foody/model/request.dart' as r;
+import 'package:mexalorder/helpers/storage/local_storage.dart';
+import 'package:mexalorder/helpers/utils/do_http_request.dart';
+import 'package:mexalorder/helpers/utils/utils.dart';
+import 'package:mexalorder/model/agente.dart';
+import 'package:mexalorder/model/statistiche.dart';
+import 'package:mexalorder/views/my_controller.dart';
+import 'package:mexalorder/views/ui/Statistiche/statistiche_screen.dart';
+import 'package:mexalorder/model/request.dart' as r;
 
 class StatisticheController extends MyController {
   List<Statistiche> statistiche = [];

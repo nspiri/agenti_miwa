@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/theme/app_themes.dart';
-import 'package:foody/helpers/theme/theme_customizer.dart';
-import 'package:foody/helpers/utils/ui_mixins.dart';
-import 'package:foody/helpers/widgets/my_spacing.dart';
-import 'package:foody/helpers/widgets/my_text.dart';
-import 'package:foody/widgets/custom_switch.dart';
+import 'package:mexalorder/helpers/theme/app_themes.dart';
+import 'package:mexalorder/helpers/theme/theme_customizer.dart';
+import 'package:mexalorder/helpers/utils/ui_mixins.dart';
+import 'package:mexalorder/helpers/widgets/my_spacing.dart';
+import 'package:mexalorder/helpers/widgets/my_text.dart';
+import 'package:mexalorder/widgets/custom_switch.dart';
 
 class RightBar extends StatefulWidget {
   const RightBar({

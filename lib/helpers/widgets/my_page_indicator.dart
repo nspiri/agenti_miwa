@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/widgets/my_pages.dart';
+import 'package:mexalorder/helpers/widgets/my_pages.dart';
 
 class MyPagerIndicator extends StatelessWidget {
   final PagerIndicatorViewModel? viewModel;

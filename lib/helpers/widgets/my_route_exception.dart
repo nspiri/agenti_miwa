@@ -1,5 +1,4 @@
-
-import 'package:foody/helpers/widgets/my_base_exception.dart';
+import 'package:mexalorder/helpers/widgets/my_base_exception.dart';
 
 class RouteException extends BaseException {
   final String message;

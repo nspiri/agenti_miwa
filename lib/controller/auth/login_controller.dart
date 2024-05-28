@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/services/auth_services.dart';
-import 'package:foody/helpers/widgets/my_form_validator.dart';
-import 'package:foody/views/my_controller.dart';
+import 'package:mexalorder/helpers/services/auth_services.dart';
+import 'package:mexalorder/helpers/widgets/my_form_validator.dart';
+import 'package:mexalorder/views/my_controller.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/widgets/my_flex_item.dart';
-import 'package:foody/helpers/widgets/my_list_extension.dart';
-import 'package:foody/helpers/widgets/my_responsiv.dart';
-import 'package:foody/helpers/widgets/my_spacing.dart';
-import 'package:foody/helpers/widgets/responsive.dart';
+import 'package:mexalorder/helpers/widgets/my_flex_item.dart';
+import 'package:mexalorder/helpers/widgets/my_list_extension.dart';
+import 'package:mexalorder/helpers/widgets/my_responsiv.dart';
+import 'package:mexalorder/helpers/widgets/my_spacing.dart';
+import 'package:mexalorder/helpers/widgets/responsive.dart';
 
 class MyFlex extends StatelessWidget {
   final List<MyFlexItem> children;

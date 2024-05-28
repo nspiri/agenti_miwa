@@ -1,7 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/widgets/my_form_validator.dart';
-import 'package:foody/views/my_controller.dart';
+import 'package:mexalorder/helpers/widgets/my_form_validator.dart';
+import 'package:mexalorder/views/my_controller.dart';
 
 enum Category {
   Fruits,
@@ -31,7 +31,6 @@ class FoodEditController extends MyController {
       "With tender, delicate and loosely packed green leaves, Lettuce gives a crunchy and fresh feel to burgers and sandwiches. Nulla nibh diam, blandit vel consequat nec, ultrices et ipsum. Nulla varius magna a consequat pulvinar.";
   final String _dummyPrice = "\$95";
   final String _dummyQty = "2";
-
 
   @override
   void onInit() {

@@ -1,22 +1,22 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/storage/local_storage.dart';
-import 'package:foody/helpers/utils/do_http_request.dart';
-import 'package:foody/helpers/utils/global.dart';
-import 'package:foody/helpers/utils/show_message_dialogs.dart';
-import 'package:foody/helpers/utils/utils.dart';
-import 'package:foody/helpers/widgets/my_text.dart';
-import 'package:foody/model/articolo.dart';
-import 'package:foody/model/calcolo_totale.dart';
-import 'package:foody/model/cart_model.dart';
-import 'package:foody/model/customer_detail.dart';
-import 'package:foody/model/listino.dart';
-import 'package:foody/model/nota.dart';
-import 'package:foody/model/user.dart';
-import 'package:foody/views/my_controller.dart';
+import 'package:mexalorder/helpers/storage/local_storage.dart';
+import 'package:mexalorder/helpers/utils/do_http_request.dart';
+import 'package:mexalorder/helpers/utils/global.dart';
+import 'package:mexalorder/helpers/utils/show_message_dialogs.dart';
+import 'package:mexalorder/helpers/utils/utils.dart';
+import 'package:mexalorder/helpers/widgets/my_text.dart';
+import 'package:mexalorder/model/articolo.dart';
+import 'package:mexalorder/model/calcolo_totale.dart';
+import 'package:mexalorder/model/cart_model.dart';
+import 'package:mexalorder/model/customer_detail.dart';
+import 'package:mexalorder/model/listino.dart';
+import 'package:mexalorder/model/nota.dart';
+import 'package:mexalorder/model/user.dart';
+import 'package:mexalorder/views/my_controller.dart';
 import 'package:get/get.dart';
-import 'package:foody/model/request.dart' as r;
+import 'package:mexalorder/model/request.dart' as r;
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class ListaController extends MyController {

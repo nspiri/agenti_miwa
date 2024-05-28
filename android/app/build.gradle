@@ -29,7 +29,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "com.example.foody"
+    namespace "com.example.mexalorder"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 

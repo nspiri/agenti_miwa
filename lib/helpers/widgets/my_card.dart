@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/theme/app_themes.dart';
-import 'package:foody/helpers/utils/my_shadow.dart';
-import 'package:foody/helpers/widgets/my_constant.dart';
-import 'package:foody/helpers/widgets/my_spacing.dart';
+import 'package:mexalorder/helpers/theme/app_themes.dart';
+import 'package:mexalorder/helpers/utils/my_shadow.dart';
+import 'package:mexalorder/helpers/widgets/my_constant.dart';
+import 'package:mexalorder/helpers/widgets/my_spacing.dart';
 
 class MyCard extends StatelessWidget {
   final Widget child;

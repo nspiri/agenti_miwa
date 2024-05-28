@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:foody/helpers/theme/admin_theme.dart';
-import 'package:foody/helpers/theme/app_themes.dart';
-import 'package:foody/helpers/widgets/my_dashed_divider.dart';
-import 'package:foody/helpers/widgets/my_navigation_mixin.dart';
+import 'package:mexalorder/helpers/theme/admin_theme.dart';
+import 'package:mexalorder/helpers/theme/app_themes.dart';
+import 'package:mexalorder/helpers/widgets/my_dashed_divider.dart';
+import 'package:mexalorder/helpers/widgets/my_navigation_mixin.dart';
 
 mixin UIMixin {
   // ThemeData get theme => AppStyle.theme;

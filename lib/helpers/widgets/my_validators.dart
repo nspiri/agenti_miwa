@@ -1,6 +1,5 @@
-
-import 'package:foody/helpers/utils/my_string_utils.dart';
-import 'package:foody/helpers/widgets/my_field_validator.dart';
+import 'package:mexalorder/helpers/utils/my_string_utils.dart';
+import 'package:mexalorder/helpers/widgets/my_field_validator.dart';
 
 class MyEmailValidator extends MyFieldValidatorRule<String> {
   @override

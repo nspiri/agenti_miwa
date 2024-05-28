@@ -1,4 +1,4 @@
-import 'package:foody/model/cart_model.dart';
+import 'package:mexalorder/model/cart_model.dart';
 
 class ShoppingCache {
   static List<CartData>? carts;
