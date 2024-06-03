@@ -137,24 +137,25 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen>
                   ],
                 )),
           ),
-          Padding(
-            padding: MySpacing.xy(8, 8),
-            child: MyButton(
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onPressed: () => {Get.toNamed('/admin/customers/orders')},
-                borderRadiusAll: AppStyle.buttonRadius.medium,
-                padding: MySpacing.xy(8, 4),
-                splashColor: contentTheme.danger.withAlpha(28),
-                backgroundColor: Colors.transparent,
-                child: Row(
-                  children: [
-                    MyText.labelMedium(
-                      "Ordini in corso",
-                      fontWeight: 600,
-                    ),
-                  ],
-                )),
-          ),
+          if (!controller.isOffline)
+            Padding(
+              padding: MySpacing.xy(8, 8),
+              child: MyButton(
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  onPressed: () => {Get.toNamed('/admin/customers/orders')},
+                  borderRadiusAll: AppStyle.buttonRadius.medium,
+                  padding: MySpacing.xy(8, 4),
+                  splashColor: contentTheme.danger.withAlpha(28),
+                  backgroundColor: Colors.transparent,
+                  child: Row(
+                    children: [
+                      MyText.labelMedium(
+                        "Ordini in corso",
+                        fontWeight: 600,
+                      ),
+                    ],
+                  )),
+            ),
           Padding(
             padding: MySpacing.xy(8, 8),
             child: MyButton(
@@ -246,19 +247,20 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen>
             color: contentTheme.onPrimary,
           ),
         ),
-        MySpacing.width(8),
-        MyButton.rounded(
-          onPressed: () {
-            Get.toNamed('/admin/customers/orders');
-          },
-          elevation: 0,
-          padding: MySpacing.xy(20, 16),
-          backgroundColor: contentTheme.primary,
-          child: MyText.bodySmall(
-            'Ordini in corso',
-            color: contentTheme.onPrimary,
+        if (!controller.isOffline) MySpacing.width(8),
+        if (!controller.isOffline)
+          MyButton.rounded(
+            onPressed: () {
+              Get.toNamed('/admin/customers/orders');
+            },
+            elevation: 0,
+            padding: MySpacing.xy(20, 16),
+            backgroundColor: contentTheme.primary,
+            child: MyText.bodySmall(
+              'Ordini in corso',
+              color: contentTheme.onPrimary,
+            ),
           ),
-        ),
         MySpacing.width(8),
         MyButton.rounded(
           onPressed: () {

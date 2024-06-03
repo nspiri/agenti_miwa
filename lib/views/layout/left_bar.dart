@@ -222,11 +222,12 @@ class _LeftBarState extends State<LeftBar>
                             isCondensed: isCondensed,
                             route: '/admin/customers/detail',
                           ),
-                          MenuItem(
-                            title: "Ordini in corso",
-                            isCondensed: isCondensed,
-                            route: '/admin/customers/orders',
-                          ),
+                          if (!isOffline)
+                            MenuItem(
+                              title: "Ordini in corso",
+                              isCondensed: isCondensed,
+                              route: '/admin/customers/orders',
+                            ),
                           MenuItem(
                             title: "Scadenzario",
                             isCondensed: isCondensed,

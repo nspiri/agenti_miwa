@@ -169,24 +169,36 @@ class Utils {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     String token = "";
 
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String v = packageInfo.version;
-    String c = packageInfo.buildNumber;
+    if (!kIsWeb) {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      String v = packageInfo.version;
+      String c = packageInfo.buildNumber;
 
-    var url = Uri.parse(
-        "https://download.datasistemi.cloud/apk/poolpack/dist/version.txt");
-    hp.Response response = await hp.get(url);
+      var url = Uri.parse("");
 
-    if (response.body != "") {
-      try {
-        int version =
-            int.parse(response.body.replaceAll(".", "").replaceAll("+", ""));
-        int curVer = int.parse("${v.replaceAll(".", "")}${c}");
-        if (version > curVer) {
-          Get.toNamed("/auth/login");
+      if (Platform.isWindows) {
+        url = Uri.parse(
+            "https://download.datasistemi.cloud/apk/miwa/version.txt");
+      }
+      if (Platform.isAndroid) {
+        url = Uri.parse(
+            "https://download.datasistemi.cloud/apk/miwa/apk/version.txt");
+      }
+      hp.Response response = await hp.get(url);
+
+      if (response.body != "") {
+        try {
+          int version =
+              int.parse(response.body.replaceAll(".", "").replaceAll("+", ""));
+          int curVer = int.parse("${v.replaceAll(".", "")}${c}");
+          if (version > curVer) {
+            await LocalStorage.setToken("");
+            await LocalStorage.setLoggedInUser(false);
+            Get.toNamed("/auth/login");
+          }
+        } catch (e) {
+          print('Failed to make OTA update. Details: $e');
         }
-      } catch (e) {
-        print('Failed to make OTA update. Details: $e');
       }
     }
 
@@ -196,6 +208,9 @@ class Utils {
       if (Platform.isWindows) {
         WindowsDeviceInfo info = await deviceInfo.windowsInfo;
         token = info.deviceId.replaceAll("{", "").replaceAll("}", "");
+      }
+      if (Platform.isAndroid) {
+        token = LocalStorage.getToken() ?? "";
       }
     }
 
@@ -209,6 +224,8 @@ class Utils {
 
     if (res.code == 200) {
       if (res.error != "") {
+        await LocalStorage.setToken("");
+        await LocalStorage.setLoggedInUser(false);
         Get.toNamed("/auth/login");
       }
       var a = res.result as List<dynamic>;
@@ -218,6 +235,8 @@ class Utils {
           StatoCliente.dummyList.then((value) {
             for (var element in value) {
               if (element.stato == "") {
+                LocalStorage.setToken("");
+                LocalStorage.setLoggedInUser(false);
                 Get.toNamed("/admin/customers/state", arguments: value);
               }
             }

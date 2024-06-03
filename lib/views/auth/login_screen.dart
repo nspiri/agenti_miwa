@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mexalorder/controller/auth/login_controller.dart';
@@ -35,16 +36,19 @@ class _LoginScreenState extends State<LoginScreen>
   late LoginController controller;
   var focusNode = FocusNode();
   OtaEvent? currentEvent;
+  String test = "Inizio";
 
   @override
   void initState() {
     controller = Get.put(LoginController());
-    if (Platform.isWindows) {
-      autoUpdater.addListener(this);
-      update();
-    }
-    if (Platform.isAndroid) {
-      tryOtaUpdate();
+    if (!kIsWeb) {
+      if (Platform.isWindows) {
+        autoUpdater.addListener(this);
+        update();
+      }
+      if (Platform.isAndroid) {
+        tryOtaUpdate();
+      }
     }
     super.initState();
   }
@@ -57,20 +61,21 @@ class _LoginScreenState extends State<LoginScreen>
   Future<void> tryOtaUpdate() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     var currentVersion = "${packageInfo.version}${packageInfo.buildNumber}";
-    var url =
-        Uri.parse("https://download.datasistemi.cloud/apk/miwa/version.txt");
+    var url = Uri.parse(
+        "https://download.datasistemi.cloud/apk/miwa/apk/version.txt");
     hp.Response response = await hp.get(url);
-
     if (response.body != "") {
       try {
         int version =
             int.parse(response.body.replaceAll(".", "").replaceAll("+", ""));
         int curVer = int.parse(currentVersion.replaceAll(".", ""));
+        test = "VERSIONI $curVer $version";
+        setState(() {});
         if (version > curVer) {
           print('ABI Platform: ${await OtaUpdate().getAbi()}');
           OtaUpdate()
               .execute(
-            'https://download.datasistemi.cloud/apk/miwa/app-release.apk',
+            'https://download.datasistemi.cloud/apk/miwa/apk/app-release.apk',
             destinationFilename: 'app-release-temp.apk',
           )
               .listen(
@@ -339,7 +344,7 @@ class _LoginScreenState extends State<LoginScreen>
 
   Widget loadingDownload() {
     return Visibility(
-      visible: true, //currentEvent?.status.name == "DOWNLOADING",
+      visible: currentEvent?.status.name == "DOWNLOADING",
       child: Container(
         decoration: BoxDecoration(color: Colors.grey.withOpacity(0.5)),
         child: Center(
@@ -352,6 +357,7 @@ class _LoginScreenState extends State<LoginScreen>
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
                       '${currentEvent?.status.name} : ${currentEvent?.value}%'),
+                  // test),
                 )
               ],
             ),

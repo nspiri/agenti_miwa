@@ -25,6 +25,11 @@ class AuthService {
         WindowsDeviceInfo info = await deviceInfo.windowsInfo;
         token = info.deviceId.replaceAll("{", "").replaceAll("}", "");
       }
+      if (Platform.isAndroid) {
+        /*AndroidDeviceInfo info = await deviceInfo.androidInfo;
+        token = info.serialNumber;*/
+        token = LocalStorage.getToken() ?? "";
+      }
     }
 
     Response res = await DoRequest.doHttpRequest(
@@ -33,7 +38,7 @@ class AuthService {
         dati: {
           "Utente": data["email"],
           "Password": data["password"],
-          "Token": token ?? ""
+          "Token": token
         });
 
     if (res.code == 200) {

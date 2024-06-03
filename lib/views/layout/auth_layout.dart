@@ -31,63 +31,69 @@ class AuthLayout extends StatelessWidget {
   }
 
   Widget mobileScreen(BuildContext context) {
-    return Scaffold(
-      key: controller.scaffoldKey,
-      body: Container(
-        padding: MySpacing.top(MySpacing.safeAreaTop(context) + 20),
-        height: MediaQuery.of(context).size.height,
-        color: theme.cardTheme.color,
-        child: SingleChildScrollView(
-          key: controller.scrollKey,
-          child: child,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        key: controller.scaffoldKey,
+        body: Container(
+          padding: MySpacing.top(MySpacing.safeAreaTop(context) + 20),
+          height: MediaQuery.of(context).size.height,
+          color: theme.cardTheme.color,
+          child: SingleChildScrollView(
+            key: controller.scrollKey,
+            child: child,
+          ),
         ),
       ),
     );
   }
 
   Widget largeScreen(BuildContext context) {
-    return Scaffold(
-        key: controller.scaffoldKey,
-        backgroundColor: Colors.blue,
-        body: Stack(
-          children: [
-            Center(
-              child: Image.asset(
-                height: double.infinity,
-                width: double.infinity,
-                Images.background,
-                fit: BoxFit.cover,
-              ),
-            ),
-            SingleChildScrollView(
-              child: Container(
-                margin: MySpacing.fromLTRB(0, 100, 0, 100),
-                width: MediaQuery.of(context).size.width,
-                child: MyFlex(
-                  wrapAlignment: WrapAlignment.center,
-                  wrapCrossAlignment: WrapCrossAlignment.start,
-                  runAlignment: WrapAlignment.center,
-                  spacing: 0,
-                  runSpacing: 0,
-                  children: [
-                    MyFlexItem(
-                      sizes: "xxl-8 lg-8 md-9 sm-10",
-                      child: MyContainer(
-                        paddingAll: 0,
-                        borderRadiusAll: 12,
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        color: AdminTheme.theme.contentTheme.background
-                            .withOpacity(0.95),
-                        child: SingleChildScrollView(
-                            key: controller.scrollKey,
-                            child: child ?? Container()),
-                      ),
-                    ),
-                  ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+          key: controller.scaffoldKey,
+          backgroundColor: Colors.blue,
+          body: Stack(
+            children: [
+              Center(
+                child: Image.asset(
+                  height: double.infinity,
+                  width: double.infinity,
+                  Images.background,
+                  fit: BoxFit.cover,
                 ),
               ),
-            ),
-          ],
-        ));
+              SingleChildScrollView(
+                child: Container(
+                  margin: MySpacing.fromLTRB(0, 100, 0, 100),
+                  width: MediaQuery.of(context).size.width,
+                  child: MyFlex(
+                    wrapAlignment: WrapAlignment.center,
+                    wrapCrossAlignment: WrapCrossAlignment.start,
+                    runAlignment: WrapAlignment.center,
+                    spacing: 0,
+                    runSpacing: 0,
+                    children: [
+                      MyFlexItem(
+                        sizes: "xxl-8 lg-8 md-9 sm-10",
+                        child: MyContainer(
+                          paddingAll: 0,
+                          borderRadiusAll: 12,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          color: AdminTheme.theme.contentTheme.background
+                              .withOpacity(0.95),
+                          child: SingleChildScrollView(
+                              key: controller.scrollKey,
+                              child: child ?? Container()),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          )),
+    );
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mexalorder/controller/home_controller.dart';
@@ -19,6 +20,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as hp;
 import 'package:auto_updater/auto_updater.dart';
 import 'package:ota_update/ota_update.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,31 +37,36 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     controller = Get.put(HomeController());
-    if (Platform.isWindows) {
-      autoUpdater.addListener(this);
-      update();
+    if (!kIsWeb) {
+      if (Platform.isWindows) {
+        autoUpdater.addListener(this);
+        update();
+      }
+      if (Platform.isAndroid) {
+        tryOtaUpdate();
+      }
     }
     controller.getDati();
     super.initState();
   }
 
   Future<void> tryOtaUpdate() async {
-    var currentVersion =
-        "${controller.version.replaceAll(".", "")}${controller.code}";
-    var url =
-        Uri.parse("https://download.datasistemi.cloud/apk/miwa/version.txt");
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    var currentVersion = "${packageInfo.version}${packageInfo.buildNumber}";
+    var url = Uri.parse(
+        "https://download.datasistemi.cloud/apk/miwa/apk/version.txt");
     hp.Response response = await hp.get(url);
 
     if (response.body != "") {
       try {
         int version =
             int.parse(response.body.replaceAll(".", "").replaceAll("+", ""));
-        int curVer = int.parse(currentVersion);
+        int curVer = int.parse(currentVersion.replaceAll(".", ""));
         if (version > curVer) {
           print('ABI Platform: ${await OtaUpdate().getAbi()}');
           OtaUpdate()
               .execute(
-            'https://download.datasistemi.cloud/apk/miwa/app-release.apk',
+            'https://download.datasistemi.cloud/apk/miwa/apk/app-release.apk',
             destinationFilename: 'app-release-temp.apk',
           )
               .listen(
@@ -306,6 +313,7 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
         ),
+        Positioned.fill(child: loadingDownload()),
         MyFlex(
           children: [
             MyFlexItem(
@@ -394,6 +402,31 @@ class _HomeScreenState extends State<HomeScreen>
                 fontWeight: 600,
               ))
         ],
+      ),
+    );
+  }
+
+  Widget loadingDownload() {
+    return Visibility(
+      visible: currentEvent?.status.name == "DOWNLOADING",
+      child: Container(
+        decoration: BoxDecoration(color: Colors.grey.withOpacity(0.5)),
+        child: Center(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CircularProgressIndicator(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(
+                      '${currentEvent?.status.name} : ${currentEvent?.value}%'),
+                  // test),
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

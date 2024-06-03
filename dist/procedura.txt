@@ -4,4 +4,4 @@
 
 flutter_distributor release --name prod --jobs windows-exe
 
-dart run auto_updater:sign_update dist/1.1.5+16/mexalorder-1.1.5+16-windows-setup.exe
+dart run auto_updater:sign_update dist/2.0.0+20/mexalorder-2.0.0+20-windows-setup.exe
