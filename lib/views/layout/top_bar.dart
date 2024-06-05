@@ -58,6 +58,24 @@ class _TopBarState extends State<TopBar>
                 child: Row(
                   children: [
                     MyText.labelLarge(clienteSelezionato?.ragioneSociale ?? ""),
+                    if (clienteSelezionato != null) MySpacing.width(8),
+                    if (clienteSelezionato != null)
+                      InkWell(
+                          onTap: () {
+                            clienteSelezionato = null;
+                            carrelloGlobale = [];
+                            LocalStorage.setCarrelloGlobale([]);
+                            LocalStorage.setCarrello([]);
+                            LocalStorage.setDettCli(null);
+                            LocalStorage.setFattA(null);
+                            LocalStorage.setNotaConsegna("");
+                            LocalStorage.setNotaIncasso("");
+                            Get.toNamed("/admin/customers/list");
+                          },
+                          child: Icon(
+                            LucideIcons.x,
+                            color: topBarTheme.onBackground,
+                          )),
                   ],
                 ),
               )
