@@ -169,7 +169,7 @@ class Utils {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     String token = "";
 
-    if (!kIsWeb) {
+    /* if (!kIsWeb) {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
       String v = packageInfo.version;
       String c = packageInfo.buildNumber;
@@ -200,7 +200,7 @@ class Utils {
           print('Failed to make OTA update. Details: $e');
         }
       }
-    }
+    }*/
 
     if (kIsWeb) {
       token = LocalStorage.getToken() ?? "";
@@ -210,6 +210,9 @@ class Utils {
         token = info.deviceId.replaceAll("{", "").replaceAll("}", "");
       }
       if (Platform.isAndroid) {
+        token = LocalStorage.getToken() ?? "";
+      }
+      if (Platform.isMacOS) {
         token = LocalStorage.getToken() ?? "";
       }
     }

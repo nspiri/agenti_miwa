@@ -65,8 +65,9 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
               MySpacing.height(flexSpacing),
               Padding(
-                padding: MySpacing.x(flexSpacing / 2),
-                child: MyFlex(
+                  padding: MySpacing.x(flexSpacing / 2),
+                  child: Text(
+                      "") /*MyFlex(
                   children: [
                     MyFlexItem(
                         sizes: 'lg-2 md-6',
@@ -262,8 +263,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                       ),
                     ),
                   ],
-                ),
-              ),
+                ),*/
+                  ),
             ],
           );
         },

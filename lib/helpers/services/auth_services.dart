@@ -30,6 +30,9 @@ class AuthService {
         token = info.serialNumber;*/
         token = LocalStorage.getToken() ?? "";
       }
+      if (Platform.isMacOS) {
+        token = LocalStorage.getToken() ?? "";
+      }
     }
 
     Response res = await DoRequest.doHttpRequest(

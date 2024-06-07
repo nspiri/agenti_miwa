@@ -141,9 +141,11 @@ class DoRequest {
         return resp;*/
       }
     } on TimeoutException {
-      return "404";
+      r.Response resp = r.Response(code: 404, result: "", error: "404");
+      return resp;
     } catch (e) {
-      return e.toString();
+      r.Response resp = r.Response(code: 404, result: "", error: e.toString());
+      return resp;
     }
   }
 }

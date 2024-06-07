@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 class JSONDecoder {
   late final Map<String, dynamic> jsonObject;
   late final List<dynamic> jsonList;
@@ -119,7 +117,7 @@ class JSONDecoder {
     return local ? defaultValue!.toLocal() : defaultValue!;
   }
 
-  LatLng getLatLng(
+  /*LatLng getLatLng(
       {String latitudeKey = 'latitude', String longitudeKey = 'longitude'}) {
     double latitude = getDouble(latitudeKey);
     double longitude = getDouble(longitudeKey);
@@ -135,7 +133,7 @@ class JSONDecoder {
     }
     return null;
   }
-
+*/
   DateTime? getDateTimeOrNull(String key, {bool local = true}) {
     if (jsonObject.containsKey(key)) {
       String? validatedDate = validateString(jsonObject[key]);
