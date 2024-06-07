@@ -5,15 +5,15 @@
         <description>Most recent updates to mexalorder</description>
         <language>en</language>
         <item>
-            <title>Version 2.0.0+20</title>
+            <title>Version 2.0.3+23</title>
             <sparkle:releaseNotesLink>
                 
             </sparkle:releaseNotesLink>
             <pubDate>Thu, 24 May 2024 12:00:00 +0800</pubDate>
     	    <sparkle:criticalUpdate></sparkle:criticalUpdate>
-            <enclosure url="https://download.datasistemi.cloud/apk/miwa/2.0.0+20/mexalorder-2.0.0+20-windows-setup.exe"
-                       sparkle:dsaSignature="MD0CHQCvaQyq4BVEthFYvgwlGdaOQSlMg1Lu1GHgvACBAhxLFOkLB0wFNm9icC1twoyAWXu60Lmey1rLtg5T"
-                       sparkle:version="2.0.0+20"
+            <enclosure url="https://download.datasistemi.cloud/apk/miwa/2.0.3+23/mexalorder-2.0.3+23-windows-setup.exe"
+                       sparkle:dsaSignature="MDwCHCiHNM80RDXJe3yc0UJjgG56zEx8gN4Sr/OnhWcCHCTnP35PI0thO3e6gN0rZieqaaeAztbu88SFrTM="
+                       sparkle:version="2.0.3+23"
                        sparkle:os="windows"
                        length="0"
                        type="application/octet-stream" />

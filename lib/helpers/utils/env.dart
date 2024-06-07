@@ -7,16 +7,16 @@ String user = "Mexal";
 String pass = "GkU2CIoAZwDEWDE";
 
 //TEST
-String mexal_url = "https://mxl1.hostcsi.com:9008/webapi/servizi";
+/*String mexal_url = "https://mxl1.hostcsi.com:9008/webapi/servizi";
 String mxl_user = "SPXAPI";
 String mxl_pass = "CSICSICSI";
-String sigla = "MIW";
+String sigla = "MIW";*/
 
 //PROD
-/*String mexal_url = "https://mxl2.hostcsi.com:9005/webapi/servizi";
+String mexal_url = "https://mxl2.hostcsi.com:9005/webapi/servizi";
 String mxl_user = "MXLORD";
 String mxl_pass = "CSICSICSI";
-String sigla = "MIW";*/
+String sigla = "MIW";
 
 String passAuth =
     "Passepartout ${base64Encode(utf8.encode('$mxl_user:$mxl_pass'))}";

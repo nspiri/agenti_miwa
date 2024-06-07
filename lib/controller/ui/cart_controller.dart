@@ -28,7 +28,7 @@ class CartController extends MyController {
   CustomerDetail? destinazione;
   CustomerDetail? fattA;
   double scAb = 0, abbuono = 0, totaleDaPagare = 0;
-  bool loading = false;
+  bool loading = true;
   TextEditingController notaIncasso = TextEditingController();
   TextEditingController notaConsegna = TextEditingController();
   CalcoloTotale allTot = CalcoloTotale([], 0, 0, 0, 0, 0, 0, 0);
@@ -121,6 +121,116 @@ class CartController extends MyController {
     }
   }
 
+  aggiungiArticoli2(List<Articolo> articoli) async {
+    loading = true;
+    //update();
+    if (articoli.length > 0) {
+      List<Map<String, dynamic>> art = [];
+
+      for (var element in articoli) {
+        art.add({
+          "articolo": element.codArt,
+          "quantita": element.conf,
+          "listino": element.listinoSelezionato?.listino ?? 1,
+          "prezzo": 0,
+          "sconto": "",
+          "omaggio": element.applicaOmaggio ? 1 : 0
+        });
+      }
+
+      Map<String, dynamic> payload = {
+        "agente": LocalStorage.getLoggedUser()?.codiceAgente,
+        "cliente": fattA?.codiceCliente ?? destinazione?.codiceCliente ?? "",
+        "data": "",
+        "documento": "OC",
+        "magazzino": 1,
+        "tipo_immagine": "C",
+        "articoli": art
+      };
+
+      r.Response res = await DoRequest.doHttpRequest(
+          nomeCollage: "colsrart",
+          etichettaCollage: "GET_CONDDOC2",
+          dati: payload);
+
+      if (res.code == 200) {
+        List<dynamic> data = json.decode(jsonEncode(res.result));
+        List<CondDoc> condDoc = data.map((e) => CondDoc.fromJson(e)).toList();
+        assegnaPrezzi(condDoc, articoli);
+        //return condDoc;
+      } else {
+        loading = false;
+        update();
+        showErrorMessage(context, "Attenzione", res.error);
+      }
+      return null;
+    }
+    return null;
+  }
+
+  assegnaPrezzi(List<CondDoc> condDoc, List<Articolo> articoli) {
+    for (var articolo in articoli) {
+      for (var cond in condDoc) {
+        if (articolo.codArt == cond.arcod) {
+          articolo.icona ??= cond.arcae;
+          PrezzoArticolo p = PrezzoArticolo(
+              omaggio: cond.omaggio,
+              prezzo: cond.prezzo,
+              provvigione: cond.provvigione,
+              scalaSconti: cond.scalaSconti,
+              sconto: cond.sconto,
+              tipoProvvigione: cond.tipoProvvigione);
+          articolo.prezzoArticolo ??= p;
+          if (articolo.listinoSelezionato == null) {
+            articolo.prezzoListini = elaboraListini(articolo.prezzoListini!);
+            articolo.listinoSelezionato = articolo.prezzoListini?[0];
+            articolo.textControllerListino.text =
+                "€${Utils.formatStringDecimal(articolo.prezzoListini?[0].valore, 3)}";
+          } else {
+            for (Arprz l in articolo.prezzoListini ?? []) {
+              if (l.listino == articolo.listinoSelezionato?.listino) {
+                articolo.listinoSelezionato = l;
+              }
+            }
+          }
+          if (articolo.scontoSelezionato == null) {
+            articolo.scontoSelezionato =
+                articolo.prezzoArticolo?.scalaSconti?[0];
+            articolo.textControllerSconto.text =
+                articolo.scontoSelezionato?.sconto == ""
+                    ? "Nessuno sconto"
+                    : "${articolo.scontoSelezionato?.sconto}%";
+            /* if (element.prezzoArticolo?.sconto != "") {
+          element.scontoSelezionato = ScalaSconti(
+              sconto: element.prezzoArticolo?.sconto,
+              prezzo: element.prezzoArticolo?.prezzo,
+              provvigione: element.prezzoArticolo?.provvigione as double,
+              tipoProvvigione: "%");
+          element.textControllerSconto.text =
+              "${element.prezzoArticolo?.sconto}%";
+        } else {
+          element.scontoSelezionato = element.prezzoArticolo?.scalaSconti?[0];
+          element.textControllerSconto.text =
+              element.scontoSelezionato?.sconto == ""
+                  ? "Nessuno sconto"
+                  : "${element.scontoSelezionato?.sconto}%";
+        }*/
+          }
+          articolo.importo = articolo.prezzoArticolo?.prezzo ?? 0;
+        }
+      }
+    }
+    carrello = articoli;
+    getTotali(null);
+    if (carrello.isEmpty) {
+      allTot.azzeraRighe();
+    }
+    carrelloGlobale = carrello;
+    LocalStorage.setCarrelloGlobale(carrello);
+    /* loading = false;
+    update();*/
+  }
+
   aggiungiArticoli(List<Articolo> articoli) async {
     loading = true;
     //update();
@@ -162,8 +272,8 @@ class CartController extends MyController {
         }*/
       }
       element.importo = element.prezzoArticolo?.prezzo ?? 0;
-      getTotali(null);
-      element.loading = false;
+      //getTotali(null);
+      //element.loading = false;
       update();
     }
     carrello = articoli;
@@ -478,10 +588,16 @@ class CartController extends MyController {
       carrelloGlobale = carrello;
       LocalStorage.setCarrelloGlobale(carrello);
       applicaPrezzi(tot);
+      loading = false;
       update();
     } else {
-      showErrorMessage(context, "Errore",
-          "Si è verificato un errore durante il calcolo dei prezzi.");
+      loading = false;
+      update();
+      showErrorMessage(
+          context,
+          "Errore",
+          /*"Si è verificato un errore durante il calcolo dei prezzi."*/ res
+              .error);
     }
     if (art != null) {
       art.loadingPrezzo = false;

@@ -148,7 +148,7 @@ class ListaController extends MyController {
       }
       aggiornaPrezzoArticolo(element);
 
-      element.loading = false;
+      //element.loading = false;
       update();
     }
     carrello = articoli;

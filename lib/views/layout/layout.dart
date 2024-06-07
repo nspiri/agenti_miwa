@@ -60,8 +60,9 @@ class Layout extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              if (clienteSelezionato != null) MySpacing.width(8),
-              if (clienteSelezionato != null)
+              if ((clienteSelezionato?.codiceCliente?.length ?? 0) > 0)
+                MySpacing.width(8),
+              if ((clienteSelezionato?.codiceCliente?.length ?? 0) > 0)
                 InkWell(
                     onTap: () {
                       clienteSelezionato = null;
@@ -72,6 +73,7 @@ class Layout extends StatelessWidget {
                       LocalStorage.setFattA(null);
                       LocalStorage.setNotaConsegna("");
                       LocalStorage.setNotaIncasso("");
+                      LocalStorage.setOffline(false);
                       Get.toNamed("/admin/customers/list");
                     },
                     child: Icon(

@@ -244,24 +244,17 @@ class _CartScreenState extends State<ListaScreen>
         Articolo data = controller.carrello[index];
         return MyContainer(
             width: double.infinity,
-            child: data.loading
-                ? Center(
-                    child: CircularProgressIndicator(
-                      color: contentTheme.primary,
-                      strokeWidth: 3,
-                    ),
-                  )
-                : Row(
-                    children: [
-                      Expanded(
-                        child: descrizione(data),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: quantita(data),
-                      ),
-                    ],
-                  ));
+            child: Row(
+              children: [
+                Expanded(
+                  child: descrizione(data),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: quantita(data),
+                ),
+              ],
+            ));
       },
       separatorBuilder: (context, index) {
         return SizedBox(
@@ -280,22 +273,15 @@ class _CartScreenState extends State<ListaScreen>
         Articolo data = controller.carrello[index];
         return MyContainer(
             width: double.infinity,
-            child: data.loading
-                ? Center(
-                    child: CircularProgressIndicator(
-                      color: contentTheme.primary,
-                      strokeWidth: 3,
-                    ),
-                  )
-                : Column(
-                    children: [
-                      descrizioneMobile(data),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: quantitaMobile(data),
-                      ),
-                    ],
-                  ));
+            child: Column(
+              children: [
+                descrizioneMobile(data),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: quantitaMobile(data),
+                ),
+              ],
+            ));
       },
       separatorBuilder: (context, index) {
         return SizedBox(
@@ -372,7 +358,7 @@ class _CartScreenState extends State<ListaScreen>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           MyText.labelMedium(
-                            listino.descrizione,
+                            listino.descrizione ?? "",
                           ),
                           MyText.labelMedium(
                             "€ ${Utils.formatStringDecimal(listino.valore, 3)}",
@@ -468,7 +454,7 @@ class _CartScreenState extends State<ListaScreen>
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             MyText.labelMedium(
-                                              listino.descrizione,
+                                              listino.descrizione ?? "",
                                             ),
                                             MyText.labelMedium(
                                               "€ ${Utils.formatStringDecimal(listino.valore, 3)}",
