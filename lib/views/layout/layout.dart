@@ -64,16 +64,16 @@ class Layout extends StatelessWidget {
                 MySpacing.width(8),
               if ((clienteSelezionato?.codiceCliente?.length ?? 0) > 0)
                 InkWell(
-                    onTap: () {
+                    onTap: () async {
                       clienteSelezionato = null;
                       carrelloGlobale = [];
-                      LocalStorage.setCarrelloGlobale([]);
-                      LocalStorage.setCarrello([]);
-                      LocalStorage.setDettCli(null);
-                      LocalStorage.setFattA(null);
-                      LocalStorage.setNotaConsegna("");
-                      LocalStorage.setNotaIncasso("");
-                      LocalStorage.setOffline(false);
+                      await LocalStorage.setCarrelloGlobale([]);
+                      await LocalStorage.setCarrello([]);
+                      await LocalStorage.setDettCli(null);
+                      await LocalStorage.setFattA(null);
+                      await LocalStorage.setNotaConsegna("");
+                      await LocalStorage.setNotaIncasso("");
+                      await LocalStorage.setOffline(false);
                       Get.toNamed("/admin/customers/list");
                     },
                     child: Icon(
@@ -323,7 +323,15 @@ class Layout extends StatelessWidget {
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               onPressed: () async {
                 await LocalStorage.setLoggedInUser(false);
-                //languageHideFn?.call();
+                clienteSelezionato = null;
+                carrelloGlobale = [];
+                await LocalStorage.setCarrelloGlobale([]);
+                await LocalStorage.setCarrello([]);
+                await LocalStorage.setDettCli(null);
+                await LocalStorage.setFattA(null);
+                await LocalStorage.setNotaConsegna("");
+                await LocalStorage.setNotaIncasso("");
+                await LocalStorage.setOffline(false);
                 Get.offAll(LoginScreen());
               },
               borderRadiusAll: AppStyle.buttonRadius.medium,
