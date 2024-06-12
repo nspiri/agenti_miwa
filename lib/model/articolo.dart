@@ -34,7 +34,7 @@ class Articolo extends IdentifierModel {
   double importo = 0;
   double importoTotale = 0;
   bool applicaOmaggio = false;
-  bool loading = true, loadingPrezzo = false;
+  bool /*loading = true,*/ loadingPrezzo = false;
   int? nrVendite;
   String? ultimaVendita;
   final TextEditingController textControllerListino = TextEditingController();
@@ -189,19 +189,21 @@ class Articolo extends IdentifierModel {
 class Arprz {
   int? listino;
   double? valore;
-  String descrizione = "";
+  String? descrizione = "";
 
-  Arprz({this.listino, this.valore});
+  Arprz({this.listino, this.valore, this.descrizione});
 
   Arprz.fromJson(Map<String, dynamic> json) {
     listino = json['listino'];
     valore = json['valore'];
+    descrizione = json['descrizione'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['listino'] = listino;
     data['valore'] = valore;
+    data['descrizione'] = descrizione;
     return data;
   }
 }
@@ -294,6 +296,154 @@ class ScalaSconti {
     data['sconto'] = sconto;
     data['tipo_provvigione'] = tipoProvvigione;
     data['provvigione'] = provvigione;
+    return data;
+  }
+}
+
+class CondDoc {
+  String? aralt;
+  int? ardec;
+  String? arcod;
+  double? arcon;
+  String? ardsc;
+  int? prezzoDecimali;
+  String? arum1;
+  int? arsco;
+  Omaggio? omaggio;
+  String? ariva;
+  double? aqdin;
+  String? mydes;
+  List<dynamic>? arime;
+  String? arnds;
+  int? arscq;
+  int? arlis;
+  double? provvigione;
+  int? arpro;
+  double? aqesi;
+  Uint8List? arcae;
+  List<dynamic>? arice;
+  List<Arprz>? arprz;
+  double? prezzo;
+  String? sconto;
+  String? tipoProvvigione;
+  List<ScalaSconti>? scalaSconti;
+
+  CondDoc(
+      {this.aralt,
+      this.ardec,
+      this.arcod,
+      this.arcon,
+      this.ardsc,
+      this.prezzoDecimali,
+      this.arum1,
+      this.arsco,
+      this.omaggio,
+      this.ariva,
+      this.aqdin,
+      this.mydes,
+      this.arime,
+      this.arnds,
+      this.arscq,
+      this.arlis,
+      this.provvigione,
+      this.arpro,
+      this.aqesi,
+      this.arcae,
+      this.arice,
+      this.arprz,
+      this.prezzo,
+      this.sconto,
+      this.tipoProvvigione,
+      this.scalaSconti});
+
+  CondDoc.fromJson(Map<String, dynamic> json) {
+    aralt = json['aralt'];
+    ardec = json['ardec'];
+    arcod = json['arcod'];
+    arcon = json['arcon'];
+    ardsc = json['ardsc'];
+    prezzoDecimali = json['prezzo_decimali'];
+    arum1 = json['arum1'];
+    arsco = json['arsco'];
+    omaggio =
+        json['omaggio'] != null ? new Omaggio.fromJson(json['omaggio']) : null;
+    ariva = json['ariva'];
+    aqdin = json['aqdin'];
+    mydes = json['mydes'];
+    arime = getImmagineArticolo(json['arime']);
+    arnds = json['arnds'];
+    arscq = json['arscq'];
+    arlis = json['arlis'];
+    provvigione = json['provvigione'];
+    arpro = json['arpro'];
+    aqesi = json['aqesi'];
+    arcae = getImmagineArticolo(json['arcae']);
+    arice = getImmagineArticolo(json['arice']);
+    if (json['arprz'] != null) {
+      arprz = <Arprz>[];
+      json['arprz'].forEach((v) {
+        arprz!.add(new Arprz.fromJson(v));
+      });
+    }
+    prezzo = json['prezzo'];
+    sconto = json['sconto'];
+    tipoProvvigione = json['tipo_provvigione'];
+    if (json['scala_sconti'] != null) {
+      scalaSconti = <ScalaSconti>[];
+      json['scala_sconti'].forEach((v) {
+        scalaSconti!.add(new ScalaSconti.fromJson(v));
+      });
+    }
+  }
+
+  Uint8List? getImmagineArticolo(List<dynamic>? result) {
+    String img = "";
+    if (result != null) {
+      if (result.isNotEmpty) {
+        for (String element in result) {
+          img += element;
+        }
+        return base64
+            .decode(img.replaceAll(RegExp(r'\s+'), '').replaceAll("[", ""));
+      }
+    }
+    return null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['aralt'] = aralt;
+    data['ardec'] = ardec;
+    data['arcod'] = arcod;
+    data['arcon'] = arcon;
+    data['ardsc'] = ardsc;
+    data['prezzo_decimali'] = prezzoDecimali;
+    data['arum1'] = arum1;
+    data['arsco'] = arsco;
+    if (omaggio != null) {
+      data['omaggio'] = omaggio!.toJson();
+    }
+    data['ariva'] = ariva;
+    data['aqdin'] = aqdin;
+    data['mydes'] = mydes;
+    data['arime'] = arime;
+    data['arnds'] = arnds;
+    data['arscq'] = arscq;
+    data['arlis'] = arlis;
+    data['provvigione'] = provvigione;
+    data['arpro'] = arpro;
+    data['aqesi'] = aqesi;
+    data['arcae'] = arcae;
+    data['arice'] = arice;
+    if (arprz != null) {
+      data['arprz'] = arprz!.map((v) => v.toJson()).toList();
+    }
+    data['prezzo'] = prezzo;
+    data['sconto'] = sconto;
+    data['tipo_provvigione'] = tipoProvvigione;
+    if (scalaSconti != null) {
+      data['scala_sconti'] = scalaSconti!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

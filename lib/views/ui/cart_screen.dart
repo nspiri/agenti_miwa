@@ -48,30 +48,43 @@ class _CartScreenState extends State<CartScreen>
     cliente = dati?.cliente;
     cliente ??= clienteSelezionato;
     controller = Get.put(CartController(context: context));
+    controller.getData(cliente!);
     if (dati?.carrello != [] && dati?.carrello != null) {
-      for (var element in dati!.carrello!) {
+      /*for (var element in dati!.carrello!) {
         element.loading = true;
-      }
+      }*/
       controller.carrello = dati!.carrello!;
-      controller.aggiungiArticoli(dati?.carrello ?? []);
+      controller.loading = true;
+      controller.aggiungiArticoli2(dati?.carrello ?? []);
       controller.notaIncasso.text = LocalStorage.getNotaIncasso() ?? "";
       controller.notaConsegna.text = LocalStorage.getNotaConsegna() ?? "";
     } else {
+      var a = LocalStorage.getCarrello();
       if ((LocalStorage.getCarrello() ?? []).length > 0) {
         carrelloGlobale = LocalStorage.getCarrello() ?? [];
-        for (var element in carrelloGlobale) {
+        /* for (var element in carrelloGlobale) {
           element.loading = true;
-        }
+        }*/
         controller.carrello = carrelloGlobale;
-        controller.aggiungiArticoli(carrelloGlobale);
+        controller.loading = true;
+        controller.aggiungiArticoli2(carrelloGlobale);
         controller.notaIncasso.text = LocalStorage.getNotaIncasso() ?? "";
         controller.notaConsegna.text = LocalStorage.getNotaConsegna() ?? "";
+      } else {
+        if ((LocalStorage.getCarrelloGlobale() ?? []).length > 0) {
+          carrelloGlobale = LocalStorage.getCarrelloGlobale() ?? [];
+          controller.carrello = carrelloGlobale;
+          controller.loading = true;
+          controller.aggiungiArticoli2(carrelloGlobale);
+        } else {
+          controller.loading = true;
+          controller.aggiungiArticoli2([]);
+        }
       }
     }
     if (cliente != null) {
       mostraNote();
     }
-    controller.getData(cliente!);
     super.initState();
   }
 
@@ -114,7 +127,9 @@ class _CartScreenState extends State<CartScreen>
     ).then((value) {
       controller.articoliCancellati = [];
       List<Articolo> articoli = value as List<Articolo>;
-      controller.aggiungiArticoli(articoli);
+      controller.loading = true;
+      controller.update();
+      controller.aggiungiArticoli2(articoli);
     });
   }
 
@@ -226,9 +241,16 @@ class _CartScreenState extends State<CartScreen>
                     MyFlexItem(
                         sizes: 'lg-7',
                         child: controller.carrello.isNotEmpty
-                            ? screenMT.isMobile
-                                ? listaCarrelloMobile()
-                                : listaCarrello()
+                            ? controller.loading
+                                ? Center(
+                                    child: CircularProgressIndicator(
+                                      color: contentTheme.primary,
+                                      strokeWidth: 3,
+                                    ),
+                                  )
+                                : screenMT.isMobile
+                                    ? listaCarrelloMobile()
+                                    : listaCarrello()
                             : Column(
                                 children: [
                                   MyText.titleLarge(
@@ -268,28 +290,21 @@ class _CartScreenState extends State<CartScreen>
         Articolo data = controller.carrello[index];
         return MyContainer(
             width: double.infinity,
-            child: data.loading
-                ? Center(
-                    child: CircularProgressIndicator(
-                      color: contentTheme.primary,
-                      strokeWidth: 3,
-                    ),
-                  )
-                : Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 12),
-                        child: immagine(data),
-                      ),
-                      Expanded(
-                        child: descrizione(data),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: quantita(data),
-                      ),
-                    ],
-                  ));
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: immagine(data),
+                ),
+                Expanded(
+                  child: descrizione(data),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: quantita(data),
+                ),
+              ],
+            ));
       },
       separatorBuilder: (context, index) {
         return SizedBox(
@@ -308,22 +323,15 @@ class _CartScreenState extends State<CartScreen>
         Articolo data = controller.carrello[index];
         return MyContainer(
             width: double.infinity,
-            child: data.loading
-                ? Center(
-                    child: CircularProgressIndicator(
-                      color: contentTheme.primary,
-                      strokeWidth: 3,
-                    ),
-                  )
-                : Column(
-                    children: [
-                      descrizioneMobile(data),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: quantitaMobile(data),
-                      ),
-                    ],
-                  ));
+            child: Column(
+              children: [
+                descrizioneMobile(data),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: quantitaMobile(data),
+                ),
+              ],
+            ));
       },
       separatorBuilder: (context, index) {
         return SizedBox(
@@ -418,7 +426,7 @@ class _CartScreenState extends State<CartScreen>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           MyText.labelMedium(
-                            listino.descrizione,
+                            listino.descrizione ?? "",
                           ),
                           MyText.labelMedium(
                             "€ ${Utils.formatStringDecimal(listino.valore, 3)}",
@@ -618,7 +626,7 @@ class _CartScreenState extends State<CartScreen>
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             MyText.labelMedium(
-                                              listino.descrizione,
+                                              listino.descrizione ?? "",
                                             ),
                                             MyText.labelMedium(
                                               "€ ${Utils.formatStringDecimal(listino.valore, 3)}",

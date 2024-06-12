@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:mexalorder/model/request.dart' as r;
 import 'package:http/http.dart' as http;
 import 'package:mexalorder/helpers/utils/env.dart' as env;
@@ -64,8 +65,9 @@ class DoRequest {
         final response = await dio.post(env.base_url,
             data: jsonEncode(a),
             options: Options(
-              headers: env.headers,
-            ));
+                headers: env.headers,
+                sendTimeout: Duration(seconds: 30),
+                receiveTimeout: Duration(seconds: 30)));
         /*final response = await http
             //.post(Uri.https("mxl1.hostcsi.com:9008", "/webapi/servizi"),
             .post(Uri.https(env.base_url, "/api/mexal/proxy"),
