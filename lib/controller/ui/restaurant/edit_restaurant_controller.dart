@@ -35,7 +35,6 @@ class EditRestaurantController extends MyController {
   final String _dummyCompanyType = "Partnership";
   final String _dummyPanCardNumber = "KGX5793RSD";
   final String _dummyFaxNumber = "+1 65 497 321";
-  final String _dummyWebsite = "http://healthyfeastcorner.com";
 
   /// Bank Detail
   final String _dummyBankName = "National Bank of Canada";
@@ -74,8 +73,6 @@ class EditRestaurantController extends MyController {
         controller: TextEditingController(text: _dummyPanCardNumber));
     basicValidator.addField('fax_number',
         controller: TextEditingController(text: _dummyFaxNumber));
-    basicValidator.addField('website',
-        controller: TextEditingController(text: _dummyWebsite));
     basicValidator.addField('bank_name',
         controller: TextEditingController(text: _dummyBankName));
     basicValidator.addField('bank_branch',
