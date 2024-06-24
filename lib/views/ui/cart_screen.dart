@@ -86,6 +86,9 @@ class _CartScreenState extends State<CartScreen>
       mostraNote();
     }
     super.initState();
+    FlutterError.onError = (FlutterErrorDetails details) {
+      print("=================== CAUGHT FLUTTER ERROR");
+    };
   }
 
   mostraNote() async {

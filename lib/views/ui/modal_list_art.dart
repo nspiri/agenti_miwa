@@ -87,7 +87,9 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                     children: [
                       MyContainer(
                         onTap: () {
-                          controller.promo();
+                          if (controller.loading == false) {
+                            controller.promo();
+                          }
                         },
                         paddingAll: 8,
                         color: controller.isPromo
@@ -111,7 +113,9 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
                       MySpacing.width(8),
                       MyContainer(
                         onTap: () {
-                          controller.top10(widget.codCliente);
+                          if (controller.loading == false) {
+                            controller.top10(widget.codCliente);
+                          }
                         },
                         paddingAll: 8,
                         color: controller.isTop10
@@ -897,7 +901,9 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
           flex: 0,
           child: MyContainer(
             onTap: () {
-              controller.promo();
+              if (controller.loading == false) {
+                controller.promo();
+              }
             },
             paddingAll: 8,
             color: controller.isPromo
@@ -924,8 +930,10 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
           flex: 0,
           child: MyContainer(
             onTap: () {
-              controller.top10(widget.codCliente);
-              controller.caricaArticoli();
+              if (controller.loading == false) {
+                controller.top10(widget.codCliente);
+                controller.caricaArticoli();
+              }
             },
             paddingAll: 8,
             color: controller.isTop10

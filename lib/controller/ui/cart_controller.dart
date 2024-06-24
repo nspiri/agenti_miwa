@@ -42,6 +42,7 @@ class CartController extends MyController {
   }
 
   getData(CustomerDetail cliente) async {
+    carrello = [];
     User? u = LocalStorage.getLoggedUser();
     if (u != null) {
       isModificaPrezzo = u.modificaPrezzo ?? true;
@@ -652,11 +653,14 @@ class CartController extends MyController {
           "L'ordine non può essere inviato perchè il totale del documento è 0 €.");
       return false;
     }
+    if (destinazione == null || destinazione?.codiceCliente == "") {
+      showErrorMessage(context, "Attenzione", "La destinazione non è presente");
+      return false;
+    }
     return true;
   }
 
   inviaOrdine() async {
-    //if (carrello.isNotEmpty) {
     if (controlloOrdine()) {
       showDialog<void>(
         context: context,
@@ -786,13 +790,17 @@ class CartController extends MyController {
               ),
               child: MyText.labelMedium("Ok"),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(true);
               },
             ),
           ],
         );
       },
-    ).then((value) => cancellaOrdine());
+    ).then((value) {
+      if (value as bool == true) {
+        cancellaOrdine();
+      }
+    });
   }
 
   applicaPrezzi(CalcoloTotale tot) {

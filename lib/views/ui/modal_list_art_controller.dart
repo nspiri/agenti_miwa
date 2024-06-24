@@ -226,7 +226,6 @@ class ModalListaArtController extends MyController {
     isTop10 = false;
     articoliSelezionati = artSel;
     articoliCancellati = artCanc;
-    isPromo = false;
     loading = true;
     codice.text = "";
     desc.text = "";
@@ -250,7 +249,6 @@ class ModalListaArtController extends MyController {
     isPromo = false;
     isAll = false;
     isTop10 = true;
-    isPromo = false;
     loading = true;
     codice.text = "";
     desc.text = "";
@@ -368,31 +366,64 @@ class ModalListaArtController extends MyController {
   }
 
   promo() async {
-    isPromo = true;
-    isAll = false;
-    isTop10 = false;
-    isPromo = false;
-    loading = true;
-    codice.text = "";
-    desc.text = "";
-    codAlt.text = "";
-    cat.text = "";
     setLoading(true);
-    articoli = articoli
-        .where((element) =>
-            element.prezzoListini
-                ?.where((element) => element.listino == 2)
-                .first
-                .valore !=
-            0)
-        .toList();
-    articoliFiltrati = articoli;
-    sortArt();
-    data = MyDataListArtModal(articoliFiltrati, context, this);
-    modificaConfArt();
-    caricaArticoli();
-    setLoading(false);
-    update();
+    if (isTop10) {
+      isPromo = true;
+      isAll = false;
+      isTop10 = false;
+      loading = true;
+      codice.text = "";
+      desc.text = "";
+      codAlt.text = "";
+      cat.text = "";
+      Articolo.dummyList.then((value) {
+        articoli = value;
+        articoliFiltrati = articoli;
+        sortArt();
+        data = MyDataListArtModal(articoliFiltrati, context, this);
+        modificaConfArt();
+        caricaArticoli();
+        scrollController.addListener(_scrollListener);
+
+        articoli = articoli
+            .where((element) =>
+                element.prezzoListini
+                    ?.where((element) => element.listino == 2)
+                    .first
+                    .valore !=
+                0)
+            .toList();
+        articoliFiltrati = articoli;
+        sortArt();
+        data = MyDataListArtModal(articoliFiltrati, context, this);
+        modificaConfArt();
+        caricaArticoli();
+        setLoading(false);
+      });
+    } else {
+      isPromo = true;
+      isAll = false;
+      isTop10 = false;
+      loading = true;
+      codice.text = "";
+      desc.text = "";
+      codAlt.text = "";
+      cat.text = "";
+      articoli = articoli
+          .where((element) =>
+              element.prezzoListini
+                  ?.where((element) => element.listino == 2)
+                  .first
+                  .valore !=
+              0)
+          .toList();
+      articoliFiltrati = articoli;
+      sortArt();
+      data = MyDataListArtModal(articoliFiltrati, context, this);
+      modificaConfArt();
+      caricaArticoli();
+      setLoading(false);
+    }
   }
 
   sortArt() {
