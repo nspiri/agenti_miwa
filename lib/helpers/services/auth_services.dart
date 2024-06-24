@@ -30,7 +30,7 @@ class AuthService {
         token = info.serialNumber;*/
         token = LocalStorage.getToken() ?? "";
       }
-      if (Platform.isMacOS) {
+      if (Platform.isIOS) {
         token = LocalStorage.getToken() ?? "";
       }
     }

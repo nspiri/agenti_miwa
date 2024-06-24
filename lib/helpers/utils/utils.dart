@@ -212,7 +212,7 @@ class Utils {
       if (Platform.isAndroid) {
         token = LocalStorage.getToken() ?? "";
       }
-      if (Platform.isMacOS) {
+      if (Platform.isIOS) {
         token = LocalStorage.getToken() ?? "";
       }
     }
