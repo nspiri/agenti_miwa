@@ -154,15 +154,15 @@ class Articolo extends IdentifierModel {
   static List<Articolo>? _dummyList;
 
   static Future<List<Articolo>> get dummyList async {
-    //if (_dummyList == null) {
-    bool offline = LocalStorage.getOffline();
-    if (offline) {
-      return LocalStorage.getArticoli() ?? [];
-    } else {
-      dynamic data = json.decode(await getData());
-      _dummyList = listFromJSON(data);
+    if (_dummyList == null) {
+      bool offline = LocalStorage.getOffline();
+      if (offline) {
+        return LocalStorage.getArticoli() ?? [];
+      } else {
+        dynamic data = json.decode(await getData());
+        _dummyList = listFromJSON(data);
+      }
     }
-    //}
 
     return _dummyList!;
   }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -32,10 +33,21 @@ Future<void> main(List<String> args) async {
   AppStyle.init();
   await ThemeCustomizer.init();
 
-  runApp(ChangeNotifierProvider<AppNotifier>(
+  /*runApp(ChangeNotifierProvider<AppNotifier>(
     create: (context) => AppNotifier(),
     child: const MyApp(),
-  ));
+  ));*/
+  runZoned<Future<void>>(
+    () async {
+      runApp(ChangeNotifierProvider<AppNotifier>(
+        create: (context) => AppNotifier(),
+        child: const MyApp(),
+      ));
+    },
+    onError: (dynamic error, StackTrace stackTrace) {
+      print("=================== CAUGHT DART ERROR");
+    },
+  );
 }
 
 class MyApp extends StatelessWidget {

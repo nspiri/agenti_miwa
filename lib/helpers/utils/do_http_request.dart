@@ -66,8 +66,8 @@ class DoRequest {
             data: jsonEncode(a),
             options: Options(
                 headers: env.headers,
-                sendTimeout: Duration(seconds: 30),
-                receiveTimeout: Duration(seconds: 30)));
+                sendTimeout: Duration(seconds: 120),
+                receiveTimeout: Duration(seconds: 120)));
         /*final response = await http
             //.post(Uri.https("mxl1.hostcsi.com:9008", "/webapi/servizi"),
             .post(Uri.https(env.base_url, "/api/mexal/proxy"),
