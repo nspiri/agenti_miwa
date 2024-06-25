@@ -192,7 +192,6 @@ class Utils {
               int.parse(response.body.replaceAll(".", "").replaceAll("+", ""));
           int curVer = int.parse("${v.replaceAll(".", "")}${c}");
           if (version > curVer) {
-            await LocalStorage.setToken("");
             await LocalStorage.setLoggedInUser(false);
             Get.toNamed("/auth/login");
           }
@@ -224,7 +223,6 @@ class Utils {
 
     if (res.code == 200) {
       if (res.error != "") {
-        await LocalStorage.setToken("");
         await LocalStorage.setLoggedInUser(false);
         Get.toNamed("/auth/login");
       }
@@ -232,11 +230,10 @@ class Utils {
       if (a.isNotEmpty) {
         ControlloUtente user = ControlloUtente.fromJson(a[0]);
         if (user.confermaStatoClienti == true) {
-          StatoCliente.dummyList.then((value) {
+          var a = 0;
+          await StatoCliente.dummyList.then((value) {
             for (var element in value) {
               if (element.stato == "") {
-                LocalStorage.setToken("");
-                LocalStorage.setLoggedInUser(false);
                 Get.toNamed("/admin/customers/state", arguments: value);
               }
             }
