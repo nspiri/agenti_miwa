@@ -48,5 +48,10 @@ app.*.map.json
 .dart_tool/package_config.json
 .flutter-plugins-dependencies
 .flutter-plugins-dependencies
-.flutter-plugins-dependencies
-.dart_tool/package_config.json
+dist/procedura.txt
+dist/2.0.6+26/mexalorder-2.0.6+26-windows-setup.exe
+dist/2.0.7+27/mexalorder-2.0.7+27-windows-setup.exe
+dist/dist/2.0.6+26/mexalorder-2.0.6+26-windows-setup.exe
+dist/dist/2.0.7+27/mexalorder-2.0.7+27-windows-setup.exe
+dist/dist/appcast.xml
+dist/procedura.txt
