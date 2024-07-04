@@ -797,9 +797,9 @@ class CartController extends MyController {
         );
       },
     ).then((value) {
-      if (value as bool == true) {
-        cancellaOrdine();
-      }
+      //if (value as bool == true) {
+      cancellaOrdine();
+      //}
     });
   }
 
