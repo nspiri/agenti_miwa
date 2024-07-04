@@ -9,7 +9,7 @@ String pass = "GkU2CIoAZwDEWDE";
 //TEST
 /*String mexal_url = "https://mxl1.hostcsi.com:9008/webapi/servizi";
 String mxl_user = "SPXAPI";
-String mxl_pass = "CSICSICSI";
+String mxl_pass = "CSICSICSI  ";
 String sigla = "MIW";*/
 
 //PROD

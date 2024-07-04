@@ -318,6 +318,10 @@ class Layout extends StatelessWidget {
             thickness: 1,
           ),*/
           Padding(
+              padding: MySpacing.xy(8, 8),
+              child: MyText.labelLarge(
+                  LocalStorage.getLoggedUser()?.utente ?? "")),
+          Padding(
             padding: MySpacing.xy(8, 8),
             child: MyButton(
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
