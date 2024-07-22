@@ -1253,7 +1253,9 @@ class _CartScreenState extends State<CartScreen>
             Flexible(
               child: MyContainer(
                 onTap: () {
-                  controller.inviaOrdine();
+                  if (!controller.inviaLoading) {
+                    controller.inviaOrdine();
+                  }
                 },
                 width: double.infinity,
                 borderRadiusAll: 30,

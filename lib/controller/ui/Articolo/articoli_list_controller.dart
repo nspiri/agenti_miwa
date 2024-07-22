@@ -247,8 +247,6 @@ class FoodController extends MyController {
   promo() async {
     isPromo = true;
     loading = true;
-    isPromo = false;
-    loading = true;
     codice.text = "";
     desc.text = "";
     codAlt.text = "";

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mexalorder/helpers/storage/local_storage.dart';
 import 'package:mexalorder/helpers/utils/do_http_request.dart';
+import 'package:mexalorder/helpers/utils/show_message_dialogs.dart';
 import 'package:mexalorder/model/articolo.dart';
 import 'package:mexalorder/model/storico.dart';
 import 'package:mexalorder/views/my_controller.dart';
@@ -72,6 +73,7 @@ class ModalListaStoricoArtController extends MyController {
         setLoading(false);
         update();
       } else {
+        showErrorMessage(context, "Attenzione", "${res.error}");
         setLoading(false);
         return "";
       }

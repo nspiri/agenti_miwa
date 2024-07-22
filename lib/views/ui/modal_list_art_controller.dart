@@ -113,19 +113,13 @@ class ModalListaArtController extends MyController {
 
   void caricaArticoli() {
     articoliMobile = [];
+    currentPage = 1;
     for (int i = 0; i <= articlesPerPage; i++) {
       if (i < articoliFiltrati.length) {
         articoliMobile.add(articoliFiltrati[i]);
       } else {
         break;
       }
-    }
-  }
-
-  void scrollListener() {
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
-      _loadMoreArticles();
     }
   }
 
@@ -236,9 +230,9 @@ class ModalListaArtController extends MyController {
       articoli = value;
       articoliFiltrati = articoli;
       sortArt();
-      data = MyDataListArtModal(articoliFiltrati, context, this);
       modificaConfArt();
       caricaArticoli();
+      data = MyDataListArtModal(articoliFiltrati, context, this);
       scrollController.addListener(_scrollListener);
       setLoading(false);
       update();
@@ -261,10 +255,10 @@ class ModalListaArtController extends MyController {
       articoli = LocalStorage.getTopArticoli() ?? [];
       articoliFiltrati = articoli;
       sortArt();
-      setData();
       modificaConfArt();
-      caricaArticoli();
+      // caricaArticoli();
       orderNrVendite();
+      setData();
       setLoading(false);
       update();
     } else {
@@ -288,10 +282,10 @@ class ModalListaArtController extends MyController {
         articoli = Articolo.listFromJSON(dati);
         articoliFiltrati = articoli;
         sortArt();
-        setData();
         modificaConfArt();
-        caricaArticoli();
+        //caricaArticoli();
         orderNrVendite();
+        setData();
         setLoading(false);
         update();
       } else {

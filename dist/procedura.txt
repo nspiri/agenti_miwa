@@ -4,6 +4,6 @@
 
 flutter_distributor release --name prod --jobs windows-exe
 
-dart run auto_updater:sign_update dist/2.0.7+27/mexalorder-2.0.7+27-windows-setup.exe
+dart run auto_updater:sign_update dist/2.0.8+28/mexalorder-2.0.8+28-windows-setup.exe
 
 Modificare appcast.xml e version.txt
