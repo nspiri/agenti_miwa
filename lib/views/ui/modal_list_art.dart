@@ -932,7 +932,6 @@ class _ModalListaArticoliState extends State<ModalListaArticoli>
             onTap: () {
               if (controller.loading == false) {
                 controller.top10(widget.codCliente);
-                controller.caricaArticoli();
               }
             },
             paddingAll: 8,
