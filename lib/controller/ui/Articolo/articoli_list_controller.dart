@@ -74,6 +74,7 @@ class FoodController extends MyController {
 
   void caricaArticoli() {
     articoliMobile = [];
+    currentPage = 1;
     for (int i = 0; i <= articlesPerPage; i++) {
       if (i < articoliFiltrati.length) {
         articoliMobile.add(articoliFiltrati[i]);
