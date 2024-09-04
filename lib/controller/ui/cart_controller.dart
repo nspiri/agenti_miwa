@@ -760,6 +760,9 @@ class CartController extends MyController {
             }
             update();
           }
+        } else {
+          inviaLoading = false;
+          update();
         }
       });
     }
